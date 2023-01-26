@@ -1,22 +1,12 @@
-import { createStore, applyMiddleware, combineReducers } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk from 'redux-thunk'
-import { carsReducer } from '../reducers/carsReducer';
-import { alertsReducer } from '../reducers/alertsReducer';
+import { configureStore } from '@reduxjs/toolkit'
+import userReducer from '../features/Auth/userSlice'
 
-const composeEnhancers = composeWithDevTools({});
 
-const rootReducer = combineReducers({
-    carsReducer,
-    alertsReducer
+
+const store = configureStore({
+  reducer:{
+     user:userReducer
+  }
 })
 
-
-const store = createStore(
-  rootReducer,
-  composeEnhancers(
-    applyMiddleware(thunk) 
-  )
-);
-
-export default store
+export default store;

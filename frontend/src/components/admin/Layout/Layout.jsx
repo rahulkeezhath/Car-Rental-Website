@@ -3,10 +3,10 @@ import AdminRoute from '../../../routes/AdminRoute'
 
 const Layout = () => {
   return <Fragment>
-        <div>
-            <AdminRoute/>
-        </div>
-    </Fragment>
+    <div>
+        <AdminRoute/>
+    </div>
+  </Fragment>
 }
 
 export default Layout

@@ -4,6 +4,8 @@ import  LG from'../../../assets/Login.jpg'
 import { useState } from 'react'
 import axios from 'axios'
 import {Link} from 'react-router-dom'
+import {useDispatch} from 'react-redux'
+import { login } from '../../../redux/features/auth/userSlice'
 
 
 
@@ -12,11 +14,15 @@ function Login() {
 
   axios.defaults.baseURL = 'http://localhost:5000';
   
+
   const [isUserLoggedIn,setIsUserLoggedIn] = useState(false)
   const [data, setData] = useState({
     email:"",
     password:""
   })
+
+  
+  const dispatch = useDispatch()
 
   const [error,setError] = useState("")
 
@@ -25,7 +31,12 @@ function Login() {
   }
 
   const handleSubmit = async (e) =>{
-    e.preventDefault();
+    e.preventDefault(); 
+    dispatch(login({
+      email:email,
+      password:password,
+      loggedIn : true
+    }))
     try {
       const url = "/users/userLogin";
       const {data:res} = await axios.post(url, data)

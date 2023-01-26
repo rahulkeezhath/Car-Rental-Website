@@ -17,13 +17,17 @@ connectDB(()=>{
 })
 
 // Middlewares
-app.use(cors())
+app.use(
+    cors({
+        origin: "*"
+})
+)
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb'}));
 
 // Routes
 app.use('/users',userRoutes)
-
+app.use('/admin',adminRoutes)
 
 app.listen(port, () =>
 console.log(`Server Started on port ${port}`));
