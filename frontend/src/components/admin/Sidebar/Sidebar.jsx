@@ -196,7 +196,7 @@ const Sidebar = () => {
 const Section = styled.section`
   position: fixed;
   left: 0;
-  background-color: #212121;
+  background-color: #0c0800;
   height: 100vh;
   width: 18vw;
   display: flex;
@@ -220,12 +220,12 @@ const Section = styled.section`
       align-items: center;
       gap: 2rem;
       svg {
-        color: #2439dc;
+        color: #fff;
         font-size: 2rem;
       }
       span {
         font-size: 2rem;
-        color: #2439dc;
+        color: #fff;
         font-family: "Permanent Marker", cursive;
       }
     }
@@ -241,7 +241,7 @@ const Section = styled.section`
           padding: 0.6rem 1rem;
           border-radius: 0.6rem;
           &:hover {
-            background-color: #2439dc;
+            background-color: #F9A826;
             a {
               color: black;
             }
@@ -254,7 +254,7 @@ const Section = styled.section`
           }
         }
         .active {
-          background-color: #2439dc;
+          background-color: #F9A826;
           a {
             color: black;
           }
@@ -343,7 +343,7 @@ const ResponsiveNav = styled.div`
         }
       }
       .active {
-        background-color: #2439dc;
+        background-color: #fff;
         a {
           color: black;
         }

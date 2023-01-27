@@ -2,6 +2,7 @@ import React from 'react'
 import {Routes, Route} from 'react-router-dom'
 import Signup from '../pages/users/Signup/Signup'
 import Login from '../pages/users/Login/Login'
+import Otp from '../pages/users/OtpVerification/OtpVerification'
 import Home from '../pages/users/Home/Home'
 import Bookings from '../pages/users/MyBookings/Bookings'
 import Cars from '../pages/users/Cars/Cars'
@@ -18,6 +19,7 @@ const UserRoute = ()=>{
         <Route exact path='/' element={<Home/>} />
         <Route exact path='/login' element={<Login/>} />
         <Route exact path='/signup' element={<Signup/>} />
+        <Route exact path='/otp' element={<Otp/>} />
         <Route exact path='/bookingcar' element={<Bookings/>} />
         <Route exact path='/cars' element={<Cars/>} />
         <Route exact path='/cars/:slug' element={<SingleCar/>} />

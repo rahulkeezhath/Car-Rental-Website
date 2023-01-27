@@ -23,7 +23,7 @@ color: white;
   h2{
     span{
       margin-left: 0.5rem;
-      color: #2439dc;
+      color: #F9A826;
       letter-spacing: 0.2rem;
       font-family: 'Permanent Marker', cursive;
     }
@@ -37,16 +37,16 @@ color: white;
   padding: 1rem 8rem 1rem 1rem;
   border-radius: 1rem;
   svg{
-    color: #2439dc;
+    color: #F9A826;
   }
   input{
     background-color: transparent;
     border: none;
-    color: #2439dc;
+    color: #F9A826;
     font-family: 'Permanent Marker', cursive;
     letter-spacing: 0.3rem;
     &::placeholder{
-      color: #2439dc;
+      color: #F9A826;
     }
     &:focus{
       outline: none;
