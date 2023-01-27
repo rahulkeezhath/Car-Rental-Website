@@ -4,9 +4,15 @@ import SP from "../../../assets/Signup.jpeg";
 import { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { useForm } from 'react-hook-form'
+ 
 
 function Signup() {
   axios.defaults.baseURL = "http://localhost:5000";
+
+
+  const {register, formState: {errors}, handleSubmit} = useForm()
+
 
 
   const [data, setData] = useState({
@@ -23,8 +29,7 @@ function Signup() {
     setData({ ...data, [input.name]: input.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async () => {
     try {
       const url = "/users/userSignup";
       const { data: res } = await axios.post(url, data);
@@ -49,7 +54,7 @@ function Signup() {
             <h1>Welcome To Fastrack</h1>
             <p className="sub">Signup in the Page for Accessing Cars</p>
           </div>
-          <form id="form" class="form" onSubmit={handleSubmit}>
+          <form id="form" class="form" onSubmit={handleSubmit(onSubmit)}>
             <div className="form-control">
               <label for="email">Full Name</label>
               <input
@@ -57,10 +62,13 @@ function Signup() {
                 id="fName"
                 name="fullName"
                 placeholder="Full Name"
+                {...register("fullName",{required:true})}
                 onChange={handleChange}
                 value={data.fullName}
-                required
               />
+              <error>
+                {errors.fullName?.type === 'required' && "Name is required"}
+              </error>
               <i id="icon2" onclick="eyeClick()" className=""></i>
               {/* <i class="fa-solid fa-circle-check"></i> */}
             </div>
@@ -72,10 +80,14 @@ function Signup() {
                 id="email"
                 name="email"
                 placeholder="Email"
+                {...register("email",{required:true, pattern: /^[a-zA-Z0-9_.+-]+@[a-zA-Z-9-]+\.[a-zA-Z0-9-.]+$/i})}
                 onChange={handleChange}
                 value={data.email}
-                required
               />
+               <error>
+                {errors.email?.type === 'required' && "Email is required"}
+                {errors.email?.type === 'pattern' && "Email is not Valid"}
+              </error>
               <i id="icon2" onclick="eyeClick()" className=""></i>
               {/* <i class="fa-solid fa-circle-check"></i> */}
             </div>
@@ -87,10 +99,14 @@ function Signup() {
                 id="phoneNumber"
                 name="phoneNumber"
                 placeholder="Phone Number"
+                {...register("phoneNumber",{required:true,minLength:7, maxLength:10})}
                 onChange={handleChange}
                 value={data.phoneNumber}
-                required
               />
+              <error>
+              {errors.phoneNumber?.type === 'minLength' && "Entered Number is Less than 6 digits"}
+              {errors.phoneNumber?.type === 'maxLength' && "Entered Number is More than 10 digits"}
+              </error>
               <i id="icon2" onclick="eyeClick()" className=""></i>
               {/* <i class="fa-solid fa-circle-check"></i> */}
             </div>
@@ -102,16 +118,20 @@ function Signup() {
                 id="password"
                 name="password"
                 placeholder="Password"
+                {...register("password",{required:true ,minLength:5, maxLength:20})}
                 onChange={handleChange}
-                value={data.password}
-                required
+                value={data.password} 
               />
+              <error>
+              {errors.password?.type === 'minLength' && "Entered Password is Less than 5 digits"}
+              {errors.password?.type === 'maxLength' && "Entered Number is More than 20 digits"}
+              </error>
               <i id="icon" onclick="eyeClick()" className=""></i>
               {/* <i onclick="eyeClick()" class="fa-solid fa-circle-check"></i> */}
             </div>
             {error && <div className="error_msg">{error}</div>}
             <br />
-            <button class="button-entrar" type="submit">
+            <button  class="button-entrar" type="submit">
               Signup
             </button>
             <br />
