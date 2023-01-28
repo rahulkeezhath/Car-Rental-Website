@@ -1,8 +1,9 @@
 const {User} = require('../../models/userModel')
 const Joi = require('joi')
 const bcrypt = require('bcrypt')
+const asyncHandler = require('express-async-handler')
 
-const userLogin = async (req,res) => {
+const userLogin = asyncHandler(async (req,res) => {
 try {
     const {error} = validate(req.body)
 
@@ -25,7 +26,7 @@ try {
 } catch (error) {
     res.status(500).send({message: "Internal Server Error"})
 }
-}
+})
 
 const validate = (data) => {
 const schema = Joi.object({

@@ -1,7 +1,8 @@
 const { User, validate} = require('../../models/userModel')
 const bcrypt = require('bcrypt')
+const asyncHandler = require('express-async-handler')
 
-const userSignup = async(req,res)=>{
+const userSignup = asyncHandler(async(req,res)=>{
     try {
        const {error} = validate(req.body);
        if(error)
@@ -18,7 +19,7 @@ const userSignup = async(req,res)=>{
     } catch (error) {
         res.status(500).send({message:"Interval Server Error"})
     }
-}
+})
 
 
 module.exports={
