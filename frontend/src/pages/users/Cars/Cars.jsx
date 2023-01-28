@@ -5,7 +5,6 @@ import Helmet from '../../../components/users/Helmet/Helmet'
 import { Container, Row, Col } from 'reactstrap'
 import CommonSection from '../../../components/users/UI/About/CommonSection'
 import CarItem from '../../../components/users/UI/HomeContent/CarItem'
-import CarData from '../../../assets/data/carData'
 import carData from '../../../assets/data/carData'
 
 const Cars = () => {

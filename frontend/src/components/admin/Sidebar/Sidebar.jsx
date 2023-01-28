@@ -10,13 +10,27 @@ import { FiLogOut } from "react-icons/fi";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { VscChromeClose } from "react-icons/vsc";
 import scrollreveal from 'scrollreveal'
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { adminLogout } from '../../../redux/features/adminAuth/adminAuthSlice';
 
 
 const Sidebar = () => {
+
+  const dispatch = useDispatch()
+  const navigate= useNavigate()
+
+  const logout = () => {
+    dispatch(adminLogout())
+    navigate('/admin')
+  }
+
   const [currentLink, setCurrentLink] = useState(1);
   const [navbarState, setNavbarState] = useState(false);
   const html = document.querySelector("html");
   html.addEventListener("click", () => setNavbarState(false));
+
+
 
   useEffect(() => {
     const sr = scrollreveal({
@@ -124,9 +138,9 @@ const Sidebar = () => {
           </div>
         </div>
         <div className="logout">
-          <a href="#">
+          <a>
             <FiLogOut />
-            <span className="logout">Logout</span>
+            <span onClick={logout} className="logout">Logout</span>
           </a>
         </div>
       </Section>

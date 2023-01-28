@@ -1,74 +1,61 @@
 import React from 'react'
 import './Login.css'
-import { useState } from 'react'
-import axios from 'axios'
-import { useDispatch } from 'react-redux'
-import {adminLogin} from '../../../redux/features/adminAuth/adminAuthSlice'
+import {useForm} from 'react-hook-form'
+import {toast} from 'react-toastify'
+import { useDispatch, useSelector } from 'react-redux'
+import {useNavigate} from 'react-router-dom'
+import {adminLogin, reset} from '../../../redux/features/adminAuth/adminAuthSlice'
+import Spinner from '../../../components/Spinner/Spinner'
+import { useEffect } from 'react'
 
 
-const Login = () => {
+const AdminLogin = () => {
 
-    axios.defaults.baseURL = 'http://localhost:5000'
-
-    const [isAdminLoggedIn,setIsAdminLoggedIn] =useState(false)
-    const [data, setData] = useState({
-        userName:"",
-        password:""
-    })
-
+    const navigate = useNavigate()
     const dispatch = useDispatch()
+    const { admin, isLoading, isSuccess, isError, message } = useSelector((state) => state.adminAuth)
+    const { register, formState: {errors}, handleSubmit } = useForm()
 
-    const [error,setError] = useState("")
+ 
+    useEffect(()=>{
+      if (isError) {
+        toast.error(message)
+      }
+      if(isSuccess || admin){
+        navigate('/admin/dashboard')
+      }
+      dispatch(reset())
+    },[isError,isSuccess,admin,message,dispatch,navigate])
 
-    const handleChange = ({currentTarget:input}) => {
-        setData({...data,[input.name]: input.value})
+    const onSubmit =  (data) => {
+      dispatch(adminLogin(data))
     }
-
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-        dispatch(adminLogin({
-          userName:data.userName,
-          password:data.password,
-          loggedIn:true
-        }))
-        try {
-            const url = "/admin/adminLogin";
-            const {data:res} = await axios.post(url, data)
-            localStorage.setItem("token", res.data)
-            setIsAdminLoggedIn(true)
-            window.location = "/admin/dashboard"
-          } catch (error) {
-            if(
-              error.response &&
-              error.response.status >= 400 &&
-              error.response.status <= 500
-            ) {
-              setError(error.response.data.message)
-            }
-          }
+    if(isLoading){
+      return(<Spinner/>)
     }
 
   return (
    
-<div class="mainLogin">
-        <div class="container">
-            <div class="login">
-                <div class="row lgn">
-                    <div class="col-md img">    
+<div className="mainLogin">
+        <div className="container">
+            <div className="login">
+                <div className="row lgn">
+                    <div className="col-md img">    
                     </div>
-                    <div class="col-md">
-                        <form class="login-form" onSubmit={handleSubmit}>
+                    <div className="col-md">
+                        <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
                             <h4>Admin Login</h4>
-                            <div class="form-group">
-                                <input class="form-control user" name="userName" type="text" autocomplete="off" placeholder="User Name"  onChange={handleChange} value={data.userName} required/>
-                                <i class="fa ic fa-envelope" aria-hidden="true"></i>
+                            <div className="form-group">
+                                <input className="form-control user" name="userName" type={'text'} autocomplete="off" placeholder="User Name" {...register('userName', {required: 'Please Enter User Name'})}/>
+                                <i className="fa ic fa-envelope" aria-hidden="true"></i>
+                                {errors.userName && <p className='error_mg'>{errors.userName?.message}</p>}
                             </div>
-                            <div class="form-group">
-                                <input class="form-control pass" type="password" name="password" placeholder="Password" autocomplete="new-password" onChange={handleChange} value={data.password} required/>
-                                <i class="fa ic fa-lock" aria-hidden="true"></i>
+                            <div className="form-group">
+                                <input className="form-control pass" type={'password'} name="password" placeholder="Password" autocomplete="new-password" {...register('password', {required: 'Please Enter Password'})}/>
+                                {errors.password && <p className='error_mg'>{errors.password?.message}</p>}
+                                <i className="fa ic fa-lock" aria-hidden="true"></i>
                             </div>
-                            {error && <div className='error_msg'>{error}</div>}<br/>
-                            <button class="btn-login" type="submit">Login</button>
+                            <button className="btn-login" type="submit">Login</button>
                         </form>
                     </div>
                 </div>
@@ -78,4 +65,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default AdminLogin

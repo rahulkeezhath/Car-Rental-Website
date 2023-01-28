@@ -1,106 +1,91 @@
 import React from 'react'
 import './Login.css'
 import  LG from'../../../assets/Login.jpg'
-import { useState } from 'react'
-import axios from 'axios'
-import {Link} from 'react-router-dom'
-import {useDispatch} from 'react-redux'
-import { login } from '../../../redux/features/auth/userSlice'
+import {Link, useNavigate} from 'react-router-dom'
+import {useDispatch, useSelector} from 'react-redux'
+import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
+import Spinner from '../../../components/Spinner/Spinner'
+import { login, reset } from '../../../redux/features/auth/authSlice'
+import { useEffect } from 'react'
 
 
 
 
 function Login() {
 
-  axios.defaults.baseURL = 'http://localhost:5000';
+  const { register, handleSubmit, formState: { errors } } = useForm()
   
 
-  const [isUserLoggedIn,setIsUserLoggedIn] = useState(false)
-  const [data, setData] = useState({
-    email:"",
-    password:""
-  })
-
-  
+  const navigate = useNavigate()
   const dispatch = useDispatch()
+  const { user, isError, isSuccess, isLoading, message } = useSelector((state) => state.auth)
 
-  const [error,setError] = useState("")
 
-  const handleChange = ({currentTarget: input}) =>{
-    setData({...data,[input.name]: input.value})
+  useEffect(() => {
+    if (isError) {
+      toast.error(message)
+    }
+    if(isSuccess || user) {
+      navigate('/')
+    }
+    dispatch(reset())
+  }, [isError, user, message, isSuccess, navigate, dispatch])
+
+
+  const onSubmit =  (data) =>{
+    dispatch(login(data))
   }
 
-  const handleSubmit = async (e) =>{
-    e.preventDefault(); 
-    dispatch(login({
-      email:email,
-      password:password,
-      loggedIn : true
-    }))
-    try {
-      const url = "/users/userLogin";
-      const {data:res} = await axios.post(url, data)
-      localStorage.setItem("token", res.data)
-      setIsUserLoggedIn(true)
-      window.location = "/"
-    } catch (error) {
-      if(
-        error.response &&
-        error.response.status >= 400 &&
-        error.response.status <= 500
-      ) {
-        setError(error.response.data.message)
-      }
-    }
+  if (isLoading) {
+    return (<><Spinner/></>)
   }
 
   return (
     <div className='first2'>
-       <div class="main">
-      <div class="container3">
-        <div class="titulo">
+       <div className="main">
+      <div className="container3">
+        <div className="titulo">
           <h1>Welcome To Fastrack</h1>
-          <p class="sub">Log in to the Page for Booking Cars</p>
+          <p className="sub">Log in to the Page for Booking Cars</p>
         </div>
-        <form id="form" class="form" onSubmit={handleSubmit}>
-          <div class="form-control">
+        <form id="form" className="form" onSubmit={handleSubmit(onSubmit)}>
+          <div className="form-control">
             <label for="email">Email</label>
-            <input type="email" id="email" name='email' placeholder="Email" onChange={handleChange} value={data.email} required />
-            <i id="icon2" onclick="eyeClick()" class=""></i>
-            {/* <i class="fa-solid fa-circle-check"></i> */}
-            <small>Mensagem de Erro</small>
+            <input type={'email'}
+             id="email"
+             name='email'
+             placeholder="Email"
+             {...register('email', {required: 'Please Enter Email', pattern:{value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: "Invalid Email Address"}})}
+            />
+            {errors.email && <p className='error_mg'>{errors.email?.message}</p>}
           </div>
 
-          <div class="form-control">
+          <div className="form-control">
             <label for="password">Password</label>
             <input
-              type="password"
+              type={'password'}
               id="password"
               name='password'
               placeholder="Password"
-              onChange={handleChange}
-              value={data.password}
-              required
+              {...register("password", { required: "Please Enter Password", minLength: { value: 5, message: "Password must be 8 characters"}})}
             />
-            <i id="icon" onclick="eyeClick()" class=""></i>
-           {/* <i onclick="eyeClick()" class="fa-solid fa-circle-check"></i> */}
-            <small>Mensagem de Erro</small>
+            {errors.password && <p className='error_mg'>{errors.password?.message}</p>}
           </div>
-          <div class="lemb-esq">
-            <div class="checkbox">
-              <input type="checkbox" class="checkbox-box" />
-              <p class="Lembrar">Remember My login</p>
+          <div className="lemb-esq">
+            <div className="checkbox">
+              <input type={"checkbox" } className="checkbox-box" />
+              <p className="Lembrar">Remember My login</p>
             </div>
-            <p class="re_senha">Forgot Password</p>
+            <p className="re_senha">Forgot Password</p>
           </div>
-          {error && <div className='error_msg'>{error}</div>}<br/>
-          <button class="button-entrar" type="submit">Login</button><br />
+          <button className="button-entrar" type="submit">Login</button><br />
           <Link to={"/signup"}>
-          <button class="button-criar" type="submit">Signup</button>
+          <button className="button-criar" type="submit">Signup</button>
           </Link>
         </form>
       </div>
-      <div class="container4">
+      <div className="container4">
         <img src={LG} alt="image" width="100%" height="100%" />
       </div>
     </div>

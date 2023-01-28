@@ -137,6 +137,11 @@
         text-align: center;
     }
 
+    .error_mg{
+        font-size: 10px;
+        color: #f34646;
+      }
+
  @media (max-width: 575.98px) {
         .lgn {
             width: 300px;

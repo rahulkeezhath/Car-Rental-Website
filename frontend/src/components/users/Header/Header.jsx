@@ -2,6 +2,9 @@ import React, {useRef} from 'react'
 import {Container,Row,Col} from "reactstrap";
 import {Link,NavLink} from 'react-router-dom'
 import './Header.css'
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../../redux/features/auth/authSlice';
 
 const navLinks = [
   {
@@ -28,6 +31,13 @@ const navLinks = [
 
 const Header = () => {
 
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const userLogout = () => {
+    dispatch(logout())
+    navigate('/')
+  }
 
   const menuRef = useRef(null)
 
@@ -56,6 +66,9 @@ const Header = () => {
              </Link>
           <Link to='/signup' className='d-flex align-items-center gap-1'>
              <i class="ri-user-line"></i> Signup
+              </Link>
+              <Link onClick={userLogout} className='d-flex align-items-center gap-1'>
+              <i class="ri-logout-box-r-line"></i> Logout
               </Link>
           </div>
         </Col>

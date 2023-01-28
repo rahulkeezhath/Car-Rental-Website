@@ -1,11 +1,11 @@
 import React from 'react'
-import Layout from '../../../components/users/Layout/Layout'
+import App from '../../../App'
 
 function Bookings() {
   return (
-    <Layout>
+    <App>
         <h1>Booking Car</h1>
-    </Layout>
+        </App>
   )
 }
 

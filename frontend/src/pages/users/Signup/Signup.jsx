@@ -1,50 +1,54 @@
 import React from "react";
 import "./Signup.css";
+import { toast } from 'react-toastify'
+import {useDispatch, useSelector} from 'react-redux'
 import SP from "../../../assets/Signup.jpeg";
-import { useState } from "react";
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from 'react-hook-form'
+import { userRegister, reset } from "../../../redux/features/auth/authSlice";
+import { useEffect } from "react";
+import Spinner from '../../../components/Spinner/Spinner'
+
  
 
 function Signup() {
-  axios.defaults.baseURL = "http://localhost:5000";
 
 
   const {register, formState: {errors}, handleSubmit} = useForm()
 
 
+  
 
-  const [data, setData] = useState({
-    fullName: "",
-    email: "",
-    phoneNumber: "",
-    password: "",
-  });
 
-  const [error, setError] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const { isError, isSuccess, isLoading, message, user } = useSelector((state) => state.auth)
 
-  const handleChange = ({ currentTarget: input }) => {
-    setData({ ...data, [input.name]: input.value });
-  };
 
-  const onSubmit = async () => {
-    try {
-      const url = "/users/userSignup";
-      const { data: res } = await axios.post(url, data);
-      navigate("/login");
-      console.log(res.message);
-    } catch (error) {
-      if (
-        error.response &&
-        error.response.status >= 400 &&
-        error.response.status <= 500
-      ) {
-        setError(error.response.data.message);
-      }
+  useEffect(() => {
+    if (isError) {
+      toast.error(message)
     }
+    if (isSuccess) {
+      navigate('/')
+    }
+    if(user) {
+      navigate('/')
+    }
+
+    dispatch(reset())
+  }, [isError, isSuccess, message, user, navigate, dispatch])
+
+
+
+  const onSubmit = async (data) => {
+    const {fullName, email, phoneNumber, password} = data
+    const userData = {fullName, email, phoneNumber, password}
+    dispatch(userRegister(userData))
   };
+  if (isLoading) {
+    return (<><Spinner/></>)
+  }
 
   return (
     <div className="first1">
@@ -54,89 +58,62 @@ function Signup() {
             <h1>Welcome To Fastrack</h1>
             <p className="sub">Signup in the Page for Accessing Cars</p>
           </div>
-          <form id="form" class="form" onSubmit={handleSubmit(onSubmit)}>
+          <form id="form" className="form" onSubmit={handleSubmit(onSubmit)}>
             <div className="form-control">
               <label for="email">Full Name</label>
               <input
-                type="text"
+                type={'text'}
                 id="fName"
                 name="fullName"
                 placeholder="Full Name"
-                {...register("fullName",{required:true})}
-                onChange={handleChange}
-                value={data.fullName}
+                {...register("fullName",{required: 'Please Enter Name', minLength: { value: 3, message: 'Name must be 3 or more characters'}})}
               />
-              <error>
-                {errors.fullName?.type === 'required' && "Name is required"}
-              </error>
-              <i id="icon2" onclick="eyeClick()" className=""></i>
-              {/* <i class="fa-solid fa-circle-check"></i> */}
+              {errors.fullName && <p className="error_mg">{errors.fullName?.message}</p>}
+           
             </div>
 
             <div className="form-control">
               <label for="email">Email</label>
               <input
-                type="email"
+                type={'email'}
                 id="email"
                 name="email"
                 placeholder="Email"
-                {...register("email",{required:true, pattern: /^[a-zA-Z0-9_.+-]+@[a-zA-Z-9-]+\.[a-zA-Z0-9-.]+$/i})}
-                onChange={handleChange}
-                value={data.email}
+                {...register("email",{required:"Please Enter Email", pattern: /^[a-zA-Z0-9_.+-]+@[a-zA-Z-9-]+\.[a-zA-Z0-9-.]+$/i, message: "Invalid Email Address"})}
               />
-               <error>
-                {errors.email?.type === 'required' && "Email is required"}
-                {errors.email?.type === 'pattern' && "Email is not Valid"}
-              </error>
-              <i id="icon2" onclick="eyeClick()" className=""></i>
-              {/* <i class="fa-solid fa-circle-check"></i> */}
+              {errors.email && <p className="error_mg">{errors.email?.message}</p>}
             </div>
 
             <div className="form-control">
               <label for="email">Phone Number</label>
               <input
-                type="text"
+                type={"text"}
                 id="phoneNumber"
                 name="phoneNumber"
                 placeholder="Phone Number"
-                {...register("phoneNumber",{required:true,minLength:7, maxLength:10})}
-                onChange={handleChange}
-                value={data.phoneNumber}
+                {...register("phoneNumber",{required: "Please Enter Phone Number",minLength: {value: 10, message: "Phone number must be  10 numbers"}, maxLength: {value: 10, message: "Phone number cannot exceed more than 10 numbers"}})}
               />
-              <error>
-              {errors.phoneNumber?.type === 'minLength' && "Entered Number is Less than 6 digits"}
-              {errors.phoneNumber?.type === 'maxLength' && "Entered Number is More than 10 digits"}
-              </error>
-              <i id="icon2" onclick="eyeClick()" className=""></i>
-              {/* <i class="fa-solid fa-circle-check"></i> */}
+              {errors.phoneNumber && <p className="error_mg">{errors.phoneNumber?.message}</p>}
             </div>
 
             <div className="form-control">
               <label for="password">Password</label>
               <input
-                type="password"
+                type={'password'}
                 id="password"
                 name="password"
                 placeholder="Password"
-                {...register("password",{required:true ,minLength:5, maxLength:20})}
-                onChange={handleChange}
-                value={data.password} 
+                {...register("password",{required: "Please Enter  Password" ,minLength: {value: 8, message: "Password must be 8 characters"}})}
               />
-              <error>
-              {errors.password?.type === 'minLength' && "Entered Password is Less than 5 digits"}
-              {errors.password?.type === 'maxLength' && "Entered Number is More than 20 digits"}
-              </error>
-              <i id="icon" onclick="eyeClick()" className=""></i>
-              {/* <i onclick="eyeClick()" class="fa-solid fa-circle-check"></i> */}
+               {errors.password && <p className="error_mg">{errors.password?.message}</p>}
             </div>
-            {error && <div className="error_msg">{error}</div>}
             <br />
-            <button  class="button-entrar" type="submit">
+            <button  className="button-entrar" type="submit">
               Signup
             </button>
             <br />
             <Link to={"/login"}>
-              <button class="button-criar" type="submit">
+              <button className="button-criar" type="submit">
                 Login
               </button>
             </Link>

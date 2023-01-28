@@ -1,11 +1,11 @@
-import Layout from './components/users/Layout/Layout'
-import AdminLayout from './components/admin/Layout/Layout'
+import UserRoute from "./routes/UserRoute"
+import AdminRoute from './routes/AdminRoute'
 
 function App() {
   return (
   <>
-  <Layout />
-  <AdminLayout/>
+    <UserRoute/>
+    <AdminRoute/>
   </>
   )
 }
