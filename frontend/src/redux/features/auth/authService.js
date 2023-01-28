@@ -12,6 +12,10 @@ const register = async (userData) => {
     return response.data
 }
 
+// Otp Verification
+const otp = async (data) => {
+    const response = await axiosInstance.post
+}
 
 // Login user 
 
