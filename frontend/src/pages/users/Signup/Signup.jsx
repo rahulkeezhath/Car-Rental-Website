@@ -30,7 +30,7 @@ function Signup() {
       toast.error(message)
     }
     if (isSuccess) {
-      navigate('/')
+      navigate('/otp')
     }
     if(user) {
       navigate('/')

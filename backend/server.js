@@ -4,7 +4,7 @@ const dotenv = require('dotenv').config()
 const port = process.env.PORT || 5000
 const cors = require('cors')
 const connectDB = require('./config/db')
-const { errorHandler } = require('./middleware/errorMiddleware')
+
 
 const userRoutes = require('./routes/userRouter')
 const adminRoutes = require('./routes/adminRouter')
@@ -32,7 +32,7 @@ app.use('/users',userRoutes)
 app.use('/admin',adminRoutes)
 
 
-app.use(errorHandler)
+
 
 app.listen(port, () =>
 console.log(`Server Started on port ${port}`));

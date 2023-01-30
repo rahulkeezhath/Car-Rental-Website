@@ -5,6 +5,11 @@
     box-sizing: border-box;
     font-family: 'poppins', sans-serif;
 }
+
+form{
+    display: grid;
+}
+
 .body1
 {
     display: flex;
@@ -29,7 +34,7 @@
 }
 .otp input
 {
-    width: 60px;
+    width: 100%;
     font-size: 24px;
     margin: 2px;
     padding: 10px;
@@ -66,3 +71,15 @@ button:active
 {
     transform: scale(.9);
 }
+
+.error_msg{
+    width: 370px;
+    padding: 15px;
+    margin: 5px 0;
+    font-size: 14px;
+    background-color: #f34646;
+    color: white;
+    border-radius: 5px;
+    text-align: center;
+  }
+  

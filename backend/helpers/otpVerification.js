@@ -7,27 +7,29 @@ const client = require('twilio')(accountSID,authToken)
 const doSms = (phoneNumber) => {
     let resp = {}
     return new Promise((resolve,reject)=>{
-        client.verify.services(serviceSID).verification.create({
+        client.verify.v2.services(serviceSID).verifications.create({
             to: `+91${phoneNumber}`,
             channel: "sms"
           })
           .then((res) => {
             resp.valid = true
             resolve(resp)
-            console.log(res);
+            console.log(resp);
+            console.log("kjbkhbd",res);
           }).catch((err) => {
             reject(err)
           })
     })
 }
 
-const verifyOtp = (phoneNumber, otp) => {
+const verifyOtp = (phoneNumber, otpCode) => {
     return new Promise((resolve, reject) => {
-      client.verify.services(serviceSID).verificationChecks.create({
+      client.verify.v2.services(serviceSID).verificationChecks.create({
         to: `+91${phoneNumber}`,
-        code: otp
+        code: otpCode
       }).then((res) => {
         resolve(res)
+        console.log("jhgfjs",res);
       }).catch((err) => {
         reject(err)
       })

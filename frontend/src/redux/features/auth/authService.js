@@ -1,5 +1,5 @@
 import axiosInstance from "../../../../utils/axiosInstance";
-
+import {message} from 'antd'
 
 // Register user 
 const register = async (userData) => {
@@ -7,6 +7,7 @@ const register = async (userData) => {
 
     if(response.data) {
         localStorage.setItem('userData', JSON.stringify(userData))
+        message.success("Registration Succesfull")
     }
 
     return response.data
@@ -14,7 +15,13 @@ const register = async (userData) => {
 
 // Otp Verification
 const otp = async (data) => {
-    const response = await axiosInstance.post
+    const response = await axiosInstance.post('/users/otp',data)
+
+    if(response.data) {
+        localStorage.setItem('user', JSON.stringify(response.data))
+        message.success('OTP Verified')
+    }
+    return response.data
 }
 
 // Login user 
@@ -24,6 +31,7 @@ const login = async (userData) => {
 
     if(response.data) {
         localStorage.setItem('user', JSON.stringify(response.data))
+        message.success("Login Success")
     }
 
     return response.data
@@ -33,11 +41,13 @@ const login = async (userData) => {
 // Logout user
 const logout = () => {
     localStorage.removeItem('user')
+    message.success("Logout Success")
 }
 
 
 const authService = {
     register,
+    otp,
     login,
     logout
 }

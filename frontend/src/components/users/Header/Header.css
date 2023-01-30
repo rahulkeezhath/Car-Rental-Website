@@ -28,12 +28,20 @@
     font-size: 0.7rem;
 }
 
+.header_top_right .ant-btn{
+    background-color: white !important;
+    color: #000d6b !important;
+    border: 1px solid #000d6b !important ;
+    padding: 5px 15px !important;
+    outline: none !important;
+}
 
 .header_top_right a{
     text-decoration: none;
     color: #fff;
     font-size: .9rem;
 }
+
 
 .header_top_right a:hover{
     color: #fff;

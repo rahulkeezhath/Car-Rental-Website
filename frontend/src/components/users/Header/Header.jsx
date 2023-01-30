@@ -31,6 +31,8 @@ const navLinks = [
 
 const Header = () => {
 
+  const user = JSON.parse(localStorage.getItem('user'))
+
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -42,6 +44,33 @@ const Header = () => {
   const menuRef = useRef(null)
 
   const toggleMenu = ()=> menuRef.current.classList.toggle('menu_active')
+
+  const items = [
+  {
+    key: '1',
+    label: (
+      <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+        1st menu item
+      </a>
+    ),
+  },
+  {
+    key: '2',
+    label: (
+      <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
+        2nd menu item
+      </a>
+    ),
+  },
+  {
+    key: '3',
+    label: (
+      <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
+        3rd menu item
+      </a>
+    ),
+  },
+];
 
 
   return <header className="header">
@@ -61,15 +90,26 @@ const Header = () => {
 
         <Col lg='6' md='6' sm='6'>
           <div className='header_top_right d-flex align-items-center justify-content-end gap-3'>
-          <Link to='/login' className='d-flex align-items-center gap-1'>
+          
+              {user?.fullName ? (
+                <>
+              <Link className='d-flex align-items-center gap-1 ms-3'>
+              <i class="ri-account-circle-line"></i>{user.fullName}
+              <span onClick={userLogout} className='d-flex align-items-center gap-1  ms-3'>
+              <i class="ri-logout-box-r-line"></i> Logout
+              </span>
+              </Link>
+              </>
+              ): (
+                <>
+                <Link to='/login' className='d-flex align-items-center gap-1'>
              <i class="ri-login-circle-line"></i> Login 
              </Link>
           <Link to='/signup' className='d-flex align-items-center gap-1'>
              <i class="ri-user-line"></i> Signup
               </Link>
-              <Link onClick={userLogout} className='d-flex align-items-center gap-1'>
-              <i class="ri-logout-box-r-line"></i> Logout
-              </Link>
+                </>
+              )}
           </div>
         </Col>
       </Row>

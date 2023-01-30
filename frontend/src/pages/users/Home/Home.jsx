@@ -15,6 +15,7 @@ import Footer from '../../../components/users/Footer/Footer'
 
 
 function Home() {
+
   return <Helmet title='Home'>
 
     <Header/>

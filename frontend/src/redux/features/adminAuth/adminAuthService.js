@@ -1,4 +1,5 @@
 import axiosInstance from "../../../../utils/axiosInstance";
+import { message } from "antd";
 
 // Login Admin
 const login = async (adminData) => {
@@ -6,6 +7,7 @@ const login = async (adminData) => {
 
     if(response.data) {
         localStorage.setItem('admin', JSON.stringify(response.data))
+        message.success("Login Success")
     }
     return response.data
 }
@@ -13,6 +15,7 @@ const login = async (adminData) => {
 //Logout Admin
 const logout = () => {
     localStorage.removeItem('admin')
+    message.success("Logout Sucess")
 }
 
 const adminAuthService = {
