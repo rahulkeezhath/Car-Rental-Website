@@ -1,0 +1,18 @@
+.main_layout{
+    margin-left: 300px;
+    background-color: grey;
+    padding: 30px; 
+}
+.content{
+    margin-left: 275px;
+    padding: 35px;
+}
+
+@media screen and (max-width:1100px) {
+   .main_layout{
+    margin-left: 0px;
+   }
+   .content{
+    margin-left: 0px;
+   }
+}

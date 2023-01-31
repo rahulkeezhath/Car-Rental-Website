@@ -1,6 +1,5 @@
-const { User, validation} = require('../models/userModel')
+const { User} = require('../models/userModel')
 const jwt = require('jsonwebtoken')
-const Joi = require('joi')
 const bcrypt = require('bcrypt')
 require('dotenv').config()
 const asyncHandler = require('express-async-handler');
@@ -26,7 +25,6 @@ const userSignup = asyncHandler(async(req,res)=>{
     // Send OTP
 
     const otpSend = await doSms(phoneNumber)
-    console.log("fewfwe",otpSend);
     if(otpSend) {
         res.status(200).json(true)
     }
@@ -36,22 +34,18 @@ const userSignup = asyncHandler(async(req,res)=>{
 
 const otpVerification = asyncHandler(async (req,res) => {
     const { fullName, email, password, phoneNumber, otpCode } = req.body
-    console.log(req.body);
     const otpVerify = await verifyOtp(phoneNumber, otpCode)
-    console.log(otpVerify);
     if (otpVerify.status == 'approved') {
         
         // Hash Password
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(password, salt)
-        console.log("jfjhe");
 
           // Create User
         const user = await User.create({
         fullName,email,phoneNumber,
         password: hashedPassword
     })
-    console.log("sfwef",user);
     if(user) {
         res.status(201).json({
             _id: user.id,
@@ -61,10 +55,8 @@ const otpVerification = asyncHandler(async (req,res) => {
             token: generateAuthToken(user._id)
         })
     }
-    console.log("kehgfhwek");
     }else{
         res.status(400)
-        console.log("OTP INVALID");
         throw new Error('Invalid OTP')
     }
 })

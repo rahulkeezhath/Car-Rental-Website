@@ -2,7 +2,7 @@ import React, {useEffect} from 'react'
 import styled from 'styled-components'
 import Navbar from '../Navbar/Navbar'
 import scrollreveal from 'scrollreveal'
-const DashboardContent = () => {
+const DashboardContent = ({children}) => {
   useEffect(() => {
     const sr = scrollreveal({
       origin: "bottom",
@@ -25,6 +25,7 @@ const DashboardContent = () => {
   }, []);
   return <Section>
     <Navbar/>
+      {children}
   </Section>
 }
 

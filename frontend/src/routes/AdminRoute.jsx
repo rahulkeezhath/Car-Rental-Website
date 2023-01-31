@@ -4,6 +4,8 @@ import AdminLogin from '../pages/admin/Login/Login'
 import Dashboard from '../pages/admin/Dashboard/Dashboard'
 import BookingCar from '../pages/admin/Bookings/Booking'
 import SellCar from '../pages/admin/Sell Car/Sell'
+import UsersContent from '../components/admin/UsersContent/UsersContent'
+import Users from '../pages/admin/Users/Users'
 // import Error from '../pages/Error/Error'
 
 const AdminRoute = () => {
@@ -12,6 +14,7 @@ const AdminRoute = () => {
         <Route exact path='/admin' element={<AdminLogin/>} />
         <Route element={<ProtectedRoute/>} />
         <Route exact path='/admin/dashboard' element={<Dashboard/>} />
+        <Route exact path='/admin/users' element={<Users/>} />
         <Route exact path='/admin/bookings/' element={<BookingCar/>} />
         <Route exact path='/admin/sell-car/' element={<SellCar/>} />
         {/* <Route exact path='*' element={<Error/>} /> */}

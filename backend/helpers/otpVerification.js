@@ -15,7 +15,6 @@ const doSms = (phoneNumber) => {
             resp.valid = true
             resolve(resp)
             console.log(resp);
-            console.log("kjbkhbd",res);
           }).catch((err) => {
             reject(err)
           })
@@ -29,7 +28,6 @@ const verifyOtp = (phoneNumber, otpCode) => {
         code: otpCode
       }).then((res) => {
         resolve(res)
-        console.log("jhgfjs",res);
       }).catch((err) => {
         reject(err)
       })

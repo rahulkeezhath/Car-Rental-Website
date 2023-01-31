@@ -84,7 +84,7 @@ const Sidebar = () => {
                 className={currentLink === 1 ? "active" : "none"}
                 onClick={() => setCurrentLink(1)}
               >
-                <a href="#">
+                <a href="/admin/dashboard">
                   <MdSpaceDashboard />
                   <span> Dashboard</span>
                 </a>
@@ -93,9 +93,9 @@ const Sidebar = () => {
                 className={currentLink === 2 ? "active" : "none"}
                 onClick={() => setCurrentLink(2)}
               >
-                <a href="#">
+                <a href="/admin/users">
                   <RiDashboard2Fill />
-                  <span> Riders</span>
+                  <span> Users</span>
                 </a>
               </li>
               <li

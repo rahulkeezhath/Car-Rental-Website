@@ -22,6 +22,7 @@ const OtpVerification = () => {
   useEffect(() => {
     if(isError) {
       toast.error(message)
+      navigate('/signup')
     }
     if(isSuccess || user) {
       navigate('/')
