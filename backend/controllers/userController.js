@@ -7,6 +7,7 @@ const {doSms, verifyOtp} = require('../helpers/otpVerification')
 
 
 const userSignup = asyncHandler(async(req,res)=>{
+    try{
      const { fullName, email, phoneNumber, password} = req.body
 
      if(!fullName || !email || !phoneNumber || !password) {
@@ -28,11 +29,15 @@ const userSignup = asyncHandler(async(req,res)=>{
     if(otpSend) {
         res.status(200).json(true)
     }
+    } catch (error) {
+    res.status(500).send({message: "Internal Server Error"}) 
+}
 
 })
 
 
 const otpVerification = asyncHandler(async (req,res) => {
+    try {
     const { fullName, email, password, phoneNumber, otpCode } = req.body
     const otpVerify = await verifyOtp(phoneNumber, otpCode)
     if (otpVerify.status == 'approved') {
@@ -59,15 +64,18 @@ const otpVerification = asyncHandler(async (req,res) => {
         res.status(400)
         throw new Error('Invalid OTP')
     }
+    }catch (error) {
+        res.status(408).send({message: "Internal Server Error"}) 
+    }
 })
 
 
 const userLogin = asyncHandler(async (req,res) => {
+    try{
     const { email , password } = req.body
 
     // Check for user email
     const user = await User.findOne({email})
-
     // Check for user status
     if(user && (await bcrypt.compare(password, user.password))) {
         res.status(200).json({
@@ -81,13 +89,26 @@ const userLogin = asyncHandler(async (req,res) => {
         res.status(400)
         throw new Error('Invalid Credentials')
     }
+    }catch (error) {
+    res.status(500).send({message: "Internal Server Error"}) 
+}
 })
 
 
+const getUserDetails = asyncHandler(async( req, res)=>{
+    try {
+    const { fullName, email, phoneNumber } = await User.findById(req.user.id)
+    res.status(200).json({
+        fullName,email,phoneNumber
+    })
+    } catch (error) {
+        res.status(500).send({message: "Internal Server Error"}) 
+    }
+})
 
 
-    const generateAuthToken = (id) => {
-        return jwt.sign({id},process.env.JWTPRIVATEKEY,{expiresIn:"10d"})
+const generateAuthToken = (id) => {
+    return jwt.sign({id},process.env.JWTPRIVATEKEY,{expiresIn:"10d"})
     }
  
 
@@ -95,5 +116,6 @@ const userLogin = asyncHandler(async (req,res) => {
 module.exports={
     userSignup,
     otpVerification,
-    userLogin
+    userLogin,
+    getUserDetails
 }

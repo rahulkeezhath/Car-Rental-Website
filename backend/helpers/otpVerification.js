@@ -14,7 +14,6 @@ const doSms = (phoneNumber) => {
           .then((res) => {
             resp.valid = true
             resolve(resp)
-            console.log(resp);
           }).catch((err) => {
             reject(err)
           })

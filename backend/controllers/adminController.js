@@ -1,8 +1,10 @@
 const {Admin} = require('../models/adminModel')
 const Joi = require('joi')
 const bcrypt = require('bcrypt')
+const asyncHandler = require('express-async-handler')
+const { User } = require('../models/userModel')
 
-const adminLogin = async (req,res) => {
+const adminLogin = asyncHandler(async (req,res) => {
     try{
         const {error} = validate(req.body)
         
@@ -26,7 +28,7 @@ const adminLogin = async (req,res) => {
     } catch(error){
         res.status(500).send({message: "Internal Server Error"})
     }
-}
+})
 
     const validate = (data) => {
         const schema = Joi.object({
@@ -36,6 +38,18 @@ const adminLogin = async (req,res) => {
         return schema.validate(data)
     }
 
+    // AdminUsers
+    const adminUsers = asyncHandler(async (req,res) => {
+        const users = await User.find()
+        if(users) {
+            res.status(200).json(users)
+        } else {
+            res.status(400)
+            throw new Error('User Not Found')
+        }
+    })
+
 module.exports = {
-    adminLogin
+    adminLogin,
+    adminUsers
 }

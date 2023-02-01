@@ -1,6 +1,6 @@
 const router = require('express').Router();
-const {userSignup, userLogin, otpVerification} = require('../controllers/userController')
-
+const {userSignup, userLogin, otpVerification, getUserDetails} = require('../controllers/userController')
+const { protect } = require('../middleware/authMiddleware')
 
 
 
@@ -8,6 +8,7 @@ const {userSignup, userLogin, otpVerification} = require('../controllers/userCon
 router.post('/userSignup',userSignup)
 router.post('/userLogin',userLogin)
 router.post('/otp',otpVerification)
+router.get('/getUser',protect,getUserDetails)
 
 
 

@@ -4,7 +4,6 @@ import AdminLogin from '../pages/admin/Login/Login'
 import Dashboard from '../pages/admin/Dashboard/Dashboard'
 import BookingCar from '../pages/admin/Bookings/Booking'
 import SellCar from '../pages/admin/Sell Car/Sell'
-import UsersContent from '../components/admin/UsersContent/UsersContent'
 import Users from '../pages/admin/Users/Users'
 // import Error from '../pages/Error/Error'
 

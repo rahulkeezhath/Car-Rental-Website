@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { reset, otp } from '../../../redux/features/auth/authSlice'
 import { toast } from 'react-toastify'
-import Spinner from '../../../components/Spinner/Spinner'
+import Spinner from '../../Spinner/Spinner'
 
 
 
@@ -22,7 +22,7 @@ const OtpVerification = () => {
   useEffect(() => {
     if(isError) {
       toast.error(message)
-      navigate('/signup')
+      navigate('/otp')
     }
     if(isSuccess || user) {
       navigate('/')
@@ -45,7 +45,7 @@ const OtpVerification = () => {
     <h1 className='enter'>Enter OTP</h1>
     <form onSubmit={handleSubmit(onSubmit)} >
     <div class="otp">
-        <input type="text" name='otpCode' {...register('otpCode', {required: "Please Enter OTP"})}/>
+        <input type="text" name='otpCode' {...register('otpCode', {required: "Please Enter OTP",minLength: {value: 6, message: "OTP must be  6 numbers"}, maxLength: {value: 6, message: "OTP cannot exceed more than 6 numbers"}})}/>
     </div>
     {errors.otpCode && <p className='error_msg'>{errors.otpCode?.message}</p>}
     <button type='submit'>Verify</button>
