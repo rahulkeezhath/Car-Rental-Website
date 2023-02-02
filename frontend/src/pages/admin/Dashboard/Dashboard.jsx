@@ -7,7 +7,7 @@ import Sidebar from '../../../components/admin/Sidebar/Sidebar'
 
 const Dashboard = () => {
   return(
-  <Div style={{backgroundColor:"#75767d"}}>
+  <Div>
     <Sidebar/>  
     <DashboardContent/>
   </Div>

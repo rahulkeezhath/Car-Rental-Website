@@ -4,6 +4,7 @@ import UserSignup from '../pages/users/Signup/Signup'
 import UserLogin from '../pages/users/Login/Login'
 import Otp from '../pages/users/OtpVerification/OTP'
 import Home from '../pages/users/Home/Home'
+import Profile from '../pages/users/Profile/Profile'
 import Bookings from '../pages/users/MyBookings/Bookings'
 import Cars from '../pages/users/Cars/Cars'
 import SingleCar from '../pages/users/Single Car/Single'
@@ -22,6 +23,7 @@ const UserRoute = ()=>{
         <Route exact path='/login' element={<UserLogin/>} />
         <Route element={<ProtectedRoute/>} />
         <Route exact path='/otp' element={<Otp/>} />
+        <Route path='/profile' element={<Profile/>} />
         <Route exact path='/bookingcar' element={<Bookings/>} />
         <Route exact path='/cars' element={<Cars/>} />
         <Route exact path='/cars/:slug' element={<SingleCar/>} />

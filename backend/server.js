@@ -8,6 +8,7 @@ const connectDB = require('./config/db')
 
 const userRoutes = require('./routes/userRouter')
 const adminRoutes = require('./routes/adminRouter')
+const { errorHandler } = require('./middleware/errorMiddleware')
 
 // Database Connection
 connectDB(()=>{
@@ -26,6 +27,8 @@ app.use(
 )
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb'}));
+
+app.use(errorHandler)
 
 // Routes
 app.use('/users',userRoutes)

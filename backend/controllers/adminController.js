@@ -3,6 +3,7 @@ const Joi = require('joi')
 const bcrypt = require('bcrypt')
 const asyncHandler = require('express-async-handler')
 const { User } = require('../models/userModel')
+const { response } = require('express')
 
 const adminLogin = asyncHandler(async (req,res) => {
     try{
@@ -49,7 +50,27 @@ const adminLogin = asyncHandler(async (req,res) => {
         }
     })
 
+    // Block and Unblock Users
+    const blockUser = asyncHandler(async (req,res) =>{
+       const id = req.params.id;
+       await User.findByIdAndUpdate(id,{$set:{isBlocked:true}}).then((response) =>{
+        res.status(200).json({blocked:true,message: "User Blocked Successfully"})
+       })
+    })
+
+    const unblockUser = asyncHandler(async (req,res) => {
+        const id = req.params.id;
+        await User.findByIdAndUpdate(id,{$set:{isBlocked:false}}).then((response) => {
+            res.status(200).json({blocked:false, message:"User Unblocked Succesfully"})
+
+        })
+    })
+
+  
+
 module.exports = {
     adminLogin,
-    adminUsers
+    adminUsers,
+    blockUser,
+    unblockUser   
 }

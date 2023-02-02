@@ -20,8 +20,13 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required:[true, 'Please Add Password']
+    },
+    isBlocked:{
+        type:Boolean,
+        required:true,
+        default:false
     }
-})
+}, {timestamps: true})
 
 const User = mongoose.model("user",userSchema)
 

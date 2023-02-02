@@ -75,9 +75,10 @@ const userLogin = asyncHandler(async (req,res) => {
     const { email , password } = req.body
 
     // Check for user email
-    const user = await User.findOne({email})
+    const user = await User.findOne({
+        $and: [{email:email}, {isBlocked: false}] })
     // Check for user status
-    if(user && (await bcrypt.compare(password, user.password))) {
+    if(user && user.isBlocked == false && (await bcrypt.compare(password, user.password))) {
         res.status(200).json({
             _id: user.id,
             fullName: user.fullName,
@@ -107,6 +108,33 @@ const getUserDetails = asyncHandler(async( req, res)=>{
 })
 
 
+
+const updateUserProfile = asyncHandler(async (req,res) => {
+    const user = await User.findById(req.user._id)
+
+    if(user) {
+        user.fullName = req.body.fullName || user.fullName
+        user.email = req.body.email || user.email
+
+        if(req.body.password) {
+            user.password = req.body.password
+        }
+
+        const updatedUser = await user.save()
+
+        res.json({
+            _id:updatedUser._id,
+            fullName:updatedUser.fullName,
+            email:updatedUser.email,
+            token:generateAuthToken(updatedUser._id)
+        })
+    } else {
+        res.status(404);
+        throw new Error("User Not Found")
+    }
+})
+
+
 const generateAuthToken = (id) => {
     return jwt.sign({id},process.env.JWTPRIVATEKEY,{expiresIn:"10d"})
     }
@@ -117,5 +145,6 @@ module.exports={
     userSignup,
     otpVerification,
     userLogin,
-    getUserDetails
+    getUserDetails,
+    updateUserProfile
 }
