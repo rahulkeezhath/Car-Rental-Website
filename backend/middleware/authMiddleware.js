@@ -3,7 +3,6 @@ const asyncHandler = require('express-async-handler')
 const User = require('../models/userModel')
 const Admin = require('../models/adminModel')
 
-
 const protect = asyncHandler(async (req, res, next) => {
     let token
 
@@ -50,7 +49,7 @@ const adminProtect = asyncHandler(async (req, res, next) => {
         } catch (error) {
             console.log(error);
             res.status(401)
-            throw new Error('Not Authorized, token failed')
+            throw new Error('Not Authorized, No Token')
         }
     }
 

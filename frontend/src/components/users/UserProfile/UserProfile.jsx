@@ -1,7 +1,25 @@
 import React from 'react'
+import UserProfileModal from './UserProfileModal'
+import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+
+
+
+
 
 
 const UserProfile = () => {
+
+  const { user } = useSelector(state => state.auth)
+  console.log("jdgfhgde",user)
+
+
+  const navigate = useNavigate()
+
+
+  
+
+
   return (
     <section style={{backgroundColor: '#fff'}}>
         <div className="container py-5">
@@ -10,13 +28,13 @@ const UserProfile = () => {
               <div className="card mb-4">
                 <div className="card-body text-center">
                   <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar" className="rounded-circle img-fluid" style={{width: '150px'}} />
-                  <h5 className="my-3">John Smith</h5>
+                  <h5 className="my-3">{user?.fullName}</h5>
                   <p className="text-muted mb-1">Welcome Rider</p>
                   <p className="text-muted mb-4">Have a Nice Trip</p>
                   <div className="d-flex justify-content-center mb-2">
-                    <button type="submit" className="btn btn-primary">Edit Profile</button>
-                    <button type="submit" className="btn btn-outline-primary ms-1">My Bookings</button>
-                  </div>
+                    <UserProfileModal userDetails={user}/> 
+                    <button onClick={() => navigate('/bookingcar')} type="submit" className="btn btn-outline-primary ms-1">My Bookings</button>
+                  </div>  
                 </div>
               </div>
               <div className="card mb-4 mb-lg-0">
@@ -50,7 +68,7 @@ const UserProfile = () => {
                       <p className="mb-0">Full Name</p>
                     </div>
                     <div className="col-sm-9">
-                      <p className="text-muted mb-0">Johnatan Smith</p>
+                      <p className="text-muted mb-0">{user?.fullName}</p>
                     </div>
                   </div>
                   <hr />
@@ -59,7 +77,7 @@ const UserProfile = () => {
                       <p className="mb-0">Email</p>
                     </div>
                     <div className="col-sm-9">
-                      <p className="text-muted mb-0">example@example.com</p>
+                      <p className="text-muted mb-0">{user?.email}</p>
                     </div>
                   </div>
                   <hr />
@@ -68,7 +86,7 @@ const UserProfile = () => {
                       <p className="mb-0">Mobile</p>
                     </div>
                     <div className="col-sm-9">
-                      <p className="text-muted mb-0">(098) 765-4321</p>
+                      <p className="text-muted mb-0">{user?.phoneNumber}</p>
                     </div>
                   </div>
                 </div>

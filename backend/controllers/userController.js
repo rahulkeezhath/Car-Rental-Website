@@ -97,41 +97,34 @@ const userLogin = asyncHandler(async (req,res) => {
 
 
 const getUserDetails = asyncHandler(async( req, res)=>{
+    const id = req.params.data_id
     try {
-    const { fullName, email, phoneNumber } = await User.findById(req.user.id)
-    res.status(200).json({
-        fullName,email,phoneNumber
-    })
+        const userData = await User.findOne({_id:id})
+        res.status(200).json(userData)
     } catch (error) {
-        res.status(500).send({message: "Internal Server Error"}) 
+        console.log("error")
+        console.log(error);
     }
 })
 
 
 
+
 const updateUserProfile = asyncHandler(async (req,res) => {
-    const user = await User.findById(req.user._id)
 
-    if(user) {
-        user.fullName = req.body.fullName || user.fullName
-        user.email = req.body.email || user.email
-
-        if(req.body.password) {
-            user.password = req.body.password
-        }
-
-        const updatedUser = await user.save()
-
-        res.json({
-            _id:updatedUser._id,
-            fullName:updatedUser.fullName,
-            email:updatedUser.email,
-            token:generateAuthToken(updatedUser._id)
-        })
-    } else {
-        res.status(404);
-        throw new Error("User Not Found")
-    }
+    const id = req.body.id
+   try {
+    await User.findByIdAndUpdate(id,{$set:
+    {
+        fullName: req.body.fullName,
+        email: req.body.email,
+        phoneNumber: req.body.phoneNumber,
+    }},{upsert:true}).then((response)=>{
+        res.status(200).json({response:response, message:"User Updated Successfully"})
+    })
+   } catch (error) {
+        console.log(error);
+   }
 })
 
 

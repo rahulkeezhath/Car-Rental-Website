@@ -1,9 +1,11 @@
 const {Admin} = require('../models/adminModel')
+const Cars = require('../models/carModel')
 const Joi = require('joi')
 const bcrypt = require('bcrypt')
 const asyncHandler = require('express-async-handler')
 const { User } = require('../models/userModel')
 const { response } = require('express')
+const cloudinary = require('../utils/cloudinary')
 
 const adminLogin = asyncHandler(async (req,res) => {
     try{
@@ -66,11 +68,41 @@ const adminLogin = asyncHandler(async (req,res) => {
         })
     })
 
+
+    const AddCars = asyncHandler(async (req, res) => {
+        const {name, rent, body, place, Model, transmission, fuel, brand, image } = req.body
+
+        if(!name || !rent || !body || !place || !Model || !transmission || !fuel || !brand || !image) {
+            res.status(400)
+            throw new Error("Please Fill All the Fields")
+        }
+
+        const imageResult = await cloudinary.uploader.upload(image, {
+            folder: 'Fastrack'
+        })
+
+        const car = await Cars.create({
+            name, rent, place, brand, transmission, fuel, body, 
+            image: {
+                public_id: imageResult.public_id,
+                url: imageResult.secure_url
+            }
+        })
+
+        if(car) {
+            res.status(201)
+            res.json({ message: "Your Car has been Successfully Added"})
+        } else {
+            res.status(400)
+            throw new Error("Not Added")
+        }
+    })
   
 
 module.exports = {
     adminLogin,
     adminUsers,
     blockUser,
-    unblockUser   
+    unblockUser,
+    AddCars  
 }

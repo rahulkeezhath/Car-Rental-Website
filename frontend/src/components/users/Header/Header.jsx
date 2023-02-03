@@ -93,8 +93,10 @@ const Header = () => {
           
               {user?.fullName ? (
                 <>
-              <Link className='d-flex align-items-center gap-1 ms-3'>
+              <Link to={'/profile'} className='d-flex align-items-center gap-1 ms-3'>
               <i class="ri-account-circle-line"></i>{user.fullName}
+              </Link>
+              <Link>
               <span onClick={userLogout} className='d-flex align-items-center gap-1  ms-3'>
               <i class="ri-logout-box-r-line"></i> Logout
               </span>

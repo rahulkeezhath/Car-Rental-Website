@@ -28,7 +28,7 @@ const socialLinks = [
 
 const Contact = () => {
   return (
-    <Helmet>
+    <Helmet title="Contact">
         <Header/>
         <CommonSection title="Contact"/>
         <section>

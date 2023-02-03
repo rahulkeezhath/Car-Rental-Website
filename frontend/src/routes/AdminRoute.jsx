@@ -5,6 +5,7 @@ import Dashboard from '../pages/admin/Dashboard/Dashboard'
 import BookingCar from '../pages/admin/Bookings/Booking'
 import SellCar from '../pages/admin/Sell Car/Sell'
 import Users from '../pages/admin/Users/Users'
+import Cars from '../pages/admin/Cars/Cars'
 // import Error from '../pages/Error/Error'
 
 const AdminRoute = () => {
@@ -14,6 +15,7 @@ const AdminRoute = () => {
         <Route element={<ProtectedRoute/>} />
         <Route exact path='/admin/dashboard' element={<Dashboard/>} />
         <Route exact path='/admin/users' element={<Users/>} />
+        <Route exact path='/admin/cars' element={<Cars/>} />
         <Route exact path='/admin/bookings/' element={<BookingCar/>} />
         <Route exact path='/admin/sell-car/' element={<SellCar/>} />
         {/* <Route exact path='*' element={<Error/>} /> */}

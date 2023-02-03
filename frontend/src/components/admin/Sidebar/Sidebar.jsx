@@ -102,9 +102,9 @@ const Sidebar = () => {
                 className={currentLink === 3 ? "active" : "none"}
                 onClick={() => setCurrentLink(3)}
               >
-                <a href="#">
+                <a href="/admin/cars">
                   <FaAddressCard />
-                  <span> Payment Details</span>
+                  <span> Cars </span>
                 </a>
               </li>
               <li
@@ -140,7 +140,7 @@ const Sidebar = () => {
         <div className="logout">
           <a>
             <FiLogOut />
-            <span onClick={logout} className="logout">Logout</span>
+            <span onClick={logout}  className="logout">Logout</span>
           </a>
         </div>
       </Section>
@@ -162,7 +162,7 @@ const Sidebar = () => {
             >
               <a href="#">
                 <RiDashboard2Fill />
-                <span> Riders</span>
+                <span> Users</span>
               </a>
             </li>
             <li
@@ -171,7 +171,7 @@ const Sidebar = () => {
             >
               <a href="#">
                 <FaAddressCard />
-                <span> Payment Details</span>
+                <span> Cars</span>
               </a>
             </li>
             <li
