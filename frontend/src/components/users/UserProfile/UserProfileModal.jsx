@@ -2,15 +2,15 @@ import React, {useEffect, useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import toast, {Toaster} from 'react-hot-toast'
-import {  useNavigate } from 'react-router-dom'
 import axiosInstance from '../../../../utils/axiosInstance'
 import { reset } from '../../../redux/features/auth/authSlice';
 
 
 
 const UserProfileModal = ({userDetails}) => {
+ 
   console.log("HLoo",userDetails)
   const [show, setShow] = useState(false);
 

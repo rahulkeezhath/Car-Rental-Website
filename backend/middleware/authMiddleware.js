@@ -5,21 +5,23 @@ const Admin = require('../models/adminModel')
 
 const protect = asyncHandler(async (req, res, next) => {
     let token
+    console.log("Abc",token);
 
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         try {
             // Get tocken from header
             token = req.headers.authorization.split(' ')[1]
-
+            console.log("def",token);
             // Verify token
-            const decoded = jwt.verify(token, process.env.JWT_SECRET)
-
+            const decoded = jwt.verify(token, process.env.JWTPRIVATEKEY)
+            console.log("ghi",decoded);
             // Get user from tocken
             req.user = await User.findById(decoded.id).select('-password')
+            console.log("ghi",req.user);
 
             next()
         } catch (error) {
-            console.log(error);
+            console.log("Error Vanu",error);
             res.status(401) //Not authorized
             throw new Error('Not authorized')
         }
@@ -27,6 +29,7 @@ const protect = asyncHandler(async (req, res, next) => {
 
     if (!token) {
         res.status(401)
+        console.log("Token Illa", token);
         throw new Error('Not authorized, No token')
     }
 })
@@ -40,7 +43,7 @@ const adminProtect = asyncHandler(async (req, res, next) => {
             token = req.headers.authorization.split(' ')[1]
 
             // Verify token
-            const decoded = jwt.verify(token, process.env.JWT_SECRET)
+            const decoded = jwt.verify(token, process.env.JWTPRIVATEKEY)
 
             // Get user from tocken
             req.admin = await Admin.findById(decoded.id).select('-password')

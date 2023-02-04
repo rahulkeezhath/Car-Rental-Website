@@ -7,3 +7,10 @@ const addCar = async (carData) => {
 
     return response.data
 }
+
+
+const authService = {
+    addCar
+}
+
+export default authService

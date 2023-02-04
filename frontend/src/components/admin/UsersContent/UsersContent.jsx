@@ -31,7 +31,7 @@
   const userBlock = async (id) => {
     try {
       await axiosInstance.put("/admin/blockUser/" + id).then((res) => {
-        toast.success("User Blocked ")
+        toast.error("User Blocked ")
         
         axiosInstance.get("/admin/users").then((resp) => {
           

@@ -31,8 +31,8 @@ app.use(express.urlencoded({ limit: '50mb'}));
 app.use(errorHandler)
 
 // Routes
-app.use('/users',userRoutes)
-app.use('/admin',adminRoutes)
+app.use('/api/users',userRoutes)
+app.use('/api/admin',adminRoutes)
 
 
 

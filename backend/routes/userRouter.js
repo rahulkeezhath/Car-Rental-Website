@@ -6,6 +6,7 @@ const {userSignup, userLogin, otpVerification, getUserDetails, updateUserProfile
 
 
 
+
 router.post('/userSignup',userSignup)
 router.post('/userLogin',userLogin)
 router.post('/otp',otpVerification)
