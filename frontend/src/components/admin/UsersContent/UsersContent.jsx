@@ -79,6 +79,16 @@
     
     const columns = [
       {
+        name: "Sl.No",
+        selector: (row) => row.slNo,
+        sortable:true
+      },
+      {
+        name: "Id",
+        selector: (row) => row.id,
+        sortable:true
+      },
+      {
         name: "Full Name",
         selector: (row) => row.fullName,
         sortable:true

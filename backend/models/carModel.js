@@ -17,7 +17,7 @@ const carSchema = mongoose.Schema({
         type: String,
         required: [true, "Please Add Place"]
     },
-    Model: {
+    model: {
         type: String,
         required: [true, "Please Add Model "]
     },
@@ -34,16 +34,15 @@ const carSchema = mongoose.Schema({
         required: [true, "Please Add Brand"]
     },
     image: {
-        public_id:{
             type: String,
             required: true
-        },
-        url: {
-            type: String,
-            required: true
-        }
+    },
+    isDeleted: {
+        type: Boolean,
+        default: false,
+        required: true
     }
 
-})
+}, {timestamps: true})
 
 module.exports = mongoose.model("Cars", carSchema)

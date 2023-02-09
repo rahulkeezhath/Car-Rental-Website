@@ -5,6 +5,9 @@ import authReducer from '../features/Auth/authSlice'
 import adminAuthReducer from '../features/adminAuth/adminAuthSlice'
 import adminUsersReducer from '../features/adminUsers/adminUsersSlice'
 import updateUserReducer from '../features/auth/userUpdatedSlice'
+import placesReducer from '../features/place/placeSlice'
+import brandsReducer from '../features/brands/brandSlice'
+import adminCarReducer from '../features/cars/carSlice'
 
 
 
@@ -28,10 +31,29 @@ const adminUsersPersistConfig = {
   storage,
 }
 
+const adminPlacePersistConfig = {
+  key: 'places',
+  storage
+}
+
+const adminBrandPersistConfig = {
+  key: 'brands',
+  storage
+}
+
+const adminCarPersistConfig = {
+  key: 'car',
+  storage
+}
+
+
 const persistedAuthReducer = persistReducer(authPersistConfig, authReducer)
 const persistedUpdatedUserReducer = persistReducer(updatedUserPersistConfig, updateUserReducer)
 const persistedAdminAuthReducer = persistReducer(adminAuthPersistConfig, adminAuthReducer)
 const persistedAdminUsersReducer = persistReducer(adminUsersPersistConfig, adminUsersReducer)
+const persistedAdminPlacesReducer = persistReducer(adminPlacePersistConfig, placesReducer)
+const persistedAdminBrandReducer =  persistReducer(adminBrandPersistConfig, brandsReducer)
+const persistedAdminCarReducer = persistReducer(adminCarPersistConfig,adminCarReducer)
 
 const store = configureStore({
   reducer:{
@@ -41,8 +63,10 @@ const store = configureStore({
     
     // Admin
     adminAuth:persistedAdminAuthReducer,
-    adminUsers:persistedAdminUsersReducer
-    
+    adminUsers:persistedAdminUsersReducer,
+    places:persistedAdminPlacesReducer,
+    brands: persistedAdminBrandReducer,
+    car:persistedAdminCarReducer   
   }
 })
 

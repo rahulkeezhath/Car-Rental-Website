@@ -94,7 +94,7 @@ const Sidebar = () => {
                 onClick={() => setCurrentLink(2)}
               >
                 <a href="/admin/users">
-                  <RiDashboard2Fill />
+                <FaAddressCard />
                   <span> Users</span>
                 </a>
               </li>
@@ -102,27 +102,27 @@ const Sidebar = () => {
                 className={currentLink === 3 ? "active" : "none"}
                 onClick={() => setCurrentLink(3)}
               >
-                <a href="/admin/cars">
-                  <FaAddressCard />
-                  <span> Cars </span>
+                <a href="/admin/addPlace">
+                   <RiDashboard2Fill />
+                  <span> Places </span>
                 </a>
               </li>
               <li
                 className={currentLink === 4 ? "active" : "none"}
                 onClick={() => setCurrentLink(4)}
               >
-                <a href="#">
+                <a href="/admin/addBrand">
                   <GiTwirlCenter />
-                  <span> Learning Center</span>
+                  <span> Brands </span>
                 </a>
               </li>
               <li
                 className={currentLink === 5 ? "active" : "none"}
                 onClick={() => setCurrentLink(5)}
               >
-                <a href="#">
+                <a href="/admin/cars">
                   <BsFillChatTextFill />
-                  <span> FAQs</span>
+                  <span> Cars </span>
                 </a>
               </li>
               <li
@@ -151,7 +151,7 @@ const Sidebar = () => {
               className={currentLink === 1 ? "active" : "none"}
               onClick={() => setCurrentLink(1)}
             >
-              <a href="#">
+              <a href="/admin/dashboard">
                 <MdSpaceDashboard />
                 <span> Dashboard</span>
               </a>
@@ -160,8 +160,8 @@ const Sidebar = () => {
               className={currentLink === 2 ? "active" : "none"}
               onClick={() => setCurrentLink(2)}
             >
-              <a href="#">
-                <RiDashboard2Fill />
+              <a href="/admin/users">
+              <FaAddressCard />
                 <span> Users</span>
               </a>
             </li>
@@ -169,27 +169,27 @@ const Sidebar = () => {
               className={currentLink === 3 ? "active" : "none"}
               onClick={() => setCurrentLink(3)}
             >
-              <a href="#">
-                <FaAddressCard />
-                <span> Cars</span>
+              <a href="/admin/addPlace">
+               <RiDashboard2Fill />
+                <span> Places</span>
               </a>
             </li>
             <li
               className={currentLink === 4 ? "active" : "none"}
               onClick={() => setCurrentLink(4)}
             >
-              <a href="#">
+              <a href="/admin/addBrand">
                 <GiTwirlCenter />
-                <span> Learning Center</span>
+                <span> Brands </span>
               </a>
             </li>
             <li
               className={currentLink === 5 ? "active" : "none"}
               onClick={() => setCurrentLink(5)}
             >
-              <a href="#">
+              <a href="/admin/cars">
                 <BsFillChatTextFill />
-                <span> FAQs</span>
+                <span> Cars </span>
               </a>
             </li>
             <li
@@ -201,6 +201,10 @@ const Sidebar = () => {
                 <span> Settings</span>
               </a>
             </li>
+            <a>
+            <FiLogOut />
+            <span onClick={logout}  className='logout'>Logout</span>
+          </a>
           </ul>
         </div>
       </ResponsiveNav>

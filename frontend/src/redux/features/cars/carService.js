@@ -8,9 +8,26 @@ const addCar = async (carData) => {
     return response.data
 }
 
+// Get Car
+const getCar = async () => {
+    const response = await axiosInstance.get('/admin/cars')
+    return response.data
+}
+
+
+
+// Delete Car
+const deleteCar = async (id) => {
+    const response = await axiosInstance.patch(`/admin/deleteCar?id=${id}`)
+
+    return response.data
+}
+
 
 const authService = {
-    addCar
+    addCar,
+    getCar,
+    deleteCar
 }
 
 export default authService
