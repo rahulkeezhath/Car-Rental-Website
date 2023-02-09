@@ -33,6 +33,10 @@ const carSchema = mongoose.Schema({
         type: String,
         required: [true, "Please Add Brand"]
     },
+    description: {
+        type: String,
+        required: [true, "Please Add Description"]
+    },
     image: {
             type: String,
             required: true

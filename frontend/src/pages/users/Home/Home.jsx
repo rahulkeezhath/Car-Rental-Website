@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import HeroSlider from '../../../components/users/UI/HomeContent/HeroSlider'
 import Helmet from '../../../components/users/Helmet/Helmet'
 import { Container, Row, Col } from 'reactstrap'

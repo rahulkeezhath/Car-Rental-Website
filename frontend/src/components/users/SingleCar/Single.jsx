@@ -1,12 +1,12 @@
 import React from 'react'
 import CarData from '../../../assets/data/carData'
 import {Container, Row, Col} from 'reactstrap'
-import Helmet from '../../../components/users/Helmet/Helmet'
+import Helmet from '../Helmet/Helmet'
 import {useParams} from 'react-router-dom'
-import Header from '../../../components/users/Header/Header'
-import Footer from '../../../components/users/Footer/Footer'
-import BookingForm from '../../../components/users/UI/Cars/BookingForm'
-import PaymentMethod from '../../../components/users/UI/Cars/paymentMethod'
+import Header from '../Header/Header'
+import Footer from '../Footer/Footer'
+import BookingForm from '../UI/Cars/BookingForm'
+import PaymentMethod from '../UI/Cars/paymentMethod'
 import { useEffect } from 'react'
 
 

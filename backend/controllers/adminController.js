@@ -191,23 +191,20 @@ const adminLogin = asyncHandler(async (req,res) => {
             transmission,
             fuel,
             brand,
+            description,
             image
         } = req.body
-        console.log("Sadnam ethi",req.body);
-        if (!name || !rent || !body || !place || !model || !transmission || !fuel || !brand || !image) {
+        if (!name || !rent || !body || !place || !model || !transmission || !fuel || !brand ||!description || !image) {
             res.status(400)
             throw new Error('Please fill all the fields')
         }
         const imageResult = await cloudinary.uploader.upload(image, {
             folder: 'Fastrack',
         })
-        console.log("Image vanu",imageResult);
         const car = await Cars.create({
-            name, rent,body, place, model, transmission, fuel, brand,
+            name, rent,body, place, model, transmission, fuel, brand,description,
             image: imageResult.url
         })
-        console.log("Car created", car);
-    
         if (car) {
             res.status(201)
             res.json({ message: 'Your car has been successfully added' })
@@ -215,7 +212,6 @@ const adminLogin = asyncHandler(async (req,res) => {
             res.status(400)
             throw new Error('Sorry! Something went wrong')
         }
-    console.log("car Add aayi", car);
     
     })
     
@@ -251,10 +247,11 @@ const adminLogin = asyncHandler(async (req,res) => {
             transmission,
             fuel,
             brand,
+            description,
             image
         } = req.body
     
-        if (!name || !rent || !body || !place || !Model || !transmission || !fuel || !brand || !image) {
+        if (!name || !rent || !body || !place || !Model || !transmission || !fuel || !brand ||!description || !image) {
             res.status(400)
             throw new Error('Please fill all the fields')
         }
@@ -263,7 +260,7 @@ const adminLogin = asyncHandler(async (req,res) => {
             throw new Error('Car not found')
         }
         const carUpdated = await Cars.findByIdAndUpdate(req.query.id, {
-            name, rent, body, place, Model, transmission, fuel, body, brand, image
+            name, rent, body, place, Model, transmission, fuel, body, brand, description, image
         })
     
         if (carUpdated) {

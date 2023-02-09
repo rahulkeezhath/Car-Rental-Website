@@ -53,9 +53,9 @@ const AddCar = ({type, stateChange}) => {
    
 
     const onSubmit = (data) => {
-        const { name, rent, body, place, model, transmission, fuel, brand } = data
+        const { name, rent, body, place, model, transmission, fuel, brand, description } = data
 
-        const carData = { name, rent, body, place, model, transmission, fuel, brand, image}
+        const carData = { name, rent, body, place, model, transmission, fuel, brand, description, image}
         dispatch(addCar(carData))
     }
 
@@ -82,6 +82,11 @@ const AddCar = ({type, stateChange}) => {
                         <label htmlFor="">Rent</label>
                         <input type="text" name="rent" {...register('rent', { required: 'Please Enter Rent'})} />
                         {errors.rent && <p className='errorMessage'>{errors.rent?.message}</p>}
+                    </div>
+                    <div className='add_car_input_wrapper'>
+                        <label htmlFor="">Description</label>
+                        <input type="text" name="description" {...register('description', { required: 'Please Enter Description'})} />
+                        {errors.description && <p className='errorMessage'>{errors.description?.message}</p>}
                     </div>
                     <div className='add_car_input_wrapper'>
                         <label htmlFor="">Place</label>

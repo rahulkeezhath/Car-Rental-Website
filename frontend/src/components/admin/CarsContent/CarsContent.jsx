@@ -100,11 +100,16 @@ const CarsContent = () => {
             sortable:true
           },
           {
+            name: "Description",
+            selector: (row) => row.description,
+            sortable:true
+          },
+          {
             name: "Image",
             cell: (row) => (
               <img
               src={row.image}
-              width={60}
+              width={100}
               alt='Player'
             />
             )
@@ -133,6 +138,7 @@ const CarsContent = () => {
             transmission: car.transmission,
             fuel: car.fuel,
             brand: car.brand,
+            description: car.description,
             image: car.image
           }
         })
@@ -158,7 +164,7 @@ const CarsContent = () => {
           selectableRows
           selectableRowsHighlight
           highlightOnHover
-          actions={<button onClick={() => setAddCarModal(!addCarModal)}>Add Car</button>}
+          actions={<button style={{backgroundColor:"#0dcaf0",color:'black'}} onClick={() => setAddCarModal(!addCarModal)}>Add Car</button>}
           subHeader
           />
           </div>

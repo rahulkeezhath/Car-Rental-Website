@@ -1,4 +1,5 @@
 const { User} = require('../models/userModel')
+const Cars = require('../models/carModel')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 require('dotenv').config()
@@ -128,6 +129,16 @@ const updateUserProfile = asyncHandler(async (req,res) => {
 })
 
 
+const getCars = asyncHandler(async (req,res) => {
+    const cars = await Cars.find({isDeleted: false}).sort({createdAt: -1})
+    if(cars) {
+        res.status(200).json(cars)
+    } else {
+        res.status(400)
+        throw new Error("Cars Not Getting")
+    }
+})
+
 const generateAuthToken = (id) => {
     return jwt.sign({id},process.env.JWTPRIVATEKEY,{expiresIn:"10d"})
     }
@@ -139,5 +150,6 @@ module.exports={
     otpVerification,
     userLogin,
     getUserDetails,
-    updateUserProfile
+    updateUserProfile,
+    getCars
 }

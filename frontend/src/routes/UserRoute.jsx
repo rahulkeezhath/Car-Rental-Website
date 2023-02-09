@@ -5,12 +5,10 @@ import UserLogin from '../pages/users/Login/Login'
 import Otp from '../pages/users/OtpVerification/OTP'
 import Home from '../pages/users/Home/Home'
 import Profile from '../pages/users/Profile/Profile'
-import Bookings from '../pages/users/MyBookings/Bookings'
 import Cars from '../pages/users/Cars/Cars'
-import SingleCar from '../pages/users/Single Car/Single'
+import SingleCar from '../pages/users/SingleCar/Single'
 import About from '../pages/users/About/About'
 import Blog from '../pages/users/Blog/Blog'
-import BlogDetails from '../pages/users/Blog/BlogDetails'
 import Contact from '../pages/users/Contact/Contact'
 // import Error from '../pages/Error/Error'
 
@@ -24,12 +22,10 @@ const UserRoute = ()=>{
         <Route element={<ProtectedRoute/>} />
         <Route exact path='/otp' element={<Otp/>} />
         <Route path='/profile' element={<Profile/>} />
-        <Route exact path='/bookingcar' element={<Bookings/>} />
         <Route exact path='/cars' element={<Cars/>} />
         <Route exact path='/cars/:slug' element={<SingleCar/>} />
         <Route exact path='/about' element={<About/>} /> 
         <Route exact path='/blog' element={<Blog/>} />
-        <Route exact path='/blog/:slug' element={<BlogDetails/>} />
         <Route exact path='/contact' element={<Contact/>} />
         {/* <Route exact path='*' element={<Error/>} /> */}
     </Routes>
