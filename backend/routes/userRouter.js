@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {userSignup, userLogin, otpVerification, getUserDetails, updateUserProfile, getCars} = require('../controllers/userController');
+const {userSignup, userLogin, otpVerification, getUserDetails, updateUserProfile, getCars, getCar} = require('../controllers/userController');
 
 
 
@@ -19,6 +19,7 @@ router.put('/updateUser',updateUserProfile)
 
 // Get Car
 router.get('/cars',getCars)
+router.get('/car', getCar)
 
 
 

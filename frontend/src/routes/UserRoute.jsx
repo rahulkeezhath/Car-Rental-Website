@@ -23,7 +23,7 @@ const UserRoute = ()=>{
         <Route exact path='/otp' element={<Otp/>} />
         <Route path='/profile' element={<Profile/>} />
         <Route exact path='/cars' element={<Cars/>} />
-        <Route exact path='/cars/:slug' element={<SingleCar/>} />
+        <Route exact path='/car' element={<SingleCar/>} />
         <Route exact path='/about' element={<About/>} /> 
         <Route exact path='/blog' element={<Blog/>} />
         <Route exact path='/contact' element={<Contact/>} />

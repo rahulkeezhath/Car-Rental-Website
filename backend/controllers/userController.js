@@ -139,6 +139,17 @@ const getCars = asyncHandler(async (req,res) => {
     }
 })
 
+const getCar = asyncHandler(async (req,res) => {
+    const car = await Cars.findById(req.query.id)
+    if(car) {
+        res.status(200).json(car)
+    } else {
+        res.status(400)
+        throw new Error("Something Went Wrong!")
+    }
+})
+
+
 const generateAuthToken = (id) => {
     return jwt.sign({id},process.env.JWTPRIVATEKEY,{expiresIn:"10d"})
     }
@@ -151,5 +162,6 @@ module.exports={
     userLogin,
     getUserDetails,
     updateUserProfile,
-    getCars
+    getCars,
+    getCar
 }

@@ -198,6 +198,7 @@ const adminLogin = asyncHandler(async (req,res) => {
             res.status(400)
             throw new Error('Please fill all the fields')
         }
+
         const imageResult = await cloudinary.uploader.upload(image, {
             folder: 'Fastrack',
         })

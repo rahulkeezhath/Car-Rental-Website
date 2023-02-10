@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import HeroSlider from '../../../components/users/UI/HomeContent/HeroSlider'
 import Helmet from '../../../components/users/Helmet/Helmet'
 import { Container, Row, Col } from 'reactstrap'
@@ -6,15 +6,26 @@ import CarFind from '../../../components/users/UI/HomeContent/CarFind'
 import AboutSection from '../../../components/users/UI/HomeContent/AboutSection'
 import SerivcesList from '../../../components/users/UI/HomeContent/SerivcesList'
 import CarItem from '../../../components/users/UI/HomeContent/CarItem'
-import carData from '../../../assets/data/carData'
 import BecomeDriverSection from '../../../components/users/UI/HomeContent/BecomeDriverSection'
 import Testimonial from '../../../components/users/UI/HomeContent/Testimonial'
 import BlogList from '../../../components/users/UI/HomeContent/BlogList'
 import Header from '../../../components/users/Header/Header'
 import Footer from '../../../components/users/Footer/Footer'
+import { useDispatch, useSelector } from 'react-redux'
+import { allCars, reset } from '../../../redux/features/users/cars/carSlice'
 
 
 function Home() {
+
+  const dispatch = useDispatch()
+  const { cars } = useSelector((state) => state.userCars)
+
+  useEffect(() => {
+    dispatch(allCars())
+    return () => {
+      dispatch(reset())
+    }
+  },[dispatch])
 
   return <Helmet title='Home'>
 
@@ -69,9 +80,9 @@ function Home() {
             <div className="section_subtitle2 ">Come with</div>
             <h2 className='section_title2 '>Hot Offers</h2>
           </Col>
-
-          {carData.slice(0,6).map((item)=>(
-            <CarItem item={item} key={item.id} />
+          
+          {cars.slice(1,4).map((car)=>(
+            <CarItem image={car.image}  name={car.name} rent={car.rent} model={car.model} transmission={car.transmission} fuel={car.fuel} id={car._id} />
           ))}
         
         </Row>
