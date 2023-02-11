@@ -6,7 +6,7 @@ const {adminLogin,
     adminCars,addCars,deleteCar,editCar} 
     = require('../controllers/adminController');
 
-
+const { adminProtect } = require('../middleware/authMiddleware')
 
 
 // Login
@@ -33,6 +33,6 @@ router.delete('/deleteBrand',deleteBrand )
 router.get('/cars', adminCars)
 router.post('/addCars',addCars )
 router.patch('/deleteCar',deleteCar )
-router.put('/editCar',editCar )
+router.put('/editCar',adminProtect,editCar )
 
 module.exports = router

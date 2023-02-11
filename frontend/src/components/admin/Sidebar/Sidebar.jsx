@@ -1,14 +1,15 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { MdSpaceDashboard } from "react-icons/md";
 import { RiDashboard2Fill } from "react-icons/ri";
-import { FaAddressCard, FaTaxi } from "react-icons/fa";
+import { FaTaxi } from "react-icons/fa";
 import { GiTwirlCenter } from "react-icons/gi";
-import { BsFillChatTextFill } from "react-icons/bs";
-import { IoSettings } from "react-icons/io5";
 import { FiLogOut } from "react-icons/fi";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { VscChromeClose } from "react-icons/vsc";
+import { AiFillCar } from "react-icons/ai";
+import { AiOutlineUserAdd } from "react-icons/ai";
+import { BsBookHalf } from "react-icons/bs";
 import scrollreveal from 'scrollreveal'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -94,7 +95,7 @@ const Sidebar = () => {
                 onClick={() => setCurrentLink(2)}
               >
                 <a href="/admin/users">
-                <FaAddressCard />
+               <AiOutlineUserAdd/>
                   <span> Users</span>
                 </a>
               </li>
@@ -121,7 +122,7 @@ const Sidebar = () => {
                 onClick={() => setCurrentLink(5)}
               >
                 <a href="/admin/cars">
-                  <BsFillChatTextFill />
+                  <AiFillCar/>
                   <span> Cars </span>
                 </a>
               </li>
@@ -130,8 +131,8 @@ const Sidebar = () => {
                 onClick={() => setCurrentLink(6)}
               >
                 <a href="#">
-                  <IoSettings />
-                  <span> Settings</span>
+                  <BsBookHalf />
+                  <span> Bookings </span>
                 </a>
               </li>
             </ul>
@@ -161,7 +162,7 @@ const Sidebar = () => {
               onClick={() => setCurrentLink(2)}
             >
               <a href="/admin/users">
-              <FaAddressCard />
+              <AiOutlineUserAdd/>
                 <span> Users</span>
               </a>
             </li>
@@ -188,7 +189,7 @@ const Sidebar = () => {
               onClick={() => setCurrentLink(5)}
             >
               <a href="/admin/cars">
-                <BsFillChatTextFill />
+              <AiFillCar/>
                 <span> Cars </span>
               </a>
             </li>
@@ -197,8 +198,8 @@ const Sidebar = () => {
               onClick={() => setCurrentLink(6)}
             >
               <a href="#">
-                <IoSettings />
-                <span> Settings</span>
+                <BsBookHalf />
+                <span> Bookings </span>
               </a>
             </li>
             <a>

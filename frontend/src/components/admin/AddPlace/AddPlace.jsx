@@ -16,17 +16,14 @@ import Sidebar from '../Sidebar/Sidebar'
 const AddPlace = () => {
 
   const [addPlace, setAddPlace] = useState(false)
-  const {places, placeIsSuccess, placeIsError, placeMessage, placeError } = useSelector((state) => state.places)
+  const {places, placeIsSuccess, placeIsError, placeError } = useSelector((state) => state.places)
   const placeDispatch = useDispatch()
   useEffect(() => {
     if(placeError) {
       toast.error(placeError)
     }
-    if(placeIsSuccess) {
-      toast.success(placeMessage.message)
-    }
     placeDispatch(getPlace())
-  }, [placeIsError, placeError, placeIsSuccess, placeMessage, placeDispatch])
+  }, [placeIsError, placeError, placeIsSuccess, placeDispatch])
   useEffect(() => {
     return () => {
       placeDispatch(placeReset())

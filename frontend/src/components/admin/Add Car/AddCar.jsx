@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import './AddCar.scss'
 import { useForm } from 'react-hook-form'
 import previewImage from '../../../assets/previewDemo.jpg'
-import toast,{Toaster} from 'react-hot-toast'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { reset, addCar } from '../../../redux/features/cars/carSlice'
@@ -50,7 +51,7 @@ const AddCar = ({type, stateChange}) => {
             setImage(reader.result)
         }
     }
-   
+
 
     const onSubmit = (data) => {
         const { name, rent, body, place, model, transmission, fuel, brand, description } = data
@@ -161,6 +162,7 @@ const AddCar = ({type, stateChange}) => {
                     <button type='submit'>{type}</button>
                 </form>
             </div>
+            <ToastContainer/>
         </div>
   )
 }

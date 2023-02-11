@@ -1,6 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import carService from './carService'
 
+
+
+
 const initialState = {
     car:[],
     isLoading: false,
@@ -12,7 +15,9 @@ const initialState = {
 // Add Car
 export const addCar = createAsyncThunk('car/add', async (carData, thunkAPI) => {
     try {
-        return await carService.addCar(carData)
+        const token = thunkAPI.getState().adminAuth.admin.token
+        console.log("slice token",token);
+        return await carService.addCar(carData,token)
     } catch (error) {
         const message =(error.response && error.response.data && error.response.data.message) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message)

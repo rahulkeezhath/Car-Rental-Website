@@ -5,14 +5,15 @@ import DataTable from 'react-data-table-component'
 import Navbar from '../Navbar/Navbar'
 import { useDispatch, useSelector } from 'react-redux'
 import { reset, getCars, deleteCar} from '../../../redux/features/cars/carSlice'
-import toast, {Toaster} from 'react-hot-toast'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '../../Spinner/Spinner'
 import AddCar from '../Add Car/AddCar'
 
 const CarsContent = () => {
 
     const [addCarModal, setAddCarModal ] = useState(false)
-    const { isLoading, isError, message, car } = useSelector((state) => state.car)
+    const { isLoading, isSuccess, isError, message, car } = useSelector((state) => state.car)
     const dispatch = useDispatch()
 
 
@@ -25,7 +26,7 @@ const CarsContent = () => {
       return () => {
         dispatch(reset())
       }
-    }, [isError, message, dispatch])
+    }, [isError, isSuccess, dispatch])
 
     useEffect(() => {
         const sr = scrollreveal({
@@ -152,7 +153,7 @@ const CarsContent = () => {
           <div>
           <Section>
             <Navbar/>
-            { addCarModal ? <AddCar type={'Add'} stateChange={setAddCarModal} /> : null }
+            { addCarModal ? (<AddCar type={'Add'} stateChange={setAddCarModal} />) : null }
             <div className="grid">
               <div className="row__one"></div>
         <DataTable title="Cars List"
@@ -169,7 +170,7 @@ const CarsContent = () => {
           />
           </div>
           </Section>
-          <Toaster/>
+          <ToastContainer/>
           </div>
         )
       }

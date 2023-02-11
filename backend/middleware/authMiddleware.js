@@ -1,35 +1,34 @@
 const jwt = require('jsonwebtoken')
 const asyncHandler = require('express-async-handler')
+require('dotenv').config()
 const User = require('../models/userModel')
 const Admin = require('../models/adminModel')
 
 const protect = asyncHandler(async (req, res, next) => {
     let token
-    console.log("Abc",token);
-
+    console.log("token Vano", token);
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         try {
             // Get tocken from header
             token = req.headers.authorization.split(' ')[1]
-            console.log("def",token);
+            console.log("token indo",token);
             // Verify token
-            const decoded = jwt.verify(token, process.env.JWTPRIVATEKEY)
-            console.log("ghi",decoded);
+            const decoded = jwt.verify(token,process.env.JWTPRIVATEKEY)
+            console.log("decode Cheytindo",decoded);
             // Get user from tocken
             req.user = await User.findById(decoded.id).select('-password')
-            console.log("ghi",req.user);
 
             next()
         } catch (error) {
-            console.log("Error Vanu",error);
+            console.log("error vanu",error);
             res.status(401) //Not authorized
             throw new Error('Not authorized')
         }
     }
 
     if (!token) {
+        console.log("token illalo");
         res.status(401)
-        console.log("Token Illa", token);
         throw new Error('Not authorized, No token')
     }
 })

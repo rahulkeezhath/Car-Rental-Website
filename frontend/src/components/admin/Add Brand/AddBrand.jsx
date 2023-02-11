@@ -15,18 +15,15 @@ import AddBrandModal from '../AddNewContent/AddBrandModal'
 const AddBrand = () => {
 
     const [addBrand, setAddBrand] = useState(false)
-    const { error, message, isError, isSuccess , brands } = useSelector((state) => state.brands)
+    const { error, message, isError , brands } = useSelector((state) => state.brands)
     const dispatch = useDispatch()
 
     useEffect(() => {
         if (isError) {
             toast.error(error)
         }
-        if (isSuccess) {
-            toast.success(message.message)
-        }
         dispatch(getBrands())
-    }, [dispatch, error, message, isError, isSuccess])
+    }, [dispatch, error, message, isError])
 
     useEffect(() => {
         return () => {
