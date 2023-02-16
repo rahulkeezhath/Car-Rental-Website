@@ -1,64 +1,20 @@
-const jwt = require('jsonwebtoken')
-const asyncHandler = require('express-async-handler')
+const jwt =require("jsonwebtoken");
 require('dotenv').config()
-const User = require('../models/userModel')
-const Admin = require('../models/adminModel')
 
-const protect = asyncHandler(async (req, res, next) => {
-    let token
-    console.log("token Vano", token);
-    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-        try {
-            // Get tocken from header
-            token = req.headers.authorization.split(' ')[1]
-            console.log("token indo",token);
-            // Verify token
-            const decoded = jwt.verify(token,process.env.JWTPRIVATEKEY)
-            console.log("decode Cheytindo",decoded);
-            // Get user from tocken
-            req.user = await User.findById(decoded.id).select('-password')
 
-            next()
-        } catch (error) {
-            console.log("error vanu",error);
-            res.status(401) //Not authorized
-            throw new Error('Not authorized')
-        }
-    }
+const verifyJWT = (req,res,next) => {
+  const authHeader = req.headers.authorization;
 
-    if (!token) {
-        console.log("token illalo");
-        res.status(401)
-        throw new Error('Not authorized, No token')
-    }
-})
+    console.log("fhbj",authHeader);
+  jwt.verify(authHeader,process.env.JWTPRIVATEKEY,(err,decoded)=>{
+    
+    if(err) return res.status(403).json({
+      
+      message:"access token is not valid"
+    });
+    next();
+  })
+}
 
-const adminProtect = asyncHandler(async (req, res, next) => {
-    let token
 
-    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-        try {
-            // Get tocken from header
-            token = req.headers.authorization.split(' ')[1]
-
-            // Verify token
-            const decoded = jwt.verify(token, process.env.JWTPRIVATEKEY)
-
-            // Get user from tocken
-            req.admin = await Admin.findById(decoded.id).select('-password')
-
-            next()
-        } catch (error) {
-            console.log(error);
-            res.status(401)
-            throw new Error('Not Authorized, No Token')
-        }
-    }
-
-    if (!token) {
-        res.status(401)
-        throw new Error('Not Authorized, No Token')
-    }
-})
-
-module.exports = { protect, adminProtect }
+module.exports = verifyJWT

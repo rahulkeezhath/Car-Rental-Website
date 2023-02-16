@@ -3,10 +3,12 @@ const {User} = require('../models/userModel')
 const Place = require('../models/availablePlaceModel')
 const Brand = require('../models/brandModel')
 const Cars = require('../models/carModel')
+const Drivers = require('../models/driverModel')
 const Joi = require('joi')
 const bcrypt = require('bcrypt')
 const asyncHandler = require('express-async-handler')
 const cloudinary = require('../utils/cloudinary')
+const Bookings = require('../models/bookingModel')
 
 const adminLogin = asyncHandler(async (req,res) => {
    
@@ -72,14 +74,17 @@ const adminLogin = asyncHandler(async (req,res) => {
     })
 
     const getPlace = asyncHandler(async (req, res) => {
-        const places = await Place.find().sort({ createdAt: -1 })
-        res.status(200).json(places)
+        try {
+            const places = await Place.find().sort({ createdAt: -1 })
+            res.status(200).json(places)
+        } catch (error) {
+            res.status(408).send({message: "Internal Server Error"}) 
+        }
+       
     })
     
     
-    // @desc Admin add available places
-    // @route POST /api/admin/addPlace
-    // @access Private
+
     const addPlace = asyncHandler(async (req, res) => {
         const { place } = req.body
         if (!place) {
@@ -98,9 +103,7 @@ const adminLogin = asyncHandler(async (req,res) => {
         }
     })
     
-    // @desc Admin delete place
-    // @route DELETE /api/admin/deleteBrand
-    // @access Private
+   
     const deletePlace = asyncHandler(async (req, res) => {
         if (!req.query.id) {
             res.status(400)
@@ -117,17 +120,13 @@ const adminLogin = asyncHandler(async (req,res) => {
     })
     
     
-    // @desc Admin get brands
-    // @route GET /api/admin/getBrands
-    // @access Private
+  
     const getBrands = asyncHandler(async (req, res) => {
         const brands = await Brand.find().sort({ createdAt: -1 })
         res.status(200).json(brands)
     })
     
-    // @desc Admin add Brands
-    // @route POST /api/admin/addBrand
-    // @access Private
+    
     const addBrand = asyncHandler(async (req, res) => {
         const { brand } = req.body
         if (!brand) {
@@ -145,10 +144,7 @@ const adminLogin = asyncHandler(async (req,res) => {
             res.status(201).json({ message: `${BrandToUpperCase} addedd successfully` })
         }
     })
-    
-    // @desc Admin delete Brands
-    // @route DELETE /api/admin/deleteBrand
-    // @access Private
+
     const deleteBrand = asyncHandler(async (req, res) => {
         if (!req.query.id) {
             res.status(400)
@@ -164,10 +160,7 @@ const adminLogin = asyncHandler(async (req,res) => {
         }
     })
     
-    
-    // @desc Admin Cars
-    // @route GET /api/admin/cars
-    // @access Private
+
     const adminCars = asyncHandler(async (req, res) => {
         const cars = await Cars.find({ isDeleted: false }).sort({ createdAt: -1 })
         if (cars) {
@@ -177,10 +170,7 @@ const adminLogin = asyncHandler(async (req,res) => {
             throw new Error('Something went wrong!')
         }
     })
-    
-    // @desc Admin add cars
-    // @route POST /api/admin/addCars
-    // @access Private
+
     const addCars = asyncHandler(async (req, res) => {
         const {
             name,
@@ -215,10 +205,7 @@ const adminLogin = asyncHandler(async (req,res) => {
         }
     
     })
-    
-    // @desc Admin delete car
-    // @route PUT /api/admin/deleteCar
-    // @access Private
+
     const deleteCar = asyncHandler(async (req, res) => {
         if (!req.query.id) {
             res.status(400)
@@ -235,9 +222,7 @@ const adminLogin = asyncHandler(async (req,res) => {
         }
     })
     
-    // @desc Admin edit car
-    // @route PUT /api/admin/editCar
-    // @access Private
+ 
     const editCar = asyncHandler(async (req, res) => {
         const {
             name,
@@ -270,17 +255,138 @@ const adminLogin = asyncHandler(async (req,res) => {
             res.status(400)
             throw new Error('Something went wrong!')
         }
-    
-    
-    
     })
 
 
+    const adminBookings = asyncHandler(async (req,res)=> {
+        const bookings = await Bookings.aggregate([
+            {
+                $lookup: {
+                    from: 'cars',
+                    localField: 'car',
+                    foreignField: '_id',
+                    as: 'carData'
+                }
+            },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'user',
+                    foreignField: '_id',
+                    as: 'userData'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$carData'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$userData'
+                }
+            },
+            {
+                $project: {
+                    car: 0,
+                    user: 0,
+                    'userData.password': 0,
+                    'userData.isBlocked': 0,
+                    'carData.bookedSlots': 0
+                }
+            },
+            {
+                $sort: {
+                    createdAt: -1
+                }
+            }
+        ])
+
+        if(bookings) {
+            res.status(200).json(bookings)
+        } else {
+            res.status(400)
+            throw new Error('Something Went Wrong')
+        }
+    })
 
 
+    const adminDrivers = asyncHandler(async (req,res) => {
+        const drivers = await Drivers.find()
+        if(drivers) {
+            res.status(200).json(drivers)
+        } else {
+            res.status(400)
+            throw new Error("Something Went Wrong")
+        }
+    })
+
+    const approveDriver = asyncHandler(async (req,res) => {
+        if(!req.body.id) {
+            res.status(400)
+            throw new Error("Driver Not Found")
+        }
+
+        const driver = await Drivers.findById(req.body.id)
+        const approve = await Drivers.findByIdAndUpdate(req.body.id, {
+            isApproved: true
+        })
+
+        if(approve) {
+            res.status(200).json({message: `${driver.name} Account is Approved`})
+        } else {
+            res.status(400)
+            throw new Error('Something Went Wrong')
+        }
+    })
 
 
+    const declineDriver = asyncHandler(async (req,res) => {
+        if(!req.body.id) {
+            res.status(400)
+            throw new Error("Driver Not Found")
+        }
 
+        const driver = await Drivers.findById(req.body.id)
+        const decline = await Drivers.deleteOne({_id: req.body.id})
+
+        if(decline) {
+            res.status(200).json({message: `${driver.name} Account is Rejected`})
+        } else {
+            res.status(400)
+            throw new Error('Something Went Wrong')
+        }
+    })
+
+
+    const blockAndUnblockDriver = asyncHandler(async (req,res) => {
+        if(!req.body.id){
+            res.status(400)
+            throw new Error('Driver Not Found')
+        }
+        const driver = await Drivers.findById(req.body.id)
+        if(driver.isBlocked) {
+            const unBlock = await Drivers.findByIdAndUpdate(req.body.id, {
+                isBlocked: false
+            })
+            if(unBlock) {
+                res.status(200).json({message: `${driver.name}'s Account Unblocked`})
+            } else {
+                res.status(400)
+                throw new Error('Something Went Wrong')
+            }
+        } else {
+            const block = await Drivers.findByIdAndUpdate(req.body.id, {
+                isBlocked: true
+            })
+            if(block) {
+                res.status(200).json({ message: `${driver.name}'s Account Blocked`})
+            } else {
+                res.status(400)
+                throw new Error('Something Went Wrong')
+            }
+        }
+    })
 
   
 
@@ -298,5 +404,10 @@ module.exports = {
     adminCars,
     addCars,
     deleteCar,
-    editCar
+    editCar,
+    adminBookings,
+    adminDrivers,
+    approveDriver,
+    declineDriver,
+    blockAndUnblockDriver
 }

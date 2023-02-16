@@ -1,10 +1,12 @@
 const { User} = require('../models/userModel')
 const Cars = require('../models/carModel')
+const Bookings = require('../models/bookingModel')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 require('dotenv').config()
 const asyncHandler = require('express-async-handler');
 const {doSms, verifyOtp} = require('../helpers/otpVerification')
+const { default: mongoose } = require('mongoose')
 
 
 const userSignup = asyncHandler(async(req,res)=>{
@@ -149,6 +151,64 @@ const getCar = asyncHandler(async (req,res) => {
     }
 })
 
+const bookCar = asyncHandler(async (req,res) => {
+    const { user, car, totalAmount, totalDays, pickUpDate, droffOffDate, dropOffCity, driverRequire } = req.body
+    if(!user, !car, !totalAmount, !totalDays, !pickUpDate, !droffOffDate, !dropOffCity) {
+        res.status(400)
+        throw new Error("All Fields are required")
+    } else {
+        const  theCar = await Cars.findById(car)
+        let selectedFrom = moment(pickUpDate)
+        let selectedTo = moment(droffOffDate)
+
+        if(theCar.bookedSlots.length > 0) {
+            for (let slot of theCar.bookedSlots) {
+                if (selectedFrom.isBetween(moment(slot.from), moment(slot.to), null, '[)') || selectedTo.isBetween(moment(slot.from), moment(slot.to), null, '(]')) {
+                    res.status(400)
+                    throw new Error('Slot is Already Reserved')
+                }
+            }
+        }
+        theCar.bookedSlots.push({ from: pickUpDate, to: droffOffDate})
+        await theCar.save()
+        const bookCar = await Bookings.create({
+            user, car, totalAmount, totalHours: totalDays, 'bookedSlots.from': pickUpDate, 'bookedSlots.to': droffOffDate, dropOffCity: dropOffCity, driverRequire, transactionId: 'pending'
+        })
+        if (bookCar && theCar) {
+            res.status(201).json(bookCar)
+        } else {
+            res.status(400)
+            throw new Error('Something went wrong')
+        }
+    }
+})
+
+
+const myBookings = asyncHandler(async (req,res) => {
+    const id = req.query.id
+    if (!id) {
+        res.status(400)
+        throw new Error('User is Not Found')
+    }
+    const userBookings = await Bookings.aggregate([
+        {
+            $match: { user: mongoose.Types.ObjectId(id) }
+        },
+        {
+            $lookup: {
+                from: 'cars',
+                localField: 'car',
+                foreignField: '_id',
+                as: 'carData'
+            }
+        },
+        {
+            $sort: { createdAt: -1 } 
+        }
+    ])
+    res.json(userBookings)
+})
+
 
 const generateAuthToken = (id) => {
     return jwt.sign({id},process.env.JWTPRIVATEKEY,{expiresIn:"10d"})
@@ -163,5 +223,7 @@ module.exports={
     getUserDetails,
     updateUserProfile,
     getCars,
-    getCar
+    getCar,
+    bookCar,
+    myBookings
 }

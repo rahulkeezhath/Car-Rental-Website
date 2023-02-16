@@ -1,6 +1,7 @@
 const router = require('express').Router();
-const {userSignup, userLogin, otpVerification, getUserDetails, updateUserProfile, getCars, getCar} = require('../controllers/userController');
-const { protect } = require('../middleware/authMiddleware')
+const {userSignup, userLogin, otpVerification, getUserDetails, updateUserProfile, getCars, getCar, bookCar, myBookings} = require('../controllers/userController');
+
+
 
 
 
@@ -15,11 +16,15 @@ router.post('/otp',otpVerification)
 
 // User Details
 router.get('/getUser/:data_id',getUserDetails)
-router.put('/updateUser',protect,updateUserProfile)
+router.put('/updateUser',updateUserProfile)
 
 // Get Car
-router.get('/cars',getCars)
+router.get('/cars', getCars)
 router.get('/car', getCar)
+
+// Booking Car
+router.post('/bookCar', bookCar)
+router.get('/myBookings', myBookings)
 
 
 

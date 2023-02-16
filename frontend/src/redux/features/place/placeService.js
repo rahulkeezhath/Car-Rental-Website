@@ -1,3 +1,4 @@
+
 import axiosInstance from '../../../../utils/axiosInstance'
 
 // Add Place
@@ -10,6 +11,7 @@ const addPlace = async(place) => {
 const getPlace = async() => {
     const response = await axiosInstance.get('/admin/getPlaces')
     return response.data
+ 
 }
 
 // Delete Place

@@ -11,12 +11,20 @@ import toast, {Toaster} from 'react-hot-toast'
 import Spinner from '../../Spinner/Spinner'
 
 
+
 const Cars = () => {
-  
   const [ searchQuery, setSearchQuery ] = useState("")
   const dispatch = useDispatch()
   const { cars, message, isLoading, isError } = useSelector((state) => state.userCars)
+  const [items, setItems ] = useState(cars)
   const keys = ["name", "body", "place", "brand"]
+
+  const filterItem = (bodyItem) => {
+    const updatedItems = cars.filter((curElem) => {
+      return curElem.body === bodyItem
+    })
+    setItems(updatedItems)
+  }
 
   useEffect(() => {
     if(isError) {
@@ -41,14 +49,29 @@ const Cars = () => {
         <Container>
           <Row>
             <Col lg='12'>
-              <div className='d-flex align-items-center gap-3 mb-5'>
+            <h1 className='mt-5 text-center main-heading'>Select Your Favourite Car </h1>
+            <hr />
+
+            <div className='menu-tabs container'>
+              <div className='menu-tabs d-flex justify-content-around'>
+
+                <button className='btn btn-warning' onClick={() => filterItem('SUV')}>SUV</button>
+                <button className='btn btn-warning' onClick={() => filterItem('Sedan')}>Sedan</button>
+                <button className='btn btn-warning'onClick={() => filterItem('Crossover')}>Crossover</button>
+                <button className='btn btn-warning' onClick={() => filterItem('Hatchback')}>Hatchback</button>
+                <button   className='btn btn-warning' onClick={() => setItems(cars)}>All</button>
+
+              </div>
+            </div>
+
+              <div className='d-flex align-items-center gap-3 mb-5 mt-5'>
                 <span className='d-flex align-items-center gap-2 mt-5'>
-                <i class="ri-sort-asc"></i> Filter </span>
-               <input  type={'search'} placeholder='Search' className='mt-5' onChange={(e) => setSearchQuery(e.target.value)} />   
+                 <i class="ri-sort-asc"></i> Filter </span>
+               <input  type={'search'} placeholder='Search' className='mt-5' onChange={(e) => setSearchQuery(e.target.value)} /> 
               </div>
             </Col>
             {
-              cars.filter(car => keys.some(key => car[key].toLowerCase().includes(searchQuery.toLowerCase()))).map((car)=>(
+              items.filter(car => keys.some(key => car[key].toLowerCase().includes(searchQuery.toLowerCase()))).map((car)=>(
                  <CarItem key={car._id} name={car.name} rent={car.rent} place={car.place} brand={car.brand} model={car.model} transmission={car.transmission} fuel={car.fuel} id={car._id} image={car.image} />))
             }
           </Row>

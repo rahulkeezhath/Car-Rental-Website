@@ -8,6 +8,7 @@ const connectDB = require('./config/db')
 
 const userRoutes = require('./routes/userRouter')
 const adminRoutes = require('./routes/adminRouter')
+const driverRoutes = require('./routes/driverRouter')
 const { errorHandler } = require('./middleware/errorMiddleware')
 
 // Database Connection
@@ -33,6 +34,7 @@ app.use(errorHandler)
 // Routes
 app.use('/api/users',userRoutes)
 app.use('/api/admin',adminRoutes)
+app.use('/api/driver',driverRoutes)
 
 
 

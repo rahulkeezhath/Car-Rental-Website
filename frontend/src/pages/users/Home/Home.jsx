@@ -8,7 +8,6 @@ import SerivcesList from '../../../components/users/UI/HomeContent/SerivcesList'
 import CarItem from '../../../components/users/UI/HomeContent/CarItem'
 import BecomeDriverSection from '../../../components/users/UI/HomeContent/BecomeDriverSection'
 import Testimonial from '../../../components/users/UI/HomeContent/Testimonial'
-import BlogList from '../../../components/users/UI/HomeContent/BlogList'
 import Header from '../../../components/users/Header/Header'
 import Footer from '../../../components/users/Footer/Footer'
 import { useDispatch, useSelector } from 'react-redux'
@@ -103,22 +102,6 @@ function Home() {
           </Col>
 
           <Testimonial/>
-        </Row>
-      </Container>
-    </section>
-
-
-    {/*---------------- Blog Section ----------------- */}
-
-    <section>
-      <Container>
-        <Row>
-          <Col lg='12' className='mb-5 mt-5 text-center'>
-            <h6 style={{color:'#f9a826'}}>Explore Our Blogs</h6>
-            <h2 style={{color:'#000d6b'}}>Latest Blogs</h2>
-          </Col>
-
-         <BlogList/>
         </Row>
       </Container>
     </section>

@@ -7,6 +7,7 @@ const CarItem = ({name,rent,model,transmission,fuel,id,image}) => {
 
    const navigate = useNavigate()
 
+   
   return <Col lg='4' md='4' sm='6' className='mb-5'>
     <div className="car_item">
         <div className="car_img">

@@ -16,7 +16,7 @@ const register = async (userData) => {
 // Otp Verification
 const otp = async (data) => {
     const response = await axiosInstance.post('/users/otp',data)
-
+   
     if(response.data) {
         localStorage.setItem('user', JSON.stringify(response.data))
         message.success('OTP Verified')
@@ -28,7 +28,7 @@ const otp = async (data) => {
 
 const login = async (userData) => {
     const response = await axiosInstance.post('/users/userLogin', userData)
-
+    console.log("hsdjfbwes",response.data);
     if(response.data) {
         localStorage.setItem('user', JSON.stringify(response.data))
         message.success("Login Success")
