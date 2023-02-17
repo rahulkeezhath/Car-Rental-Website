@@ -34,6 +34,11 @@ export const driverLogin=createAsyncThunk('driverAuth/login',async(loginData,thu
     }
 })
 
+// Logout driver
+export const logout = createAsyncThunk('driverAuth/logout', async () => {
+    await driverAuthService.logout()
+})
+
 export const driverAuthSlice=createSlice({
     name:'driverAuth',
     initialState,
@@ -74,6 +79,9 @@ export const driverAuthSlice=createSlice({
             state.isLoading=false
             state.isError=true
             state.error=action.payload
+        })
+        .addCase(logout.fulfilled, (state) => {
+            state.driver = null
         })
     }
 })

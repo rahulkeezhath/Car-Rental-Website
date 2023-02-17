@@ -9,8 +9,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FcApprove } from "react-icons/fc";
 import { FcDisapprove } from "react-icons/fc";
-import { BiBlock } from "react-icons/bi";
-import { CgUnblock } from "react-icons/cg";
 import Spinner from '../../Spinner/Spinner'
 
 
@@ -109,7 +107,7 @@ const DriversContent = () => {
                 )
               },
               {
-                name: "Licence Front",
+                name: "Licence Rear",
                 cell: (row) => (
                   <img
                   src={row.licenceRear}
@@ -191,7 +189,7 @@ const DriversContent = () => {
                 )
               },
               {
-                name: "Licence Front",
+                name: "Licence Rear",
                 cell: (row) => (
                   <img
                   src={row.licenceRear}
@@ -204,10 +202,10 @@ const DriversContent = () => {
               name: "Action",
               cell: (row) => (
                 <>
-                <button  onClick={() =>  dispatch(blockAndUnblockDriver(row.id)) } className={row.isBlocked ? 'unBlock_btn' : 'block_btn'}>{row.isBlocked ? <i class="ri-user-unfollow-fill"></i> : <i class="ri-user-follow-fill"></i>}</button>
+                <button  onClick={() =>  dispatch(blockAndUnblockDriver(row.id)) } className={row.isBlocked ? 'unBlock_btn' : 'block_btn'}>{row.isBlocked ? <i className="ri-user-follow-fill"></i> :  <i className="ri-user-unfollow-fill"></i>}</button>
                 </>
               )
-            }
+            }                                                          
           ]
 
           const rows1 = allDrivers.map((driver, index) => {

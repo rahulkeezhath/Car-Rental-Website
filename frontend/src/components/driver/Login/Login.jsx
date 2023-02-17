@@ -21,9 +21,10 @@ const Login = () => {
   useEffect(() => {
     if(isError) {
       toast.error(error)
+      navigate('/driverReject')
     }
     if(isSuccess || driver) {
-      navigate('/')
+      navigate('/driverSuccess')
     }
     dispatch(reset())
   }, [isError, error, isSuccess, driver, dispatch])

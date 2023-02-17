@@ -16,9 +16,15 @@ const login = async (loginData) => {
     return response.data
 }
 
+// Logout Driver
+const logout = () => {
+    localStorage.removeItem('driver')
+}
+
 const driverAuthService = {
     register,
-    login
+    login,
+    logout
 }
 
 export default driverAuthService
