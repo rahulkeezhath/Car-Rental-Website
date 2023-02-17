@@ -3,7 +3,7 @@ const {adminLogin,
     adminUsers,blockUser,unblockUser,
     getPlace,addPlace,deletePlace,
     getBrands,addBrand,deleteBrand,
-    adminCars,addCars,deleteCar,editCar,adminBookings} 
+    adminCars,addCars,deleteCar,editCar,adminBookings, adminDrivers, approveDriver, declineDriver, blockAndUnblockDriver} 
     = require('../controllers/adminController');
 
 
@@ -38,5 +38,11 @@ router.put('/editCar',editCar )
 
 //Bookings
 router.get('/getBookings',adminBookings)
+
+// Drivers
+router.get('/drivers',adminDrivers)
+router.put('/approveDriver',approveDriver)
+router.put('/declineDriver',declineDriver)
+router.put('/blockAndUnblockDriver',blockAndUnblockDriver)
 
 module.exports = router

@@ -7,6 +7,7 @@ require('dotenv').config()
 const asyncHandler = require('express-async-handler');
 const {doSms, verifyOtp} = require('../helpers/otpVerification')
 const { default: mongoose } = require('mongoose')
+const moment = require('moment/moment')
 
 
 const userSignup = asyncHandler(async(req,res)=>{

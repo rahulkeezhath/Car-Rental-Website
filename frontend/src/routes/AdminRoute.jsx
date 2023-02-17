@@ -2,7 +2,7 @@ import React from 'react'
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
 import AdminLogin from '../pages/admin/Login/Login'
 import Dashboard from '../pages/admin/Dashboard/Dashboard'
-import SellCar from '../pages/admin/Sell Car/Sell'
+import Drivers from '../pages/admin/Drivers/Drivers'
 import Users from '../pages/admin/Users/Users'
 import Cars from '../pages/admin/Cars/Cars'
 import AddPlace from '../components/admin/AddPlace/AddPlace'
@@ -19,7 +19,7 @@ const AdminRoute = () => {
         <Route exact path='/admin/addPlace' element={<AddPlace/>} />
         <Route exact path='/admin/addBrand' element={<AddBrand/>} />
         <Route exact path='/admin/cars' element={<Cars/>} />
-        <Route exact path='/admin/sell-car/' element={<SellCar/>} />
+        <Route exact path='/admin/drivers' element={<Drivers/>} />
         {/* <Route exact path='*' element={<Error/>} /> */}
     </Routes>
   )

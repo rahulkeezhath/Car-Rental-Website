@@ -7,6 +7,7 @@ const cloudinary = require('../utils/cloudinary')
 
 //Register Driver
 const driverRegister = asyncHandler (async (req,res) => {
+    try {
     const { name, email, phoneNumber, password, profilePhoto, driverLicenceFront, drivingLicenceRear } = req.body
     console.log("iehjhew",req.body);
 
@@ -59,10 +60,14 @@ const driverRegister = asyncHandler (async (req,res) => {
             throw new Error('Something went wrong')
         }
     }
+    } catch (error) {
+    res.status(500).send({message: "Internal Server Error"})
+    }
 })
 
 
 const driverLogin = asyncHandler(async (req,res) => {
+    try {
     const { email, password } = req.body
     if(!email || !password) {
         res.status(400) 
@@ -99,6 +104,9 @@ const driverLogin = asyncHandler(async (req,res) => {
     } else {
         res.status(400)
         throw new Error('Invalid Credentials')
+    }
+    } catch (error) {
+        res.status(500).send({message: "Internal Server Error"})
     }
 })
 

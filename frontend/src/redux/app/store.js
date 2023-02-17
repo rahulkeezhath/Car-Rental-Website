@@ -10,7 +10,10 @@ import brandsReducer from '../features/brands/brandSlice'
 import adminCarReducer from '../features/cars/carSlice'
 import userCarReducer from  '../features/users/cars/carSlice'
 import userSingleCarReducer from '../features/users/cars/singleCar/singleCarSlice'
-import driverSignupReducer from '../features/driverAuth/driverAuthSlice'
+import userBookingCarReducer from '../features/users/booking/bookingSlice'
+import adminBookingReducer from '../features/adminBooking/adminBookingSlice'
+import driverReducer from '../features/driverAuth/driverAuthSlice'
+import adminDriversReducer from '../features/adminDrivers/adminDriverSlice'
 
 
 const authPersistConfig = {
@@ -58,8 +61,23 @@ const userSingleCarPersistConfig = {
   storage
 }
 
+const userBookingCarPersistConfig = {
+  key: 'booking',
+  storage
+}
+
+const adminBookingPersistConfig = {
+  key: 'adminBooking',
+  storage
+}
+
 const driverAuthPersistConfig = {
   key: 'driverAuth',
+  storage
+}
+
+const adminDriversPersistConfig = {
+  key: 'adminDriver',
   storage
 }
 
@@ -72,7 +90,10 @@ const persistedAdminBrandReducer =  persistReducer(adminBrandPersistConfig, bran
 const persistedAdminCarReducer = persistReducer(adminCarPersistConfig, adminCarReducer)
 const persistedUserCarReducer = persistReducer(userCarPersistConfig, userCarReducer)
 const persistedUserSingleCarReducer = persistReducer(userSingleCarPersistConfig,userSingleCarReducer)
-const persistedDriverAuthReducer = persistReducer(driverAuthPersistConfig,driverSignupReducer)
+const persistedUserBookingCarReducer = persistReducer(userBookingCarPersistConfig,userBookingCarReducer)
+const persistedAdminBookingReducer = persistReducer(adminBookingPersistConfig,adminBookingReducer)
+const persistedDriverAuthReducer = persistReducer(driverAuthPersistConfig,driverReducer)
+const persistedAdminDriversReducer = persistReducer(adminDriversPersistConfig,adminDriversReducer)
 
 const store = configureStore({
   reducer:{
@@ -81,6 +102,7 @@ const store = configureStore({
     updatedUser:persistedUpdatedUserReducer,
     userCars:persistedUserCarReducer,
     singleCar:persistedUserSingleCarReducer,
+    booking:persistedUserBookingCarReducer,
     
     // Admin
     adminAuth:persistedAdminAuthReducer,
@@ -88,6 +110,8 @@ const store = configureStore({
     places:persistedAdminPlacesReducer,
     brands: persistedAdminBrandReducer,
     car:persistedAdminCarReducer,
+    adminBooking:persistedAdminBookingReducer,
+    adminDriver:persistedAdminDriversReducer,
     
     // Driver
     driverAuth:persistedDriverAuthReducer

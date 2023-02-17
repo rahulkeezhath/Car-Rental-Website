@@ -10,6 +10,7 @@ import { VscChromeClose } from "react-icons/vsc";
 import { AiFillCar } from "react-icons/ai";
 import { AiOutlineUserAdd } from "react-icons/ai";
 import { BsBookHalf } from "react-icons/bs";
+import { FaUserSecret } from "react-icons/fa";
 import scrollreveal from 'scrollreveal'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -50,6 +51,7 @@ const Sidebar = () => {
       .links>ul>li:nth-of-type(4),
       .links>ul>li:nth-of-type(5),
       .links>ul>li:nth-of-type(6),
+      .links>ul>li:nth-of-type(7),
       .logout
       `,
       {
@@ -130,6 +132,15 @@ const Sidebar = () => {
                 className={currentLink === 6 ? "active" : "none"}
                 onClick={() => setCurrentLink(6)}
               >
+                <a href="/admin/drivers">
+                  <FaUserSecret />
+                  <span> Drivers </span>
+                </a>
+              </li>
+              <li
+                className={currentLink === 7 ? "active" : "none"}
+                onClick={() => setCurrentLink(7)}
+              >
                 <a href="#">
                   <BsBookHalf />
                   <span> Bookings </span>
@@ -196,6 +207,15 @@ const Sidebar = () => {
             <li
               className={currentLink === 6 ? "active" : "none"}
               onClick={() => setCurrentLink(6)}
+            >
+              <a href="/admin/drivers">
+                <FaUserSecret />
+                <span> Drivers </span>
+              </a>
+            </li>
+            <li
+              className={currentLink === 7 ? "active" : "none"}
+              onClick={() => setCurrentLink(7)}
             >
               <a href="#">
                 <BsBookHalf />
