@@ -41,33 +41,6 @@ const Header = () => {
 
   const toggleMenu = ()=> menuRef.current.classList.toggle('menu_active')
 
-  const items = [
-  {
-    key: '1',
-    label: (
-      <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-        1st menu item
-      </a>
-    ),
-  },
-  {
-    key: '2',
-    label: (
-      <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-        2nd menu item
-      </a>
-    ),
-  },
-  {
-    key: '3',
-    label: (
-      <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
-        3rd menu item
-      </a>
-    ),
-  },
-];
-
 
   return <header className="header">
     
@@ -118,9 +91,9 @@ const Header = () => {
    <div className='header_middle'>
     <Container>
       <Row>
-        <Col lg='4' md='3' sm='4'>
-          <div className="logo">
-            <h1><Link to='/' className='d-flex align-items-center gap-3'>
+        <Col lg='3' md='3' sm='4'>
+          <div className="logo1">
+            <h1><Link to='/' className='d-flex align-items-center gap-2'>
             <i class="ri-car-line"></i>
             <span>Fastrack</span>
               </Link></h1>
@@ -131,8 +104,8 @@ const Header = () => {
           <div className="header_location  d-flex align-items-center gap-2">
             <span><i class="ri-earth-line"></i></span>
             <div className="header_location-content">
-              <h4>Kerala</h4>
-              <h6>Malappuram,Manjeri CIty</h6>
+              <h4>India</h4>
+              <h6>Malappuram, Kerala</h6>
             </div>
           </div>
         </Col>
@@ -172,6 +145,10 @@ const Header = () => {
               {navLinks.map((item,index)=>(
                   <NavLink to={item.path} className={navClass=> navClass.isActive ? 'nav_active nav_item': 'nav_item'} key={index} >{item.display}</NavLink>
                 ))}
+                 <>
+                  <NavLink to='/login' className={navClass=> navClass.isActive ? 'nav_active nav_item loginAndSignupBtn': 'nav_item loginAndSignupBtn'} >Login</NavLink>
+                  <NavLink to='/signup' className={navClass=> navClass.isActive ? 'nav_active nav_item loginAndSignupBtn': 'nav_item loginAndSignupBtn'} >Signup</NavLink>  
+                 </>
             </div>
           </div>
 

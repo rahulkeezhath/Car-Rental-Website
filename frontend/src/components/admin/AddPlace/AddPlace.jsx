@@ -17,13 +17,17 @@ const AddPlace = () => {
 
   const [addPlace, setAddPlace] = useState(false)
   const {places, placeIsSuccess, placeIsError, placeError } = useSelector((state) => state.places)
+  console.log("places", places);
   const placeDispatch = useDispatch()
+
   useEffect(() => {
     if(placeError) {
       toast.error(placeError)
     }
     placeDispatch(getPlace())
   }, [placeIsError, placeError, placeIsSuccess, placeDispatch])
+
+
   useEffect(() => {
     return () => {
       placeDispatch(placeReset())
@@ -80,6 +84,7 @@ const AddPlace = () => {
 
 
 
+
   const rows = places.map((place, index) => {
     return {
       id: place._id,
@@ -87,6 +92,7 @@ const AddPlace = () => {
       place: place.place
     }
   })
+
 
 
   return (

@@ -80,7 +80,7 @@ function Home() {
             <h2 className='section_title2 '>Hot Offers</h2>
           </Col>
           
-          {cars.slice(1,4).map((car)=>(
+          {cars.slice(2,5).map((car)=>(
             <CarItem image={car.image}  name={car.name} rent={car.rent} model={car.model} transmission={car.transmission} fuel={car.fuel} id={car._id} />
           ))}
         

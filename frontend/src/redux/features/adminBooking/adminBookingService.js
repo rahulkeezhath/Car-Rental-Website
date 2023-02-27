@@ -1,9 +1,13 @@
 import axiosInstance from '../../../../utils/axiosInstance'
 
 // Get Drivers
-const getBookings = async () => {
-    const response = await axiosInstance.get('/admin/getBookings')
-
+const getBookings = async (token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    const response = await axiosInstance.get('/admin/getBookings',config)
     return response.data
 }
 

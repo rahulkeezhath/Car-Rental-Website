@@ -13,7 +13,8 @@ const initialState = {
 // Book a Car
 export const bookCar = createAsyncThunk('booking/bookCar', async (bookingData, thunkAPI) => {
     try {
-        return await bookingService.bookCar(bookingData)
+        const token = thunkAPI.getState().auth.user.token
+        return await bookingService.bookCar(bookingData,token)
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message)

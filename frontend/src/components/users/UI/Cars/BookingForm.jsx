@@ -1,68 +1,158 @@
-import React from 'react'
-import './BookingForm.css'
-import {Form, FormGroup} from 'reactstrap'
+import React, {useEffect, useState} from 'react'
+import './BookingForm.scss'
+import moment from 'moment'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css';
+import { getPlace, placeReset } from '../../../../redux/features/place/placeSlice';
+import { bookCar, bookingReset} from '../../../../redux/features/users/booking/bookingSlice'
+import { useDispatch,useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom'
+import {toast} from 'react-toastify'
+import BookedSlots from '../../BookedSlots/BookedSlots';
+
+
 
 const BookingForm = () => {
-    const submitHandler = event=>{
-        event.preventDefault()
+
+    const [dropOffCity, setDropOffCity] = useState()
+    const [dropOffDate, setDropOffDate] = useState()
+    const [pickupDate, setPickUpDate] = useState()
+    const [totalDays, setTotalDays] = useState(0)
+    const [driver, setDriver] = useState(false)
+    const [totalAmount, setTotalAmount] = useState(0)
+    const [showBookedSlots, setShowBookedSlots] = useState(false)
+
+
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const bookDispatch = useDispatch()
+
+    const { car } = useSelector((state) => state.singleCar)
+    const { bookingMessage, bookingIsSuccess, bookingIsError, bookingError } = useSelector((state) => state.booking)
+    const { places } = useSelector((state) => state.places)
+    
+    let bookedSlots = car?.bookedSlots
+
+    useEffect(() => {
+        dispatch(getPlace())
+
+        return()=> {
+            dispatch(placeReset())
+            dispatch(bookingReset())
+        }
+    }, [])
+
+    useEffect(() => {
+      if(dropOffDate) {
+        setTotalDays(moment(dropOffDate).diff(moment(pickupDate),'hours'))
+      }
+      if (totalDays) {
+        if(pickupDate < dropOffDate) {
+          if(driver) {
+            setTotalAmount(Number.parseFloat(car.rent) * Number.parseInt(totalDays) + (Number.parseInt(totalDays) * 100))
+          } else {
+            setTotalAmount(Number.parseFloat(car.rent) * Number.parseInt(totalDays))
+          }
+        }else {
+          setTotalAmount(0)
+        }
+      }
+    }, [dropOffDate, totalDays, driver, pickupDate])
+
+
+    function onSubmit(e) {
+      e.preventDefault()
+      if(!dropOffCity || !pickupDate || !dropOffDate) {
+        if(!dropOffCity) {
+          toast.error('Please Add Dropoff City')
+        }
+        if(!pickupDate && !dropOffDate) {
+          toast.error("Please Add Date")
+        }
+      } else {
+        let user = JSON.parse(localStorage.getItem('user'))
+        if(!user) {
+          navigate('/login')
+        } else {
+          const reqObj = {
+            user: user._id,
+            car: car._id,
+            totalAmount,
+            totalDays,
+            pickupDate,
+            dropOffDate,
+            dropOffCity,
+            driverRequire: driver
+          }
+          if(totalDays >= 1) {
+            bookDispatch(bookCar(reqObj))
+          } else {
+            toast.error("Book Car atleast for 1 hour")
+          }
+        }
+      }
     }
+  
   return (
-    <Form onSubmit={submitHandler}>
-        <FormGroup className='booking_form d-inline-block me-4 mb-4'>
-            <input type="text" placeholder='First Name' />
-        </FormGroup>
-        <FormGroup className='booking_form d-inline-block ms-1 mb-4'>
-            <input type="text" placeholder='Last Name' />
-            </FormGroup>
+    <div className="booking_sec_wrapper">
+    <form onSubmit={onSubmit} className="booking">
+      <div className="booking_field">
+        <label htmlFor="">Dropoff City</label>
+        <select onChange={(e) => setDropOffCity(e.target.value)}>
+          <option value="" hidden>Select City</option>
+          {
+            places.map((place) => (
+              <option key={place._id} value={place.place}>{place.place}</option>
+            ))
+          }
+        </select>
+      </div>
+      <div className="booking_field">
+        <label htmlFor="">Pickup Date</label>
+        <DatePicker
+            selected={pickupDate}
+            minDate={Date.now()}
+            showTimeSelect
+            timeIntervals={60}
+            dateFormat = "MM d, yyyy h:mm aa"
+            onChange={(date) => { setPickUpDate(date)}}
+            placeholderText="Select Pickup Date" />
+      </div>
+      <div className="booking_field">
+        <label htmlFor="">Dropoff Date</label>
+        <DatePicker
+        selected={dropOffDate}
+        minDate={Date.now()}
+        showTimeSelect
+        timeIntervals={60}
+        dateFormat="MM d, yyyy h:mm aa"
+        onChange={(date) => { setDropOffDate(date)}}
+        placeholderText="Select Dropoff Date" />
+      </div>
+      <div className="booking_field_driver">
+        <div onClick={() => setShowBookedSlots(true)} className='booked_slots'>Booked Slots</div>
+        {showBookedSlots && <BookedSlots stateChange={setShowBookedSlots} data={bookedSlots} />}
+      </div>
 
-        <FormGroup className='booking_form d-inline-block me-4 mb-4'>
-            <input type="email" placeholder='Email' />
-        </FormGroup>
-        <FormGroup className='booking_form d-inline-block ms-1 mb-4'>
-            <input type="number" placeholder='Phone Number' />
-        </FormGroup>
-
-        
-        <FormGroup className='booking_form d-inline-block me-4 mb-4'>
-            <input type="email" placeholder='From Address' />
-        </FormGroup>
-        <FormGroup className='booking_form d-inline-block ms-1 mb-4'>
-            <input type="number" placeholder='To Address' />
-        </FormGroup>
-
-        <FormGroup className='booking_form d-inline-block me-4 mb-4'>
-            <select name="" id="">
-                <option value="1 person">1 Person</option>
-                <option value="2 person">2 Person</option>
-                <option value="3 person">3 Person</option>
-                <option value="4 person">4 Person</option>
-                <option value="5+ person">5+ Person</option>
-            </select>
-        </FormGroup>
-        <FormGroup className='booking_form d-inline-block ms-1 mb-4'>
-            <select name="" id="">
-                <option value="1 luggage">1 luggage</option>
-                <option value="2 luggage">2 luggage</option>
-                <option value="3 luggage">3 luggage</option>
-                <option value="4 luggage">4 luggage</option>
-                <option value="5+ luggage">5+ luggage</option>
-            </select>
-        </FormGroup>
-
-          
-        <FormGroup className='booking_form d-inline-block me-4 mb-4'>
-            <input type="date" placeholder='Journey Date' />
-        </FormGroup>
-        <FormGroup className='booking_form d-inline-block ms-1 mb-4'>
-            <input type="time" placeholder='Journey Time' className='time_picker' />
-        </FormGroup>
-
-        <FormGroup>
-            <textarea rows={5} type='textarea' className='textarea'
-             placeholder='Write'>
-            </textarea>
-        </FormGroup>
-    </Form>
+      <div className="booking_field_driver">
+        <input type="checkbox" onChange={(e) => {
+          if (e.target.checked) {
+            setDriver(true)
+          } else {
+            setDriver(false)
+          }
+        }} />
+        <label htmlFor="">Driver Require</label>
+      </div>
+      <div className="booking_field">
+        <p>Total hours : {totalDays >= 1 ? totalDays : 0} </p>
+        <h1>Total : ₹ {totalAmount} </h1>
+      </div>
+      <div className="booking_field">
+        <button style={{backgroundColor:'#000d6b'}} className='book' type='submit'>Book Now</button>
+      </div>
+    </form>
+  </div>
   )
 }
 

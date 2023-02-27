@@ -15,8 +15,7 @@ const initialState = {
 // Add Car
 export const addCar = createAsyncThunk('car/add', async (carData, thunkAPI) => {
     try {
-        const token = thunkAPI.getState().adminAuth.admin.token
-        console.log("slice token",token);
+        const token=thunkAPI.getState().adminAuth.admin.data
         return await carService.addCar(carData,token)
     } catch (error) {
         const message =(error.response && error.response.data && error.response.data.message) || error.message || error.toString()
@@ -28,7 +27,8 @@ export const addCar = createAsyncThunk('car/add', async (carData, thunkAPI) => {
 // Get Car
 export const getCars = createAsyncThunk('car/get', async (_, thunkAPI) => {
     try {
-        return await carService.getCar()
+        const token = thunkAPI.getState().adminAuth.admin.data
+        return await carService.getCar(token)
     } catch (error) {
         const message =(error.response && error.response.data && error.response.data.message) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message)
@@ -38,7 +38,8 @@ export const getCars = createAsyncThunk('car/get', async (_, thunkAPI) => {
 // Delete Car
 export const deleteCar = createAsyncThunk('car/delete', async (id, thunkAPI) => {
     try {
-        return await carService.deleteCar(id)
+        const token = thunkAPI.getState().adminAuth.admin.data
+        return await carService.deleteCar(id,token)
     } catch (error) {
         const message =(error.response && error.response.data && error.response.data.message) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message)

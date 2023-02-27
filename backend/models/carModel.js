@@ -41,12 +41,7 @@ const carSchema = mongoose.Schema({
             type: String,
             required: true
     },
-    isDeleted: {
-        type: Boolean,
-        default: false,
-        required: true
-    }
-
+    bookedSlots: [{ from: { type: String }, to: { type: String } }]
 }, {timestamps: true})
 
 module.exports = mongoose.model("Cars", carSchema)

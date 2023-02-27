@@ -58,20 +58,35 @@ const adminLogin = asyncHandler(async (req,res) => {
     })
 
     // Block and Unblock Users
-    const blockUser = asyncHandler(async (req,res) =>{
-       const id = req.params.id;
-       await User.findByIdAndUpdate(id,{$set:{isBlocked:true}}).then((response) =>{
-        res.status(200).json({blocked:true,message: "User Blocked Successfully"})
-       })
+    const blockAndUnblockUser = asyncHandler(async (req,res) => {
+        if(!req.body.id){
+            res.status(400)
+            throw new Error('User Not Found')
+        }
+        const user = await User.findById(req.body.id)
+        if(user.isBlocked) {
+            const unBlock = await User.findByIdAndUpdate(req.body.id, {
+                isBlocked: false
+            })
+            if(unBlock) {
+                res.status(200).json({message: `${user.fullName}'s Account Unblocked`})
+            } else {
+                res.status(400)
+                throw new Error('Something Went Wrong')
+            }
+        } else {
+            const block = await User.findByIdAndUpdate(req.body.id, {
+                isBlocked: true
+            })
+            if(block) {
+                res.status(200).json({ message: `${user.fullName}'s Account Blocked`})
+            } else {
+                res.status(400)
+                throw new Error('Something Went Wrong')
+            }
+        }
     })
 
-    const unblockUser = asyncHandler(async (req,res) => {
-        const id = req.params.id;
-        await User.findByIdAndUpdate(id,{$set:{isBlocked:false}}).then((response) => {
-            res.status(200).json({blocked:false, message:"User Unblocked Succesfully"})
-
-        })
-    })
 
     const getPlace = asyncHandler(async (req, res) => {
         try {
@@ -90,18 +105,17 @@ const adminLogin = asyncHandler(async (req,res) => {
         if (!place) {
             throw new Error('Please fill the field')
         }
-    
         const PlaceToUpperCase = place.toUpperCase()
         const CheckPlace = await Place.findOne({ place: PlaceToUpperCase })
-    
         if (CheckPlace) {
             throw new Error('Place Already Exist')
         } else {
             const addPlace = await Place.create({ place: PlaceToUpperCase })
-    
+            console.log("add place",addPlace);
             res.status(201).json({ message: `${PlaceToUpperCase} addedd successfully` })
         }
     })
+
     
    
     const deletePlace = asyncHandler(async (req, res) => {
@@ -110,13 +124,14 @@ const adminLogin = asyncHandler(async (req,res) => {
             throw new Error("Place not found")
         }
         const deletePlace = await Place.deleteOne({ _id: req.query.id })
-    
+        console.log("deletePlace",deletePlace);
         if (deletePlace) {
             res.status(200).json({ message: `Deleted successfully` })
         } else {
             res.status(400)
             throw new Error('Something went wrong!')
         }
+        console.log("delete",deletePlace);
     })
     
     
@@ -162,7 +177,7 @@ const adminLogin = asyncHandler(async (req,res) => {
     
 
     const adminCars = asyncHandler(async (req, res) => {
-        const cars = await Cars.find({ isDeleted: false }).sort({ createdAt: -1 })
+        const cars = await Cars.find().sort({ createdAt: -1 })
         if (cars) {
             res.status(200).json(cars)
         } else {
@@ -211,15 +226,17 @@ const adminLogin = asyncHandler(async (req,res) => {
             res.status(400)
             throw new Error("Car not found")
         }
-        const deleteCar = await Cars.findByIdAndUpdate(req.query.id, { isDeleted: true })
-    
-        const car = await Cars.findOne({ _id: req.query.id })
+
+        const deleteCar = await Cars.deleteOne({_id:req.query.id})
+        console.log("Delete avindo",deleteCar);
+
         if (deleteCar) {
-            res.status(200).json({ message: `${car.name} deleted successfully` })
+            res.status(200).json({ message: 'Deleted successfully' })
         } else {
             res.status(400)
             throw new Error('Something went wrong!')
         }
+        console.log("Delete aayo",deleteCar);
     })
     
  
@@ -393,8 +410,7 @@ const adminLogin = asyncHandler(async (req,res) => {
 module.exports = {
     adminLogin,
     adminUsers,
-    blockUser,
-    unblockUser,
+    blockAndUnblockUser,
     getPlace,
     addPlace,
     deletePlace,

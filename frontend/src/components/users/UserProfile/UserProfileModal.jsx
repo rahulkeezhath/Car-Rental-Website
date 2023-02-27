@@ -51,9 +51,7 @@ const UserProfileModal = ({userDetails}) => {
           await axiosInstance.put('/users/updateUser/',updateData).then(async(res) => {
           await axiosInstance.get('/users/getUser/' + data_id).then((datas) => {
             dispatch(reset(datas.data))
-            console.log("hdvfhdesh",datas);
             setUserData(datas.data)
-            console.log("dijfwqejfba",datas)
           })
         })
       } catch (error) {
@@ -114,9 +112,6 @@ const UserProfileModal = ({userDetails}) => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          {/* <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button> */}
           <button type='submit'className="btn btn-primary">Save Changes</button>
         </Modal.Footer>
         <Toaster/>

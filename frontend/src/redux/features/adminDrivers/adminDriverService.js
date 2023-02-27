@@ -1,28 +1,47 @@
 import axiosInstance from '../../../../utils/axiosInstance'
 
 // Get Drivers
-const getDrivers = async() => {
-
-    const response = await axiosInstance.get('/admin/drivers')
+const getDrivers = async(token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    const response = await axiosInstance.get('/admin/drivers',config)
     return response.data
 }
 
 // Approve Driver
-const approveDriver = async(id) => {
-    const response = await axiosInstance.put('/admin/approveDriver',{id:id})
+const approveDriver = async(id,token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    const response = await axiosInstance.put('/admin/approveDriver',{id:id},config)
     return response.data
 }
 
 // Decline Driver
-const declineDriver = async(id) => {
-    const response = await axiosInstance.put('/admin/declineDriver',{id:id})
+const declineDriver = async(id,token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    const response = await axiosInstance.put('/admin/declineDriver',{id:id},config)
     return response.data
 }
 
 
 // Block and Unblock Driver
-const blockAndUnblockDriver = async(id) => {
-    const response = await axiosInstance.put('/admin/blockAndUnblockDriver',{id:id})
+const blockAndUnblockDriver = async(id,token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    const response = await axiosInstance.put('/admin/blockAndUnblockDriver',{id:id},config)
     return response.data
 }
 

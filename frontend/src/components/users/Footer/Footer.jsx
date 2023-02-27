@@ -32,7 +32,7 @@ const Footer = () => {
     <Container>
       <Row>
         <Col lg='3' md='3' sm='12'>
-        <div className="logo footer_logo">
+        <div className="logo1 footer_logo">
             <h1><Link to='/' className='d-flex align-items-center gap-3'>
             <i class="ri-car-line"></i>
             <span>Fastrack</span>

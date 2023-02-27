@@ -141,7 +141,7 @@ const Sidebar = () => {
                 className={currentLink === 7 ? "active" : "none"}
                 onClick={() => setCurrentLink(7)}
               >
-                <a href="#">
+                <a href="/admin/bookings">
                   <BsBookHalf />
                   <span> Bookings </span>
                 </a>
@@ -217,7 +217,7 @@ const Sidebar = () => {
               className={currentLink === 7 ? "active" : "none"}
               onClick={() => setCurrentLink(7)}
             >
-              <a href="#">
+              <a href="/admin/bookings">
                 <BsBookHalf />
                 <span> Bookings </span>
               </a>

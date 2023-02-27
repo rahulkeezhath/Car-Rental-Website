@@ -2,8 +2,14 @@
 import axiosInstance from '../../../../utils/axiosInstance'
 
 // Add Place
-const addPlace = async(place) => {
-    const response = await axiosInstance.post('/admin/addPlace',place)
+const addPlace = async(place,token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    const response = await axiosInstance.post('/admin/addPlace',place,config)
+    console.log("response",response);
     return response.data
 }
 
@@ -11,12 +17,16 @@ const addPlace = async(place) => {
 const getPlace = async() => {
     const response = await axiosInstance.get('/admin/getPlaces')
     return response.data
- 
 }
 
 // Delete Place
-const deletePlace = async(id) => {
-    const response = await axiosInstance.delete(`/admin/deletePlace?id=${id}`)
+const deletePlace = async(id,token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    const response = await axiosInstance.delete(`/admin/deletePlace?id=${id}`,config)
     return response.data
 }
 

@@ -7,7 +7,7 @@ require('dotenv').config()
 const asyncHandler = require('express-async-handler');
 const {doSms, verifyOtp} = require('../helpers/otpVerification')
 const { default: mongoose } = require('mongoose')
-const moment = require('moment/moment')
+const moment = require('moment')
 
 
 const userSignup = asyncHandler(async(req,res)=>{
@@ -102,9 +102,11 @@ const userLogin = asyncHandler(async (req,res) => {
 
 const getUserDetails = asyncHandler(async( req, res)=>{
     const id = req.params.data_id
+    console.log("get id", id);
     try {
         const userData = await User.findOne({_id:id})
         res.status(200).json(userData)
+        console.log("userData",userData);
     } catch (error) {
         console.log("error")
         console.log(error);
@@ -117,6 +119,7 @@ const getUserDetails = asyncHandler(async( req, res)=>{
 const updateUserProfile = asyncHandler(async (req,res) => {
 
     const id = req.body.id
+    console.log("id",id);
    try {
     await User.findByIdAndUpdate(id,{$set:
     {
@@ -126,6 +129,7 @@ const updateUserProfile = asyncHandler(async (req,res) => {
     }},{upsert:true}).then((response)=>{
         res.status(200).json({response:response, message:"User Updated Successfully"})
     })
+    console.log("update aayi",);
    } catch (error) {
         console.log(error);
    }
@@ -154,14 +158,19 @@ const getCar = asyncHandler(async (req,res) => {
 
 const bookCar = asyncHandler(async (req,res) => {
     const { user, car, totalAmount, totalDays, pickUpDate, droffOffDate, dropOffCity, driverRequire } = req.body
+    console.log("carrrr",req.body);
     if(!user, !car, !totalAmount, !totalDays, !pickUpDate, !droffOffDate, !dropOffCity) {
         res.status(400)
-        throw new Error("All Fields are required")
+        throw new Error("All Fields are Required")
     } else {
         const  theCar = await Cars.findById(car)
+        console.log("kjfhkej",theCar);
         let selectedFrom = moment(pickUpDate)
+        console.log("ijjnf",selectedFrom);
         let selectedTo = moment(droffOffDate)
-
+        console.log("ohu",selectedTo);
+        console.log("theCar",theCar);
+        
         if(theCar.bookedSlots.length > 0) {
             for (let slot of theCar.bookedSlots) {
                 if (selectedFrom.isBetween(moment(slot.from), moment(slot.to), null, '[)') || selectedTo.isBetween(moment(slot.from), moment(slot.to), null, '(]')) {
@@ -173,7 +182,7 @@ const bookCar = asyncHandler(async (req,res) => {
         theCar.bookedSlots.push({ from: pickUpDate, to: droffOffDate})
         await theCar.save()
         const bookCar = await Bookings.create({
-            user, car, totalAmount, totalHours: totalDays, 'bookedSlots.from': pickUpDate, 'bookedSlots.to': droffOffDate, dropOffCity: dropOffCity, driverRequire, transactionId: 'pending'
+            user, car, totalAmount, totalHours: totalDays, 'bookedSlots.from': pickUpDate, 'bookedSlots.to': droffOffDate, dropoffCity: dropOffCity, driverRequire, transactionId: 'pending'
         })
         if (bookCar && theCar) {
             res.status(201).json(bookCar)
@@ -209,6 +218,8 @@ const myBookings = asyncHandler(async (req,res) => {
     ])
     res.json(userBookings)
 })
+
+
 
 
 const generateAuthToken = (id) => {

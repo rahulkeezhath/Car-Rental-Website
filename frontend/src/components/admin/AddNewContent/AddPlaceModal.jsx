@@ -8,12 +8,17 @@ import { useEffect } from 'react'
 const AddPlaceModal = ({stateChange}) => {
   const { register, formState:{errors}, handleSubmit } = useForm()
   const dispatch = useDispatch()
+
+  
   useEffect(()=> {
     dispatch(placeReset())
   },[dispatch])
+
   const onSubmit = (data) => {
     dispatch(addPlace(data))
   }
+
+
   return (
     <div className='add_car_container'>
       <div className="add_car_wrapper">

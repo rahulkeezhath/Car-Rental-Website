@@ -11,7 +11,7 @@ const CarItem = ({name,rent,model,transmission,fuel,id,image}) => {
   return <Col lg='4' md='4' sm='6' className='mb-5'>
     <div className="car_item">
         <div className="car_img">
-            <img src={image} alt="" className='w-100' />
+            <img style={{width:'10rem', height:'10rem'}} src={image} alt="" className='w-100' />
         </div>
 
         <div className="car_item-content mt-4">

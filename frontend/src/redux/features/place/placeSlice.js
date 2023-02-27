@@ -14,7 +14,8 @@ const initialState = {
 // Add Place
 export const addPlace = createAsyncThunk('places/add', async (place, thunkAPI) => {
     try {
-        return await placeService.addPlace(place)
+        const token = thunkAPI.getState().adminAuth.admin.data
+        return await placeService.addPlace(place,token)
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message)
@@ -36,7 +37,8 @@ export const getPlace = createAsyncThunk('places/get', async (_, thunkAPI) => {
 // Delete Place
 export const deletePlace = createAsyncThunk('places/delete', async (id, thunkAPI) => {
     try {
-        return await placeService.deletePlace(id)
+        const token = thunkAPI.getState().adminAuth.admin.data
+        return await placeService.deletePlace(id,token)
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message)

@@ -1,8 +1,13 @@
 import axiosInstance from "../../../../utils/axiosInstance";
 
 // Add Brand
-const addBrand = async(brand) => {
-    const response = await axiosInstance.post('/admin/addBrand', brand)
+const addBrand = async(brand,token) => {
+   const config = {
+      headers: {
+          Authorization: `Bearer ${token}`
+      }
+  }
+    const response = await axiosInstance.post('/admin/addBrand', brand,config)
     return response.data
 }
 
@@ -15,8 +20,13 @@ const addBrand = async(brand) => {
 
 
  // Delete Brand
- const deleteBrand = async(id)=>{
-    const response = await axiosInstance.delete(`/admin/deleteBrand?id=${id}`)
+ const deleteBrand = async(id,token)=>{
+   const config = {
+      headers: {
+          Authorization: `Bearer ${token}`
+      }
+  }
+    const response = await axiosInstance.delete(`/admin/deleteBrand?id=${id}`,config)
     return response.data
  }
 

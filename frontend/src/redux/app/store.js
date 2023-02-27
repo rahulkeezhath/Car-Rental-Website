@@ -4,7 +4,6 @@ import storage from 'redux-persist/lib/storage'
 import authReducer from '../features/Auth/authSlice'
 import adminAuthReducer from '../features/adminAuth/adminAuthSlice'
 import adminUsersReducer from '../features/adminUsers/adminUsersSlice'
-import updateUserReducer from '../features/auth/userUpdatedSlice'
 import placesReducer from '../features/place/placeSlice'
 import brandsReducer from '../features/brands/brandSlice'
 import adminCarReducer from '../features/cars/carSlice'
@@ -21,10 +20,6 @@ const authPersistConfig = {
   storage,
 }
 
-const updatedUserPersistConfig = {
-  key: 'updatedUser',
-  storage,
-}
 
 const adminAuthPersistConfig = {
   key: 'adminAuth',
@@ -82,7 +77,6 @@ const adminDriversPersistConfig = {
 }
 
 const persistedAuthReducer = persistReducer(authPersistConfig, authReducer)
-const persistedUpdatedUserReducer = persistReducer(updatedUserPersistConfig, updateUserReducer)
 const persistedAdminAuthReducer = persistReducer(adminAuthPersistConfig, adminAuthReducer)
 const persistedAdminUsersReducer = persistReducer(adminUsersPersistConfig, adminUsersReducer)
 const persistedAdminPlacesReducer = persistReducer(adminPlacePersistConfig, placesReducer)
@@ -99,7 +93,6 @@ const store = configureStore({
   reducer:{
     // Users
     auth:persistedAuthReducer,
-    updatedUser:persistedUpdatedUserReducer,
     userCars:persistedUserCarReducer,
     singleCar:persistedUserSingleCarReducer,
     booking:persistedUserBookingCarReducer,

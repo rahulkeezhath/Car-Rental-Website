@@ -14,7 +14,8 @@ const initialState = {
 // Get Bookings
 export const getAllBookings = createAsyncThunk('adminBooking/get',async(_, thunkAPI) => {
     try {
-        return await adminBookingService.getBookings()
+        const token = thunkAPI.getState().adminAuth.admin.data
+        return await adminBookingService.getBookings(token)
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message)

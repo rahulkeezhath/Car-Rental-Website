@@ -81,6 +81,9 @@
     outline: none;
 }
 
+.errorInput {
+  border: 1px solid rgba(214, 32, 32, 0.746);
+}
 
 
 @media only screen and (max-width: 992px) {

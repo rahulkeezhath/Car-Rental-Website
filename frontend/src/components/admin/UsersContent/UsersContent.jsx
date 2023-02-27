@@ -6,17 +6,17 @@
   import Navbar from '../Navbar/Navbar'
   import { useDispatch, useSelector,  } from 'react-redux'
   import toast, {Toaster} from 'react-hot-toast'
-  import {allUsers, reset} from '../../../redux/features/adminUsers/adminUsersSlice'
+  import {allUsers, blockAndUnblock, reset} from '../../../redux/features/adminUsers/adminUsersSlice'
   import Spinner from '../../Spinner/Spinner'
-  import axiosInstance from '../../../../utils/axiosInstance'
+
 
   const UsersContent = () => {
 
     const dispatch = useDispatch()
-  const { users, isLoading, isSuccess, isError, message } = useSelector((state) => state.adminUsers)
+  const { users, isLoading, isSuccess, isError, message, error } = useSelector((state) => state.adminUsers)
   useEffect(() => {
     if (isError) {
-      toast.error(message)
+      toast.error(error)
     }
     if(isSuccess){
       toast.success(message)
@@ -27,34 +27,8 @@
     }
   }, [dispatch, message, isError])
   
+
   
-  const userBlock = async (id) => {
-    try {
-      await axiosInstance.put("/admin/blockUser/" + id).then((res) => {
-        toast.error("User Blocked ")
-        
-        axiosInstance.get("/admin/users").then((resp) => {
-          
-          dispatch(allUsers(resp.data));
-        });
-      });
-    } catch (error) {
-      console.log("error ", error);
-    }
-  };
-  
-  const userUnblock = async (id) => {
-    try {
-      await axiosInstance.put("/admin/unblockUser/" + id).then((res) => {
-        toast.success("User Unblocked")
-        axiosInstance.get('/admin/users').then((response)=>{
-          dispatch(allUsers(response.data))
-        })
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
   
   useEffect(() => {
     const sr = scrollreveal({
@@ -106,15 +80,9 @@
       {
         name: 'Action',
         cell : (row) => (
-          <>
-            {row.isBlocked != true ? (
-              <button className='btn btn-danger' onClick={() => userBlock(row.id)}><i class="ri-user-unfollow-fill"></i>
-              </button>
-            ) : (
-              <button className='btn btn-primary' onClick={() => userUnblock(row.id)}><i class="ri-user-follow-fill"></i>
-              </button>
-            )}
-          </>
+        <>
+        <button onClick={() =>dispatch(blockAndUnblock(row.id))} className={row.isBlocked ? 'unBlock_btn' : 'block_btn'}>{row.isBlocked ? <i className="ri-user-follow-fill"></i> :  <i className="ri-user-unfollow-fill"></i>}</button>
+        </>
         )
       }
     ]
