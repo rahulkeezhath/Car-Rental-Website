@@ -21,6 +21,7 @@ const BookingForm = () => {
     const [driver, setDriver] = useState(false)
     const [totalAmount, setTotalAmount] = useState(0)
     const [showBookedSlots, setShowBookedSlots] = useState(false)
+ 
 
 
     const navigate = useNavigate()
@@ -32,6 +33,7 @@ const BookingForm = () => {
     const { places } = useSelector((state) => state.places)
     
     let bookedSlots = car?.bookedSlots
+    console.log("bookedSlots",bookedSlots);
 
     useEffect(() => {
         dispatch(getPlace())
@@ -59,6 +61,17 @@ const BookingForm = () => {
       }
     }, [dropOffDate, totalDays, driver, pickupDate])
 
+
+
+    useEffect(() => {
+      if(bookingIsError) {
+        toast.error(bookingError)
+      }
+      if(bookingIsSuccess) {
+        navigate('/checkout', { state: {bookingMessage,car: car}})
+      }
+      dispatch(bookingReset())
+    }, [navigate, bookingIsError, bookingIsSuccess, bookingError])
 
     function onSubmit(e) {
       e.preventDefault()

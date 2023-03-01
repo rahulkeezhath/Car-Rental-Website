@@ -4,7 +4,6 @@ import Helmet from '../Helmet/Helmet'
 import Header from '../Header/Header'
 import Footer from '../Footer/Footer'
 import BookingForm from '../UI/Cars/BookingForm'
-import PaymentMethod from '../UI/Cars/paymentMethod'
 import { useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { reset, getCar } from '../../../redux/features/users/cars/singleCar/singleCarSlice'
@@ -96,17 +95,10 @@ const Single = () => {
             </div>
             </Col>
 
-            <Col lg='7' className='mt-5'>
+            <Col lg='12' className='mt-5'>
               <div className='booking-info mt-5'>
                 <h5 className='mb-4 fw-bold' style={{color:'#000d6b'}}>Booking Information</h5>
                 <BookingForm/>
-              </div>
-            </Col>
-
-            <Col lg='5' className='mt-5'>
-              <div className='payment_info mt-5'>
-                <h5 className='mb-4 fw-bold' style={{color:'#000d6b'}}>Payment Information</h5>
-                <PaymentMethod/>
               </div>
             </Col>
 

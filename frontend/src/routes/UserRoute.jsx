@@ -7,6 +7,7 @@ import Home from '../pages/users/Home/Home'
 import Profile from '../pages/users/Profile/Profile'
 import Cars from '../pages/users/Cars/Cars'
 import SingleCar from '../pages/users/SingleCar/Single'
+import Checkout from '../pages/users/Checkout/Checkout'
 import About from '../pages/users/About/About'
 import Contact from '../pages/users/Contact/Contact'
 // import Error from '../pages/Error/Error'
@@ -23,6 +24,7 @@ const UserRoute = ()=>{
         <Route path='/profile' element={<Profile/>} />
         <Route exact path='/cars' element={<Cars/>} />
         <Route exact path='/car' element={<SingleCar/>} />
+        <Route exact path='/checkout' element={<Checkout/>} />
         <Route exact path='/about' element={<About/>} /> 
         <Route exact path='/contact' element={<Contact/>} />
         {/* <Route exact path='*' element={<Error/>} /> */}

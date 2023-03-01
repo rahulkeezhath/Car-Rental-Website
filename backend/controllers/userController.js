@@ -8,6 +8,8 @@ const asyncHandler = require('express-async-handler');
 const {doSms, verifyOtp} = require('../helpers/otpVerification')
 const { default: mongoose } = require('mongoose')
 const moment = require('moment')
+const Stripe = require('stripe')
+const stripe = Stripe('sk_test_51Mg3gFSFAwfsuLHcq2QhP0MfWq9lShezSoFqHDSlhi9o0h8VTYkEkNyH9Uqr8IQ9jkIfQbdYBHi4iDQWPOlumv1n00CYybWskj')
 
 
 const userSignup = asyncHandler(async(req,res)=>{
@@ -219,6 +221,32 @@ const myBookings = asyncHandler(async (req,res) => {
     res.json(userBookings)
 })
 
+const payment = asyncHandler(async (req,res) => {
+    const { token, totalAmount, bookingId } = req.body
+    
+    // const customer = await stripe.customers.create({
+    //     email: token.email,
+    //     source: token.id
+    // })
+    // const payment = await stripe.charges.create({
+    //     amount: totalAmount * 100,
+    //     currency: 'inr',
+    //     customer: customer.id,
+    //     receipt_email: token.email
+    // }, {
+    //     idempotencyKey: bookingId
+    // })
+
+    const updateBookStatus = await Bookings.findByIdAndUpdate({_id: bookingId}, { transactionId: bookingId, status: 'booked', 'shippedAddress.name': token.card.name, 'shippingAddress.email': token.email, 'shippingAddress.address': token.card.address_line1, 'shippingAddress.city': token.card.address_city, 'shippingAddress.pincode': token.card.address_zip })
+    console.log("Update aayo", updateBookStatus);
+    if (updateBookStatus) {
+        res.status(200).json({ message: "Booking Completed Successfully"})
+    } else {
+        res.status(400)
+        throw new Error('Something Went Wrong')
+    }
+})
+
 
 
 
@@ -237,5 +265,6 @@ module.exports={
     getCars,
     getCar,
     bookCar,
-    myBookings
+    myBookings,
+    payment
 }
