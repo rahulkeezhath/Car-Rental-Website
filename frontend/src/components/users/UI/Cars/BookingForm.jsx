@@ -16,11 +16,13 @@ const BookingForm = () => {
 
     const [dropOffCity, setDropOffCity] = useState()
     const [dropOffDate, setDropOffDate] = useState()
-    const [pickupDate, setPickUpDate] = useState()
+    const [pickUpDate, setPickUpDate] = useState()
     const [totalDays, setTotalDays] = useState(0)
     const [driver, setDriver] = useState(false)
+    console.log("driver",driver);
     const [totalAmount, setTotalAmount] = useState(0)
     const [showBookedSlots, setShowBookedSlots] = useState(false)
+    
  
 
 
@@ -33,7 +35,8 @@ const BookingForm = () => {
     const { places } = useSelector((state) => state.places)
     
     let bookedSlots = car?.bookedSlots
-    console.log("bookedSlots",bookedSlots);
+    
+
 
     useEffect(() => {
         dispatch(getPlace())
@@ -46,10 +49,10 @@ const BookingForm = () => {
 
     useEffect(() => {
       if(dropOffDate) {
-        setTotalDays(moment(dropOffDate).diff(moment(pickupDate),'hours'))
+        setTotalDays(moment(dropOffDate).diff(moment(pickUpDate),'hours'))
       }
       if (totalDays) {
-        if(pickupDate < dropOffDate) {
+        if(pickUpDate < dropOffDate) {
           if(driver) {
             setTotalAmount(Number.parseFloat(car.rent) * Number.parseInt(totalDays) + (Number.parseInt(totalDays) * 100))
           } else {
@@ -59,7 +62,7 @@ const BookingForm = () => {
           setTotalAmount(0)
         }
       }
-    }, [dropOffDate, totalDays, driver, pickupDate])
+    }, [dropOffDate, totalDays, driver, pickUpDate])
 
 
 
@@ -68,18 +71,18 @@ const BookingForm = () => {
         toast.error(bookingError)
       }
       if(bookingIsSuccess) {
-        navigate('/checkout', { state: {bookingMessage,car: car}})
+        navigate('/checkout', { state: {bookingMessage, car: car}})
       }
       dispatch(bookingReset())
     }, [navigate, bookingIsError, bookingIsSuccess, bookingError])
 
     function onSubmit(e) {
       e.preventDefault()
-      if(!dropOffCity || !pickupDate || !dropOffDate) {
+      if(!dropOffCity || !pickUpDate || !dropOffDate) {
         if(!dropOffCity) {
           toast.error('Please Add Dropoff City')
         }
-        if(!pickupDate && !dropOffDate) {
+        if(!pickUpDate && !dropOffDate) {
           toast.error("Please Add Date")
         }
       } else {
@@ -92,7 +95,7 @@ const BookingForm = () => {
             car: car._id,
             totalAmount,
             totalDays,
-            pickupDate,
+            pickUpDate,
             dropOffDate,
             dropOffCity,
             driverRequire: driver
@@ -123,7 +126,7 @@ const BookingForm = () => {
       <div className="booking_field">
         <label htmlFor="">Pickup Date</label>
         <DatePicker
-            selected={pickupDate}
+            selected={pickUpDate}
             minDate={Date.now()}
             showTimeSelect
             timeIntervals={60}

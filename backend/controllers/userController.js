@@ -104,14 +104,13 @@ const userLogin = asyncHandler(async (req,res) => {
 
 const getUserDetails = asyncHandler(async( req, res)=>{
     const id = req.params.data_id
-    console.log("get id", id);
+
     try {
         const userData = await User.findOne({_id:id})
         res.status(200).json(userData)
         console.log("userData",userData);
     } catch (error) {
-        console.log("error")
-        console.log(error);
+        console.log(error)
     }
 })
 
@@ -121,7 +120,7 @@ const getUserDetails = asyncHandler(async( req, res)=>{
 const updateUserProfile = asyncHandler(async (req,res) => {
 
     const id = req.body.id
-    console.log("id",id);
+ 
    try {
     await User.findByIdAndUpdate(id,{$set:
     {
@@ -131,7 +130,7 @@ const updateUserProfile = asyncHandler(async (req,res) => {
     }},{upsert:true}).then((response)=>{
         res.status(200).json({response:response, message:"User Updated Successfully"})
     })
-    console.log("update aayi",);
+    
    } catch (error) {
         console.log(error);
    }
@@ -159,19 +158,21 @@ const getCar = asyncHandler(async (req,res) => {
 })
 
 const bookCar = asyncHandler(async (req,res) => {
-    const { user, car, totalAmount, totalDays, pickUpDate, droffOffDate, dropOffCity, driverRequire } = req.body
-    console.log("carrrr",req.body);
-    if(!user, !car, !totalAmount, !totalDays, !pickUpDate, !droffOffDate, !dropOffCity) {
+    const { user, car, totalAmount, totalDays, pickUpDate, dropOffDate, dropOffCity, driverRequire } = req.body
+    console.log("req.body",req.body);
+   
+    if(!user, !car, !totalAmount, !totalDays, !pickUpDate, !dropOffDate, !dropOffCity) {
         res.status(400)
         throw new Error("All Fields are Required")
     } else {
         const  theCar = await Cars.findById(car)
-        console.log("kjfhkej",theCar);
+       
         let selectedFrom = moment(pickUpDate)
-        console.log("ijjnf",selectedFrom);
-        let selectedTo = moment(droffOffDate)
-        console.log("ohu",selectedTo);
-        console.log("theCar",theCar);
+       
+      
+        let selectedTo = moment(dropOffDate)
+    
+    
         
         if(theCar.bookedSlots.length > 0) {
             for (let slot of theCar.bookedSlots) {
@@ -181,10 +182,12 @@ const bookCar = asyncHandler(async (req,res) => {
                 }
             }
         }
-        theCar.bookedSlots.push({ from: pickUpDate, to: droffOffDate})
+        theCar.bookedSlots.push({ from: pickUpDate, to: dropOffDate})
         await theCar.save()
+
+        console.log("the car", theCar);
         const bookCar = await Bookings.create({
-            user, car, totalAmount, totalHours: totalDays, 'bookedSlots.from': pickUpDate, 'bookedSlots.to': droffOffDate, dropoffCity: dropOffCity, driverRequire, transactionId: 'pending'
+            user, car, totalAmount, totalHours: totalDays, 'bookedSlots.from' : pickUpDate, 'bookedSlots.to': dropOffDate, dropoffCity: dropOffCity, driverRequire, transactionId: 'pending'
         })
         if (bookCar && theCar) {
             res.status(201).json(bookCar)
@@ -192,6 +195,7 @@ const bookCar = asyncHandler(async (req,res) => {
             res.status(400)
             throw new Error('Something went wrong')
         }
+        console.log("book car", bookCar);
     }
 })
 
@@ -222,7 +226,8 @@ const myBookings = asyncHandler(async (req,res) => {
 })
 
 const payment = asyncHandler(async (req,res) => {
-    const { token, totalAmount, bookingId } = req.body
+    const { token, bookingId } = req.body
+    console.log("Body",req.body);
     
     // const customer = await stripe.customers.create({
     //     email: token.email,
@@ -238,7 +243,6 @@ const payment = asyncHandler(async (req,res) => {
     // })
 
     const updateBookStatus = await Bookings.findByIdAndUpdate({_id: bookingId}, { transactionId: bookingId, status: 'booked', 'shippedAddress.name': token.card.name, 'shippingAddress.email': token.email, 'shippingAddress.address': token.card.address_line1, 'shippingAddress.city': token.card.address_city, 'shippingAddress.pincode': token.card.address_zip })
-    console.log("Update aayo", updateBookStatus);
     if (updateBookStatus) {
         res.status(200).json({ message: "Booking Completed Successfully"})
     } else {

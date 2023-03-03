@@ -7,7 +7,8 @@ import CommonSection from '../UI/About/CommonSection'
 import CarItem from '../UI/HomeContent/CarItem'
 import { useDispatch, useSelector } from 'react-redux'
 import { allCars, reset } from '../../../redux/features/users/cars/carSlice'
-import toast, {Toaster} from 'react-hot-toast'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '../../Spinner/Spinner'
 
 
@@ -77,7 +78,7 @@ const Cars = () => {
           </Row>
         </Container>
       </section>
-      <Toaster/>
+     <ToastContainer/>
     <Footer/>
     </Helmet>
   )

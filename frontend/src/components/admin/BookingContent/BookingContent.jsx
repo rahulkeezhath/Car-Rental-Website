@@ -14,6 +14,7 @@ const BookingContent = () => {
 
     const dispatch = useDispatch()
     const { bookings, isLoading, isError, error} = useSelector((state) => state.adminBooking)
+    console.log("bookings",bookings);
 
     useEffect(() => {
         if(isError) {
@@ -54,7 +55,8 @@ const BookingContent = () => {
             {
               name: "Id",
               selector: (row) => row.id,
-              sortable:true
+              sortable:true,
+              width:"210px"
             },
             {
               name: "Sl.No",
@@ -70,21 +72,23 @@ const BookingContent = () => {
               name: "Car Name",
               selector: (row) => row.carName,
               sortable:true,
-              width: '150px'
+              width: '130px'
             },
             {
               name: "Phone Number",
               selector: (row) => row.phoneNumber,
-              sortable:true
+              sortable:true,
+              width:"130px"
             },
             {
               name: "Driver",
-              selector: (row) => row.driverRequired,
-              sortable:true
+              selector: (row) => row.driverRequire,
+              sortable:true,
+              width:"120px"
             },
             {
               name: "Pickup Date",
-              selector: (row) => row.pickupDate,
+              selector: (row) => row.pickUpDate,
               sortable:true,
               width:"150px"
             },
@@ -97,17 +101,20 @@ const BookingContent = () => {
             {
               name: "Total Hours",
               selector: (row) => row.totalHours,
-              sortable:true
+              sortable:true,
+              width:"110px"
             },
             {
               name: "Total Amount",
               selector: (row) => row.totalAmount,
-              sortable:true
+              sortable:true,
+              width:"120px"
             },
             {
               name: "Dropoff City",
               selector: (row) => row.dropOffCity,
-              sortable:true
+              sortable:true,
+              width:"120px"
             },
             {
                 name: "Payment",
@@ -131,9 +138,9 @@ const BookingContent = () => {
                 carName: booking.carData.name,
                 phoneNumber: booking.userData.phoneNumber,
                 payment: booking.transactionId === 'pending' ? 'Pending' : 'Success',
-                driverRequired: booking.driverRequire ? 'Required' : 'Not Required',
-                pickupDate: moment(booking.bookedSlots).format('MMM DD yyyy hh:mm'),
-                dropOffDate: moment(booking.bookedSlots).format('MMM DD yyyy hh:mm'),
+                driverRequire: booking.driverRequire === true ? 'Required' : 'Not Required',
+                pickUpDate: moment(booking.bookedSlots.from).format('MMM DD yyyy hh:mm'),
+                dropOffDate: moment(booking.bookedSlots.to).format('MMM DD yyyy hh:mm'),
                 totalHours: booking.totalHours,
                 totalAmount: booking.totalAmount,
                 dropOffCity: booking.dropoffCity,

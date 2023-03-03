@@ -15,17 +15,25 @@ const CheckoutPage = () => {
   const { bookingIsSuccess, bookingIsError, bookingError, bookingMessage }  = useSelector((state) => state.booking)
 
   const allData = useLocation()
+  console.log("All Data", allData);
 
   const bookingData = allData.state.bookingMessage
-  console.log("BOoking Data",bookingData);
+  console.log("booking Data", bookingData);
+
   const carData = allData.state.car
-  console.log("Car Data",carData);
-  const bookedSlots = carData.bookedSlots
-  console.log("Booked slots",bookedSlots);
+  console.log("carData",carData);
+
+  const bookedSlots = bookingData.bookedSlots
+  console.log("Booked Slots",bookedSlots);
+
+  
   const from = bookedSlots.from
   console.log("from",from);
+
+
   const to = bookedSlots.to
-  console.log("Booked to",to);
+  console.log("to",to);
+
 
 
 
@@ -35,7 +43,7 @@ const CheckoutPage = () => {
     }
     if(bookingIsSuccess) {
       toast.success(bookingMessage.message)
-      navigate('/')
+      navigate('/myBookings')
     }
     dispatch(bookingReset())
   }, [bookingIsError, bookingIsSuccess, bookingError, bookingMessage])
@@ -68,7 +76,7 @@ const CheckoutPage = () => {
         Checkout
       </h1>
       <div className='checkout_content'>
-        <img src={carData.image?.url} alt="" />
+        <img src={carData.image} alt="" />
         <h3>{carData.name}</h3>
         <h3>Rs.{carData.rent}/hour</h3>
         <hr />
@@ -84,7 +92,7 @@ const CheckoutPage = () => {
       <StripeCheckout
       shippingAddress
       token={onToken}
-      amount={bookingData.totalHours * 100}
+      amount={bookingData.totalAmount * 100}
       currency= 'INR'
       stripeKey={'pk_test_51Mg3gFSFAwfsuLHcJkrQ5LqsAaNZjnbuQm0nVRjnRZN0qRtWcxZY1BBH18v94drHf15G2fCbTRb6PMr0f4CXmvKE00JRka5zhs'}
       >

@@ -1,5 +1,6 @@
 
 import axiosInstance from '../../../../utils/axiosInstance'
+import {message} from 'antd'
 
 // Add Place
 const addPlace = async(place,token) => {
@@ -9,7 +10,7 @@ const addPlace = async(place,token) => {
         }
     }
     const response = await axiosInstance.post('/admin/addPlace',place,config)
-    console.log("response",response);
+    message.success("Place Added Successfully")
     return response.data
 }
 
@@ -27,6 +28,7 @@ const deletePlace = async(id,token) => {
         }
     }
     const response = await axiosInstance.delete(`/admin/deletePlace?id=${id}`,config)
+    message.success("Place Deleted Successfully")
     return response.data
 }
 

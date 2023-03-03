@@ -25,7 +25,7 @@ router.get('/car', getCar)
 
 // Booking Car
 router.post('/bookCar',protect, bookCar)
-router.get('/myBookings', myBookings)
+router.get('/myBookings',protect, myBookings)
 
 // Payment 
 router.post('/payment', payment)

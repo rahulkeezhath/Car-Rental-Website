@@ -5,11 +5,11 @@ import DataTable from 'react-data-table-component'
 import Navbar from '../Navbar/Navbar'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllDrivers, reset, approveDriver, declineDriver, blockAndUnblockDriver  } from '../../../redux/features/adminDrivers/adminDriverSlice'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+
 import { FcApprove } from "react-icons/fc";
 import { FcDisapprove } from "react-icons/fc";
 import Spinner from '../../Spinner/Spinner'
+import toast,{Toaster} from 'react-hot-toast'
 
 
 const DriversContent = () => {
@@ -18,10 +18,10 @@ const DriversContent = () => {
 
     useEffect(()=> {
         if(isError) {
-            toast.error(error)
+            toast.error(message)
         }
         if(isSuccess) {
-            toast.success(message.message)
+            toast.success(message)
         }
         dispatch(getAllDrivers())
         return () => {
@@ -64,7 +64,8 @@ const DriversContent = () => {
             {
               name: "Id",
               selector: (row) => row.id,
-              sortable:true
+              sortable:true,
+              width:"200px"
             },
             {
               name: "Sl.No",
@@ -79,7 +80,8 @@ const DriversContent = () => {
             {
               name: "Email",
               selector: (row) => row.email,
-              sortable:true
+              sortable:true,
+              width:'200px'
             },
             {
               name: "Phone Number",
@@ -257,7 +259,7 @@ const DriversContent = () => {
     />
     </div>
     </Section>
-    <ToastContainer/>
+    <Toaster />
     </div>
   )
 }

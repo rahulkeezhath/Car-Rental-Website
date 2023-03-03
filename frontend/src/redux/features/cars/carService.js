@@ -1,4 +1,5 @@
 import axiosInstance from "../../../../utils/axiosInstance";
+import {message} from 'antd'
 
 
 
@@ -10,6 +11,7 @@ const addCar = async (carData,token) => {
         }
     }
     const response = await axiosInstance.post('/admin/addCars', carData,config)
+    message.success("Car Added Successfully")
     
     return response.data
 }
@@ -35,6 +37,7 @@ const deleteCar = async (id,token) => {
         }
     }
     const response = await axiosInstance.delete(`/admin/deleteCar?id=${id}`,config)
+    message.success("Car Deleted Successfully")
     return response.data
 }
 

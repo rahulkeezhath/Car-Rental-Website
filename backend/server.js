@@ -9,6 +9,8 @@ const connectDB = require('./config/db')
 const userRoutes = require('./routes/userRouter')
 const adminRoutes = require('./routes/adminRouter')
 const driverRoutes = require('./routes/driverRouter')
+const chatRoutes = require('./routes/chatRouter')
+const messageRoute = require('./routes/messageRouter')
 const { errorHandler } = require('./middleware/errorMiddleware')
 
 // Database Connection
@@ -35,6 +37,8 @@ app.use(errorHandler)
 app.use('/api/users',userRoutes)
 app.use('/api/admin',adminRoutes)
 app.use('/api/driver',driverRoutes)
+app.use('/api/chat',chatRoutes)
+app.use('/api/message',messageRoute)
 
 
 

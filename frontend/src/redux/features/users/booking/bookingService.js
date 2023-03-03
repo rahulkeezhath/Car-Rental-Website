@@ -1,5 +1,5 @@
 import axiosInstance from "../../../../../utils/axiosInstance";
-
+import {message} from 'antd'
 
 // Book Car
 const bookCar = async(bookingData, token) => {
@@ -9,6 +9,7 @@ const bookCar = async(bookingData, token) => {
         }
     }
     const response = await axiosInstance.post('/users/bookCar',bookingData,config)
+    message.success("Proceed to Payment")
     return response.data
 }
 
@@ -21,6 +22,7 @@ const payCar = async(checkoutData, token) => {
         }
     }
     const response = await axiosInstance.post('/users/payment', checkoutData, config)
+    message.success("Car Booked Successfully")
     return response.data
 }
 

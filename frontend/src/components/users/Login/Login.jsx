@@ -4,7 +4,8 @@ import  LG from'../../../assets/Login.jpg'
 import {Link, useNavigate} from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
 import { useForm } from 'react-hook-form'
-import { toast } from 'react-toastify'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '../../../components/Spinner/Spinner'
 import { login, reset } from '../../../redux/features/auth/authSlice'
 import { useEffect } from 'react'
@@ -24,9 +25,10 @@ function Login() {
 
   useEffect(() => {
     if (isError) {
-      toast.error(message)
+      toast.error("Logged IN Error ")
     }
     if(isSuccess || user) {
+      toast.success("Logged IN Successfully")
       navigate('/')
     }
     dispatch(reset())

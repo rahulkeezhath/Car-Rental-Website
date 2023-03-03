@@ -16,6 +16,10 @@ const navLinks = [
     display:'Cars'
   },
   {
+    path:'/messenger',
+    display:'Chat'
+  },
+  {
     path:'/about',
     display:'About'
   },

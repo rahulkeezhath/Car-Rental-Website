@@ -1,4 +1,6 @@
 import axiosInstance from "../../../../utils/axiosInstance";
+import {message} from 'antd'
+
 
 // Add Brand
 const addBrand = async(brand,token) => {
@@ -8,6 +10,7 @@ const addBrand = async(brand,token) => {
       }
   }
     const response = await axiosInstance.post('/admin/addBrand', brand,config)
+    message.success("Brand Added Successfully")
     return response.data
 }
 
@@ -27,6 +30,7 @@ const addBrand = async(brand,token) => {
       }
   }
     const response = await axiosInstance.delete(`/admin/deleteBrand?id=${id}`,config)
+    message.success("Brand Deleted Successfully")
     return response.data
  }
 

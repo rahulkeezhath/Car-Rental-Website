@@ -5,7 +5,8 @@ import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { reset, otp } from '../../../redux/features/auth/authSlice'
-import { toast } from 'react-toastify'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '../../Spinner/Spinner'
 
 
@@ -25,6 +26,7 @@ const OtpVerification = () => {
       navigate('/signup')
     }
     if(isSuccess || user) {
+      toast.success(message)
       navigate('/')
     }
 
@@ -49,9 +51,10 @@ const OtpVerification = () => {
     </div>
     {errors.otpCode && <p className='error_msg'>{errors.otpCode?.message}</p>}
     <button type='submit'>Verify</button>
+    <ToastContainer/>
     </form>
-
     </div>
+    
   )
 }
 

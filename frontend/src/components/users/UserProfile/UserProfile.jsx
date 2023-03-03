@@ -41,7 +41,7 @@ const UserProfile = () => {
                   <p className="text-muted mb-4">Have a Nice Trip</p>
                   <div className="d-flex justify-content-center mb-2">
                     <UserProfileModal userDetails={user} /> 
-                    <button onClick={() => navigate('/bookingcar')} type="submit" className="btn btn-outline-primary ms-1">My Bookings</button>
+                    <button onClick={() => navigate('/myBookings')} type="submit" className="btn btn-outline-primary ms-1">My Bookings</button>
                   </div>  
                 </div>
               </div>

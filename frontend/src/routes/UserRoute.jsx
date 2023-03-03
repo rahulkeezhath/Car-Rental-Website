@@ -8,6 +8,8 @@ import Profile from '../pages/users/Profile/Profile'
 import Cars from '../pages/users/Cars/Cars'
 import SingleCar from '../pages/users/SingleCar/Single'
 import Checkout from '../pages/users/Checkout/Checkout'
+import MyBookings from '../pages/users/MyBookings/MyBookings'
+import ChatPage from '../pages/users/ChatPage/ChatPage'
 import About from '../pages/users/About/About'
 import Contact from '../pages/users/Contact/Contact'
 // import Error from '../pages/Error/Error'
@@ -25,6 +27,8 @@ const UserRoute = ()=>{
         <Route exact path='/cars' element={<Cars/>} />
         <Route exact path='/car' element={<SingleCar/>} />
         <Route exact path='/checkout' element={<Checkout/>} />
+        <Route exact path='/myBookings' element={<MyBookings/>} />
+        <Route exact path='/messenger' element={<ChatPage/>} />
         <Route exact path='/about' element={<About/>} /> 
         <Route exact path='/contact' element={<Contact/>} />
         {/* <Route exact path='*' element={<Error/>} /> */}

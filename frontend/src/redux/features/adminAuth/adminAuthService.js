@@ -15,7 +15,7 @@ const login = async (adminData) => {
 //Logout Admin
 const logout = () => {
     localStorage.removeItem('admin')
-    message.success("Logout Sucess")
+    message.success("Logout Success")
 }
 
 const adminAuthService = {
