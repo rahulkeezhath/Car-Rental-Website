@@ -7,21 +7,23 @@ import { getPlace, placeReset } from '../../../../redux/features/place/placeSlic
 import { bookCar, bookingReset} from '../../../../redux/features/users/booking/bookingSlice'
 import { useDispatch,useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
-import {toast} from 'react-toastify'
+import {toast} from 'react-hot-toast'
 import BookedSlots from '../../BookedSlots/BookedSlots';
+
 
 
 
 const BookingForm = () => {
 
+    
     const [dropOffCity, setDropOffCity] = useState()
     const [dropOffDate, setDropOffDate] = useState()
     const [pickUpDate, setPickUpDate] = useState()
     const [totalDays, setTotalDays] = useState(0)
     const [driver, setDriver] = useState(false)
-    console.log("driver",driver);
     const [totalAmount, setTotalAmount] = useState(0)
     const [showBookedSlots, setShowBookedSlots] = useState(false)
+    
     
  
 
@@ -34,7 +36,9 @@ const BookingForm = () => {
     const { bookingMessage, bookingIsSuccess, bookingIsError, bookingError } = useSelector((state) => state.booking)
     const { places } = useSelector((state) => state.places)
     
+   
     let bookedSlots = car?.bookedSlots
+    console.log("booked slots", bookedSlots);
     
 
 
@@ -63,6 +67,7 @@ const BookingForm = () => {
         }
       }
     }, [dropOffDate, totalDays, driver, pickUpDate])
+
 
 
 
@@ -131,6 +136,9 @@ const BookingForm = () => {
             showTimeSelect
             timeIntervals={60}
             dateFormat = "MM d, yyyy h:mm aa"
+            isClearable
+            showYearDropdown
+            highlightDates={bookedSlots}
             onChange={(date) => { setPickUpDate(date)}}
             placeholderText="Select Pickup Date" />
       </div>
@@ -142,6 +150,8 @@ const BookingForm = () => {
         showTimeSelect
         timeIntervals={60}
         dateFormat="MM d, yyyy h:mm aa"
+        isClearable
+        showYearDropdown
         onChange={(date) => { setDropOffDate(date)}}
         placeholderText="Select Dropoff Date" />
       </div>

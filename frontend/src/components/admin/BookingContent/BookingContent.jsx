@@ -8,9 +8,31 @@ import toast, {Toaster} from 'react-hot-toast'
 import { getAllBookings, reset } from '../../../redux/features/adminBooking/adminBookingSlice'
 import Spinner from '../../Spinner/Spinner'
 import moment from 'moment'
-
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 const BookingContent = () => {
+
+    const generatePdf = () => {
+      // Create a new instance of jsPDF
+      const doc = new jsPDF({
+          orientation: 'l',
+          unit: 'mm',
+          format: 'a4',   
+      });
+      
+
+     // Add content to the PDF
+      doc.text('Booking Details', 10, 10);
+      doc.autoTable({
+      head: [columns.map(column => column.name)], // Add the table header
+      body: rows.map(row => [row.id, row.slNo, row.userName, row.carName, row.phoneNumber,row.driverRequire,row.pickUpDate,row.dropOffDate,row.totalHours,row.totalAmount,row.dropOffCity,row.payment,row.status]), // Add the table rows
+    });
+
+
+      // Save the PDF
+     doc.save('booking-details.pdf');
+    }
 
     const dispatch = useDispatch()
     const { bookings, isLoading, isError, error} = useSelector((state) => state.adminBooking)
@@ -159,6 +181,7 @@ const BookingContent = () => {
         <Navbar/>
         <div className="grid">
           <div className="row__one"></div>
+        
     <DataTable title="Booking Details"
       columns={columns}
       data={rows}
@@ -171,6 +194,7 @@ const BookingContent = () => {
       subHeader
       />
       </div>
+      <button onClick={generatePdf}>Download as PDF</button>
       </Section>
       <Toaster/>
       </div>
