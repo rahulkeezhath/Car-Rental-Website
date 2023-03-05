@@ -15,24 +15,24 @@ const CheckoutPage = () => {
   const { bookingIsSuccess, bookingIsError, bookingError, bookingMessage }  = useSelector((state) => state.booking)
 
   const allData = useLocation()
-  console.log("All Data", allData);
+ 
 
   const bookingData = allData.state.bookingMessage
-  console.log("booking Data", bookingData);
+  
 
   const carData = allData.state.car
-  console.log("carData",carData);
+  
 
   const bookedSlots = bookingData.bookedSlots
-  console.log("Booked Slots",bookedSlots);
+
 
   
   const from = bookedSlots.from
-  console.log("from",from);
+ 
 
 
   const to = bookedSlots.to
-  console.log("to",to);
+
 
 
 
@@ -85,7 +85,7 @@ const CheckoutPage = () => {
         <h5 className='inline'><span className='label'> Dropoff City </span> <span className='result'>{bookingData.dropoffCity} </span></h5>
         <hr />
         <h5 className='inline payD'><span className='label'> Rent </span> <span className='result'>{(Number.parseInt(carData.rent)) * Number.parseInt(bookingData.totalHours)} </span></h5>
-        <h5 className='inline payD'><span className='label'> Driver </span> <span className='result'>{bookingData.driverRequire ? (Number.parseInt(bookingData.totalHours) * 100) : '0'}</span></h5>
+        <h5 className='inline payD'><span className='label'> Driver </span> <span className='result'>{bookingData.driverRequire ? (Number.parseInt(bookingData.totalHours) * 100)  : '0'}</span></h5>
         <h5 className='inline payD'><span className='label'> Total </span> <span className='result'>{bookingData.totalAmount}</span></h5>
         <hr />
       </div>

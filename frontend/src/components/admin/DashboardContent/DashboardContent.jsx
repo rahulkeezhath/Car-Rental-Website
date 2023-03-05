@@ -46,10 +46,10 @@ const DashboardContent = ({children}) => {
       <div className="dashboard">
       <div className="dashboard_warapper">
         <div className="dashboard_cards">
-          <DashboardCard title={'Total Cars'} value={30} symbol={<i className="ri-car-fill"></i>} />
-          <DashboardCard title={'Users'} value={10} symbol={<i className="ri-booklet-fill"></i>} />
-          <DashboardCard title={'Bookings'} value={30} symbol={<i className="ri-car-fill"></i>} />
-          <DashboardCard title={'Places'} value={30} symbol={<i className="ri-car-fill"></i>} />
+          <DashboardCard title={'Total Cars'} value={8} symbol={<i className="ri-car-fill"></i>} />
+          <DashboardCard title={'Users'} value={6} symbol={<i className="ri-booklet-fill"></i>} />
+          <DashboardCard title={'Bookings'} value={3} symbol={<i className="ri-car-fill"></i>} />
+          <DashboardCard title={'Places'} value={3} symbol={<i className="ri-car-fill"></i>} />
         </div>
         <div className="statics">
           <div className="stats">
