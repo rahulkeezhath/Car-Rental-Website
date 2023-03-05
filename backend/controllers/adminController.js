@@ -275,6 +275,36 @@ const adminLogin = asyncHandler(async (req,res) => {
     })
 
 
+    const blockAndUnblockCar = asyncHandler(async (req,res) => {
+        if(!req.body.id){
+            res.status(400)
+            throw new Error('Car Not Found')
+        }
+        const car = await Cars.findById(req.body.id)
+        if(car.isBlocked) {
+            const unBlock = await Cars.findByIdAndUpdate(req.body.id, {
+                isBlocked: false
+            })
+            if(unBlock) {
+                res.status(200).json({message: `${car.name}  Unblocked`})
+            } else {
+                res.status(400)
+                throw new Error('Something Went Wrong')
+            }
+        } else {
+            const block = await Cars.findByIdAndUpdate(req.body.id, {
+                isBlocked: true
+            })
+            if(block) {
+                res.status(200).json({ message: `${car.name} Blocked`})
+            } else {
+                res.status(400)
+                throw new Error('Something Went Wrong')
+            }
+        }
+    })
+
+
     const adminBookings = asyncHandler(async (req,res)=> {
         const bookings = await Bookings.aggregate([
             {
@@ -421,6 +451,7 @@ module.exports = {
     addCars,
     deleteCar,
     editCar,
+    blockAndUnblockCar,
     adminBookings,
     adminDrivers,
     approveDriver,

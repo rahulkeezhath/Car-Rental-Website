@@ -4,7 +4,7 @@ import scrollreveal from 'scrollreveal'
 import DataTable from 'react-data-table-component'
 import Navbar from '../Navbar/Navbar'
 import { useDispatch, useSelector } from 'react-redux'
-import { reset, getCars, deleteCar} from '../../../redux/features/cars/carSlice'
+import { reset, getCars, deleteCar, blockAndUnblockCar} from '../../../redux/features/cars/carSlice'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '../../Spinner/Spinner'
@@ -117,10 +117,11 @@ const CarsContent = () => {
             
           },
           {
-            name: "Delete",
+            name: "Action",
             cell: (row) => (
               <>
-              <button onClick={() => dispatch(deleteCar(row.id))}>Delete</button>
+              <button onClick={() => dispatch(deleteCar(row.id))} className='me-2'>Delete</button>
+              <button  onClick={() =>  dispatch(blockAndUnblockCar(row.id)) } className={row.isBlocked ? 'unBlock_btn' : 'block_btn'}>{row.isBlocked ? <i className="ri-user-follow-fill"></i> :  <i className="ri-user-unfollow-fill"></i>}</button>
               </>
             )
           },
@@ -140,7 +141,8 @@ const CarsContent = () => {
             fuel: car.fuel,
             brand: car.brand,
             description: car.description,
-            image: car.image
+            image: car.image,
+            isBlocked: car.isBlocked
           }
         })
     

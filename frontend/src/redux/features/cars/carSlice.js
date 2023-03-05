@@ -47,6 +47,18 @@ export const deleteCar = createAsyncThunk('car/delete', async (id, thunkAPI) => 
 })
 
 
+// Block and Unblock Car
+export const blockAndUnblockCar = createAsyncThunk('car/blockAndUnblockCar', async(id, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().adminAuth.admin.data
+        return await carService.blockAndUnblockCar(id, token)
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
+
 export const carSlice = createSlice({
     name: 'car',
     initialState,
@@ -95,6 +107,19 @@ export const carSlice = createSlice({
             state.message = action.payload.message
         })
         .addCase(deleteCar.rejected,(state,action)=> {
+            state.isLoading = false
+            state.isSuccess = true
+            state.message  = action.payload
+        })
+        .addCase(blockAndUnblockCar.pending,(state) => {
+            state.isLoading=true
+        })
+        .addCase(blockAndUnblockCar.fulfilled,(state,action)=> {
+            state.isLoading = false
+            state.isSuccess = true
+            state.message = action.payload
+        })
+        .addCase(blockAndUnblockCar.rejected,(state,action)=> {
             state.isLoading = false
             state.isSuccess = true
             state.message  = action.payload

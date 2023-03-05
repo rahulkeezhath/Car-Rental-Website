@@ -138,7 +138,7 @@ const updateUserProfile = asyncHandler(async (req,res) => {
 
 
 const getCars = asyncHandler(async (req,res) => {
-    const cars = await Cars.find({isDeleted: false}).sort({createdAt: -1})
+    const cars = await Cars.find({isBlocked: false}).sort({createdAt: -1})
     if(cars) {
         res.status(200).json(cars)
     } else {

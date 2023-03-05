@@ -21,17 +21,18 @@ const UserRoute = ()=>{
         <Route exact path='/' element={<Home/>} />
         <Route exact path='/signup' element={<UserSignup/>} />
         <Route exact path='/login' element={<UserLogin/>} />
-        <Route element={<ProtectedRoute/>} />
         <Route exact path='/otp' element={<Otp/>} />
+        <Route exact path='/about' element={<About/>} /> 
+        <Route exact path='/contact' element={<Contact/>} />
+        <Route element={<ProtectedRoute/>}>
         <Route path='/profile' element={<Profile/>} />
         <Route exact path='/cars' element={<Cars/>} />
         <Route exact path='/car' element={<SingleCar/>} />
         <Route exact path='/checkout' element={<Checkout/>} />
         <Route exact path='/myBookings' element={<MyBookings/>} />
         <Route exact path='/messenger' element={<ChatPage/>} />
-        <Route exact path='/about' element={<About/>} /> 
-        <Route exact path='/contact' element={<Contact/>} />
         {/* <Route exact path='*' element={<Error/>} /> */}
+        </Route>
     </Routes>
   )
 }

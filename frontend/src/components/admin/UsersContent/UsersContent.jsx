@@ -86,11 +86,11 @@ const UsersContent = () => {
             onClick={() => dispatch(blockAndUnblock(row.id))}
             className={row.isBlocked ? "unBlock_btn" : "block_btn"}
           >
-            {row.isBlocked ? (
+            {row.isBlocked ? 
               <i className="ri-user-follow-fill"></i>
-            ) : (
+             : 
               <i className="ri-user-unfollow-fill"></i>
-            )}
+            }
           </button>
         </>
       ),

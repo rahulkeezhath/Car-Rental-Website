@@ -42,11 +42,23 @@ const deleteCar = async (id,token) => {
 }
 
 
+const blockAndUnblockCar = async(id,token) => {
+    const config = {
+        headers: {
+            Authorization:  `Bearer ${token}`
+        }
+    }
+    const response = await axiosInstance.put('/admin/blockAndUnblockCar',{id:id},config)
+    console.log("Redux Response", response);
+    return response.data
+}
+
 
 const carService = {
     addCar,
     getCar,
-    deleteCar
+    deleteCar,
+    blockAndUnblockCar
 }
 
 export default carService

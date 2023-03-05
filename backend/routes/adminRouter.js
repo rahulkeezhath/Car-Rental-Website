@@ -3,7 +3,7 @@ const {adminLogin,
     adminUsers,blockUser,unblockUser,
     getPlace,addPlace,deletePlace,
     getBrands,addBrand,deleteBrand,
-    adminCars,addCars,deleteCar,editCar,adminBookings, adminDrivers, approveDriver, declineDriver, blockAndUnblockDriver, blockAndUnblockUser} 
+    adminCars,addCars,deleteCar,editCar,adminBookings, adminDrivers, approveDriver, declineDriver, blockAndUnblockDriver, blockAndUnblockUser, blockAndUnblockCar} 
     = require('../controllers/adminController');
 const { adminProtect } = require('../middleware/authMiddleware');
 
@@ -28,13 +28,14 @@ router.delete('/deletePlace',adminProtect,deletePlace )
 // Brands
 router.get('/getBrands',getBrands)
 router.post('/addBrand',adminProtect,addBrand)
-router.delete('/deleteBrand',adminProtect,deleteBrand )
+router.delete('/deleteBrand',adminProtect,deleteBrand)
 
 // Car
 router.get('/cars',adminProtect, adminCars)
 router.post('/addCars',adminProtect,addCars)
 router.delete('/deleteCar',adminProtect, deleteCar)
 router.put('/editCar',adminProtect,editCar)
+router.put('/blockAndUnblockCar', adminProtect, blockAndUnblockCar)
 
 //Bookings
 router.get('/getBookings',adminProtect,adminBookings)

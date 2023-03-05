@@ -6,18 +6,6 @@ const getCars = async() => {
     return response.data
 }
 
-// const getCars = async() => {
-//     await axiosInstance({
-//         url: '/users/cars',
-//         method:'get',
-//         headers:{
-//             authorization: response.data.token
-//         }
-//     }).then((response) => {
-//         console.log("afasas");
-//     })
-// }
-
 const carService = {
     getCars
 }

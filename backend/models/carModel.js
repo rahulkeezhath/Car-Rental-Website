@@ -41,6 +41,11 @@ const carSchema = mongoose.Schema({
             type: String,
             required: true
     },
+    isBlocked: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
     bookedSlots: [{ from: { type: String }, to: { type: String } }]
 }, {timestamps: true})
 

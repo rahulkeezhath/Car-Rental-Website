@@ -14,7 +14,7 @@ const AdminRoute = () => {
   return (
     <Routes>
         <Route exact path='/admin' element={<AdminLogin/>} />
-        <Route element={<ProtectedRoute/>} />
+        <Route element={<ProtectedRoute/>}>
         <Route exact path='/admin/dashboard' element={<Dashboard/>} />
         <Route exact path='/admin/users' element={<Users/>} />
         <Route exact path='/admin/addPlace' element={<AddPlace/>} />
@@ -23,6 +23,7 @@ const AdminRoute = () => {
         <Route exact path='/admin/drivers' element={<Drivers/>} />
         <Route exact path='/admin/bookings' element={<Booking/>}/>
         {/* <Route exact path='*' element={<Error/>} /> */}
+        </Route>
     </Routes>
   )
 }
