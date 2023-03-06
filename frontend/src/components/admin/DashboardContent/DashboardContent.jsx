@@ -4,19 +4,39 @@ import Navbar from '../Navbar/Navbar'
 import DashboardCard from '../DashboardCard/DashboardCard'
 import scrollreveal from 'scrollreveal'
 import './DashboardContent.scss'
-import {ResponsiveContainer,BarChart,Bar,XAxis,Tooltip} from 'recharts'
+import {ResponsiveContainer,BarChart,Bar,XAxis, YAxis,Tooltip} from 'recharts'
+import { useDispatch, useSelector } from 'react-redux'
+import { getAllBookings } from '../../../redux/features/adminBooking/adminBookingSlice'
+import { allUsers } from "../../../redux/features/adminUsers/adminUsersSlice";
+import { getCars } from '../../../redux/features/cars/carSlice'
+import { getPlace } from '../../../redux/features/place/placeSlice'
 
 
-const dummyData=[
-  {name:"Sat",mileStats:4000},
-  {name:"Sun",mileStats:3000},
-  {name:"Mon",mileStats:4200},
-  {name:"Tue",mileStats:5600},
-  {name:"Wed",mileStats:1890},
-]
+const DashboardContent = () => {
+
+  const dispatch = useDispatch()
+
+  const { users } = useSelector((state) => state.adminUsers);
+  const {places } = useSelector((state) => state.places)
+  const { car } = useSelector((state) => state.car)
+  const { bookings} = useSelector((state) => state.adminBooking)
 
 
-const DashboardContent = ({children}) => {
+  
+const allData=[
+  {name:"Cars",mileStats:car.length},
+  {name:"Bookings",mileStats:bookings.length},
+  {name:"Places",mileStats:places.length},
+  {name:"Users",mileStats:users.length}
+];
+
+  useEffect(() => {
+    dispatch(allUsers())
+    dispatch(getPlace())
+    dispatch(getCars())
+    dispatch(getAllBookings())
+  }, [dispatch])
+
 
   useEffect(() => {
     const sr = scrollreveal({
@@ -42,21 +62,21 @@ const DashboardContent = ({children}) => {
 
   return <Section>
     <Navbar/>
-      {children}
       <div className="dashboard">
       <div className="dashboard_warapper">
         <div className="dashboard_cards">
-          <DashboardCard title={'Total Cars'} value={8} symbol={<i className="ri-car-fill"></i>} />
-          <DashboardCard title={'Users'} value={6} symbol={<i className="ri-booklet-fill"></i>} />
-          <DashboardCard title={'Bookings'} value={3} symbol={<i className="ri-car-fill"></i>} />
-          <DashboardCard title={'Places'} value={3} symbol={<i className="ri-car-fill"></i>} />
+          <DashboardCard title={'Users'} value={users.length} symbol={<i class="ri-user-fill"></i>} />
+          <DashboardCard title={'Places'} value={places.length} symbol={<i class="ri-map-pin-fill"></i>} />
+          <DashboardCard title={'Cars'} value={car.length} symbol={<i class="ri-roadster-line"></i>} />
+          <DashboardCard title={'Bookings'} value={bookings.length} symbol={<i class="ri-book-open-line"></i>} />
         </div>
         <div className="statics">
           <div className="stats">
             <h3>Miles Statics</h3>
             <ResponsiveContainer width={'100%'} aspect={4/1}>
-              <BarChart data={dummyData}>
+              <BarChart data={allData}>
             <XAxis dataKey={'name'} stroke='#000' />
+            <YAxis domain={[0,100]}/>
             <Bar dataKey={'mileStats'} stroke={'rgba(94, 80, 63, 0.81)'} fill={'rgba(95, 71, 42, 0.81)'} barSize={30} />
             <Tooltip cursor={false} wrapperClassName='toolTip_style' />
               </BarChart>

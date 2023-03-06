@@ -6,11 +6,7 @@ import { useEffect } from "react";
 import Navbar from "../Navbar/Navbar";
 import { useDispatch, useSelector } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
-import {
-  allUsers,
-  blockAndUnblock,
-  reset,
-} from "../../../redux/features/adminUsers/adminUsersSlice";
+import { allUsers, blockAndUnblock, reset} from "../../../redux/features/adminUsers/adminUsersSlice";
 import Spinner from "../../Spinner/Spinner";
 
 const UsersContent = () => {
