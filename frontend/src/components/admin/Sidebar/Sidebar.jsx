@@ -52,7 +52,7 @@ const Sidebar = () => {
       .links>ul>li:nth-of-type(5),
       .links>ul>li:nth-of-type(6),
       .links>ul>li:nth-of-type(7),
-      .logout
+      .logout>ul>li:nth-of-type(8)
       `,
       {
         opacity: 0,
@@ -97,7 +97,7 @@ const Sidebar = () => {
                 onClick={() => setCurrentLink(2)}
               >
                 <a href="/admin/users">
-               <AiOutlineUserAdd/>
+                  <AiOutlineUserAdd />
                   <span> Users</span>
                 </a>
               </li>
@@ -106,7 +106,7 @@ const Sidebar = () => {
                 onClick={() => setCurrentLink(3)}
               >
                 <a href="/admin/addPlace">
-                   <RiDashboard2Fill />
+                  <RiDashboard2Fill />
                   <span> Places </span>
                 </a>
               </li>
@@ -124,7 +124,7 @@ const Sidebar = () => {
                 onClick={() => setCurrentLink(5)}
               >
                 <a href="/admin/cars">
-                  <AiFillCar/>
+                  <AiFillCar />
                   <span> Cars </span>
                 </a>
               </li>
@@ -150,10 +150,12 @@ const Sidebar = () => {
           </div>
         </div>
         <div className="logout">
-          <a>
-            <FiLogOut />
-            <span onClick={logout}  className="logout">Logout</span>
-          </a>
+              <a>
+                <FiLogOut />
+                <span onClick={logout} className="logout">
+                  Logout
+                </span>
+              </a>
         </div>
       </Section>
       <ResponsiveNav state={navbarState} className={navbarState ? "show" : ""}>
@@ -173,7 +175,7 @@ const Sidebar = () => {
               onClick={() => setCurrentLink(2)}
             >
               <a href="/admin/users">
-              <AiOutlineUserAdd/>
+                <AiOutlineUserAdd />
                 <span> Users</span>
               </a>
             </li>
@@ -182,7 +184,7 @@ const Sidebar = () => {
               onClick={() => setCurrentLink(3)}
             >
               <a href="/admin/addPlace">
-               <RiDashboard2Fill />
+                <RiDashboard2Fill />
                 <span> Places</span>
               </a>
             </li>
@@ -200,7 +202,7 @@ const Sidebar = () => {
               onClick={() => setCurrentLink(5)}
             >
               <a href="/admin/cars">
-              <AiFillCar/>
+                <AiFillCar />
                 <span> Cars </span>
               </a>
             </li>
@@ -222,10 +224,16 @@ const Sidebar = () => {
                 <span> Bookings </span>
               </a>
             </li>
+            <li
+              className={currentLink === 8 ? "active" : "none"}
+              onClick={() => setCurrentLink(8)}>
             <a>
-            <FiLogOut />
-            <span onClick={logout}  className='logout'>Logout</span>
-          </a>
+              <FiLogOut />
+              <span onClick={logout} className="logout">
+                Logout
+              </span>
+            </a>
+            </li>
           </ul>
         </div>
       </ResponsiveNav>
