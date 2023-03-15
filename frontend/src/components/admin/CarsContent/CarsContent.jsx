@@ -5,10 +5,10 @@ import DataTable from 'react-data-table-component'
 import Navbar from '../Navbar/Navbar'
 import { useDispatch, useSelector } from 'react-redux'
 import { reset, getCars, deleteCar, blockAndUnblockCar} from '../../../redux/features/cars/carSlice'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import toast, { Toaster } from "react-hot-toast";
 import Spinner from '../../Spinner/Spinner'
 import AddCar from '../Add Car/AddCar'
+import Swal from "sweetalert2";
 
 const CarsContent = () => {
 
@@ -49,6 +49,47 @@ const CarsContent = () => {
           );
         }, []);
         
+
+        
+    const handleDelete = (row) => {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-danger",
+      },
+      buttonsStyling: false,
+    });
+
+    swalWithBootstrapButtons
+      .fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          swalWithBootstrapButtons.fire(
+            "Deleted!",
+            "Your file has been deleted.",
+            "success"
+          );
+           dispatch(deleteCar(row.id));
+        } else if (
+          result.dismiss === Swal.DismissReason.cancel
+        ) {
+          swalWithBootstrapButtons.fire(
+            "Cancelled",
+            "Your file is safe :)",
+            "error"
+          );
+        }
+      });
+    }
+
         const columns = [
           {
             name: "Id",
@@ -120,11 +161,11 @@ const CarsContent = () => {
             name: "Action",
             cell: (row) => (
               <>
-              <button onClick={() => dispatch(deleteCar(row.id))} className='me-2'>Delete</button>
+              <button onClick={() => handleDelete(row)} className='m-1'>Delete</button>
               <button  onClick={() =>  dispatch(blockAndUnblockCar(row.id)) } className={row.isBlocked ? 'unBlock_btn' : 'block_btn'}>{row.isBlocked ? <i className="ri-user-follow-fill"></i> :  <i className="ri-user-unfollow-fill"></i>}</button>
               </>
             )
-          },
+          }
         ]
         
         
@@ -172,7 +213,7 @@ const CarsContent = () => {
           />
           </div>
           </Section>
-          <ToastContainer/>
+          <Toaster/>
           </div>
         )
       }

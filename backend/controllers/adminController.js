@@ -4,47 +4,38 @@ const Place = require('../models/availablePlaceModel')
 const Brand = require('../models/brandModel')
 const Cars = require('../models/carModel')
 const Drivers = require('../models/driverModel')
-const Joi = require('joi')
+const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt')
 const asyncHandler = require('express-async-handler')
 const cloudinary = require('../utils/cloudinary')
 const Bookings = require('../models/bookingModel')
 
 const adminLogin = asyncHandler(async (req,res) => {
-   
-    try{
-        const {error} = validate(req.body)
-        
-        if(error)
-        return res.status(400).send({message: error.details[0].message})
+    const { userName, password } = req.body;
 
-        const admin = await Admin.findOne({userName: req.body.userName})
-
-        if(!admin)
-        return res.status(401).send({message:"Invalid UserName or Password"})
-
-        const validPassword = await bcrypt.compare(
-            req.body.password,admin.password
-        )
-        if(!validPassword)
-            return res.status(401).send({message:"Invalid UserName or Password"})
-
-            const token = admin.generateAuthToken()
-            res.status(209).send({data: token,message:"Logged in Successfully"})
-
-    } catch(error){
-        console.log(error);
-        res.status(500).send({message: "Internal Server Error"})
+    if (!userName || !password) {
+      res.status(400);
+      throw new Error("Please Enter UserName and Password");
     }
+
+    // Check Admin Username
+    const admin = await Admin.findOne({ userName });
+
+    if (admin && (await bcrypt.compare(password, admin.password))) {
+      res.status(200).json({
+        _id: admin._id,
+        name: admin.userName,
+        token: generateToken(admin.id),
+      });
+    } else {
+      res.status(400);
+      throw new Error("Invalid Credentials");
+    }
+
+
 })
 
-    const validate = (data) => {
-        const schema = Joi.object({
-            userName:Joi.string().required().label("UserName"),
-            password:Joi.string().required().label("Password")
-        })
-        return schema.validate(data)
-    }
+   
 
     // AdminUsers
     const adminUsers = asyncHandler(async (req,res) => {
@@ -57,35 +48,35 @@ const adminLogin = asyncHandler(async (req,res) => {
         }
     })
 
-    // Block and Unblock Users
-    const blockAndUnblockUser = asyncHandler(async (req,res) => {
-        if(!req.body.id){
-            res.status(400)
-            throw new Error('User Not Found')
-        }
-        const user = await User.findById(req.body.id)
-        if(user.isBlocked) {
-            const unBlock = await User.findByIdAndUpdate(req.body.id, {
-                isBlocked: false
-            })
-            if(unBlock) {
-                res.status(200).json({message: `${user.fullName}'s Account Unblocked`})
-            } else {
-                res.status(400)
-                throw new Error('Something Went Wrong')
-            }
+
+    const blockAndUnblockUser = asyncHandler(async (req, res) => {
+      if (!req.body.id) {
+        res.status(400);
+        throw new Error("User Not Found");
+      }
+      const user = await User.findById(req.body.id);
+      if (user.isBlocked) {
+        const unBlock = await User.findByIdAndUpdate(req.body.id, {
+          isBlocked: false,
+        });
+        if (unBlock) {
+          res.status(200).json({ message: `${user.fullName}  Unblocked` });
         } else {
-            const block = await User.findByIdAndUpdate(req.body.id, {
-                isBlocked: true
-            })
-            if(block) {
-                res.status(200).json({ message: `${user.fullName}'s Account Blocked`})
-            } else {
-                res.status(400)
-                throw new Error('Something Went Wrong')
-            }
+          res.status(400);
+          throw new Error("Something Went Wrong");
         }
-    })
+      } else {
+        const block = await User.findByIdAndUpdate(req.body.id, {
+          isBlocked: true,
+        });
+        if (block) {
+          res.status(200).json({ message: `${user.fullName} Blocked` });
+        } else {
+          res.status(400);
+          throw new Error("Something Went Wrong");
+        }
+      }
+    });
 
 
     const getPlace = asyncHandler(async (req, res) => {
@@ -111,7 +102,6 @@ const adminLogin = asyncHandler(async (req,res) => {
             throw new Error('Place Already Exist')
         } else {
             const addPlace = await Place.create({ place: PlaceToUpperCase })
-            console.log("add place",addPlace);
             res.status(201).json({ message: `${PlaceToUpperCase} addedd successfully` })
         }
     })
@@ -124,14 +114,12 @@ const adminLogin = asyncHandler(async (req,res) => {
             throw new Error("Place not found")
         }
         const deletePlace = await Place.deleteOne({ _id: req.query.id })
-        console.log("deletePlace",deletePlace);
         if (deletePlace) {
             res.status(200).json({ message: `Deleted successfully` })
         } else {
             res.status(400)
             throw new Error('Something went wrong!')
         }
-        console.log("delete",deletePlace);
     })
     
     
@@ -228,7 +216,6 @@ const adminLogin = asyncHandler(async (req,res) => {
         }
 
         const deleteCar = await Cars.deleteOne({_id:req.query.id})
-        console.log("Delete avindo",deleteCar);
 
         if (deleteCar) {
             res.status(200).json({ message: 'Deleted successfully' })
@@ -236,7 +223,6 @@ const adminLogin = asyncHandler(async (req,res) => {
             res.status(400)
             throw new Error('Something went wrong!')
         }
-        console.log("Delete aayo",deleteCar);
     })
     
  
@@ -357,6 +343,19 @@ const adminLogin = asyncHandler(async (req,res) => {
         }
     })
 
+    const changeStatus = asyncHandler(async (req,res) => {
+        let status = req.body.status
+        let bookingId = req.body.bookingId
+
+        try {
+            await Bookings.updateOne({_id:bookingId},{$set:{status}}).then((response)=>{
+                res.sendStatus(200)
+            })
+        } catch (error) {
+             res.status(408).send({ message: "Internal Server Error" }); 
+        }
+    })
+
 
     const adminDrivers = asyncHandler(async (req,res) => {
         const drivers = await Drivers.find()
@@ -435,6 +434,12 @@ const adminLogin = asyncHandler(async (req,res) => {
         }
     })
 
+    
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWTPRIVATEKEY, {
+    expiresIn: "10d",
+  });
+};
   
 
 module.exports = {
@@ -453,6 +458,7 @@ module.exports = {
     editCar,
     blockAndUnblockCar,
     adminBookings,
+    changeStatus,
     adminDrivers,
     approveDriver,
     declineDriver,

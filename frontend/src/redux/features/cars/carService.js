@@ -37,7 +37,6 @@ const deleteCar = async (id,token) => {
         }
     }
     const response = await axiosInstance.delete(`/admin/deleteCar?id=${id}`,config)
-    message.success("Car Deleted Successfully")
     return response.data
 }
 
@@ -49,7 +48,6 @@ const blockAndUnblockCar = async(id,token) => {
         }
     }
     const response = await axiosInstance.put('/admin/blockAndUnblockCar',{id:id},config)
-    console.log("Redux Response", response);
     return response.data
 }
 

@@ -16,10 +16,6 @@ const navLinks = [
     display:'Cars'
   },
   {
-    path:'/messenger',
-    display:'Chat'
-  },
-  {
     path:'/about',
     display:'About'
   },
@@ -149,10 +145,17 @@ const Header = () => {
               {navLinks.map((item,index)=>(
                   <NavLink to={item.path} className={navClass=> navClass.isActive ? 'nav_active nav_item': 'nav_item'} key={index} >{item.display}</NavLink>
                 ))}
+                {user?.fullName ? (
+                 <>
+                  <NavLink to='/login' className={navClass=> navClass.isActive ? 'nav_active nav_item loginAndSignupBtn': 'nav_item loginAndSignupBtn'} >{user.fullName}</NavLink>
+                  <NavLink to='/signup'  onClick={userLogout} className={navClass=> navClass.isActive ? 'nav_active nav_item loginAndSignupBtn': 'nav_item loginAndSignupBtn'} >Logout</NavLink>  
+                 </>
+                ): (
                  <>
                   <NavLink to='/login' className={navClass=> navClass.isActive ? 'nav_active nav_item loginAndSignupBtn': 'nav_item loginAndSignupBtn'} >Login</NavLink>
                   <NavLink to='/signup' className={navClass=> navClass.isActive ? 'nav_active nav_item loginAndSignupBtn': 'nav_item loginAndSignupBtn'} >Signup</NavLink>  
                  </>
+                  )}
             </div>
           </div>
 

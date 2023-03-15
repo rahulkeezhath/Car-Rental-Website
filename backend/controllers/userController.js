@@ -57,7 +57,7 @@ const otpVerification = asyncHandler(async (req,res) => {
         fullName,email,phoneNumber,
         password: hashedPassword
     })
-    if(user) {
+    if(user) {  
         res.status(201).json({
             _id: user.id,
             fullName: user.fullName,
@@ -102,39 +102,38 @@ const userLogin = asyncHandler(async (req,res) => {
 })
 
 
-const getUserDetails = asyncHandler(async( req, res)=>{
-    const id = req.params.data_id
+// const getUserDetails = asyncHandler(async( req, res)=>{
+//     const id = req.params.data_id
 
-    try {
-        const userData = await User.findOne({_id:id})
-        res.status(200).json(userData)
-        console.log("userData",userData);
-    } catch (error) {
-        console.log(error)
-    }
-})
-
+//     try {
+//         const userData = await User.findOne({_id:id})
+//         res.status(200).json(userData)
+//     } catch (error) {
+//         res.status(500).send({ message: "Internal Server Error" }); 
+//     }
+// })
 
 
 
-const updateUserProfile = asyncHandler(async (req,res) => {
 
-    const id = req.body.id
+// const updateUserProfile = asyncHandler(async (req,res) => {
+
+//     const id = req.body.id
  
-   try {
-    await User.findByIdAndUpdate(id,{$set:
-    {
-        fullName: req.body.fullName,
-        email: req.body.email,
-        phoneNumber: req.body.phoneNumber,
-    }},{upsert:true}).then((response)=>{
-        res.status(200).json({response:response, message:"User Updated Successfully"})
-    })
+//    try {
+//     await User.findByIdAndUpdate(id,{$set:
+//     {
+//         fullName: req.body.fullName,
+//         email: req.body.email,
+//         phoneNumber: req.body.phoneNumber,
+//     }},{upsert:true}).then((response)=>{
+//         res.status(200).json({response:response, message:"User Updated Successfully"})
+//     })
     
-   } catch (error) {
-        console.log(error);
-   }
-})
+//    } catch (error) {
+//         
+//    }
+// })
 
 
 const getCars = asyncHandler(async (req,res) => {
@@ -159,7 +158,7 @@ const getCar = asyncHandler(async (req,res) => {
 
 const bookCar = asyncHandler(async (req,res) => {
     const { user, car, totalAmount, totalDays, pickUpDate, dropOffDate, dropOffCity, driverRequire } = req.body
-    console.log("req.body",req.body);
+    
    
     if(!user, !car, !totalAmount, !totalDays, !pickUpDate, !dropOffDate, !dropOffCity) {
         res.status(400)
@@ -185,7 +184,6 @@ const bookCar = asyncHandler(async (req,res) => {
         theCar.bookedSlots.push({ from: pickUpDate, to: dropOffDate})
         await theCar.save()
 
-        console.log("the car", theCar);
         const bookCar = await Bookings.create({
             user, car, totalAmount, totalHours: totalDays, 'bookedSlots.from' : pickUpDate, 'bookedSlots.to': dropOffDate, dropoffCity: dropOffCity, driverRequire, transactionId: 'pending'
         })
@@ -195,7 +193,6 @@ const bookCar = asyncHandler(async (req,res) => {
             res.status(400)
             throw new Error('Something went wrong')
         }
-        console.log("book car", bookCar);
     }
 })
 
@@ -227,7 +224,6 @@ const myBookings = asyncHandler(async (req,res) => {
 
 const payment = asyncHandler(async (req,res) => {
     const { token, bookingId } = req.body
-    console.log("Body",req.body);
     
     // const customer = await stripe.customers.create({
     //     email: token.email,
@@ -264,8 +260,8 @@ module.exports={
     userSignup,
     otpVerification,
     userLogin,
-    getUserDetails,
-    updateUserProfile,
+    // getUserDetails,
+    // updateUserProfile,
     getCars,
     getCar,
     bookCar,

@@ -82,4 +82,9 @@ button:active
     border-radius: 5px;
     text-align: center;
   }
+
+  .countdown-text{
+    margin-top: -45px;
+    display: flex;
+  }
   

@@ -9,28 +9,29 @@ import { useDispatch, useSelector } from 'react-redux'
 import toast,{Toaster} from 'react-hot-toast'
 import { useEffect } from 'react'
 import AddPlaceModal from '../AddNewContent/AddPlaceModal'
-import Sidebar from '../Sidebar/Sidebar'
+import Swal from "sweetalert2";
+
+
 
 
 
 const AddPlace = () => {
 
   const [addPlace, setAddPlace] = useState(false)
-  const {places, placeIsSuccess, placeIsError, placeError } = useSelector((state) => state.places)
-  console.log("places", places);
-  const placeDispatch = useDispatch()
+  const {places, placeIsError, placeError } = useSelector((state) => state.places)
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    if(placeError) {
+    if(placeIsError) {
       toast.error(placeError)
     }
-    placeDispatch(getPlace())
-  }, [placeIsError, placeError, placeIsSuccess, placeDispatch])
+    dispatch(getPlace())
+  }, [placeIsError, placeError, dispatch])
 
 
   useEffect(() => {
     return () => {
-      placeDispatch(placeReset())
+      dispatch(placeReset())
     }
   }, [])
 
@@ -55,6 +56,47 @@ const AddPlace = () => {
       }
       );
     }, []);
+
+
+    const handleDelete = (row) => {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-danger",
+      },
+      buttonsStyling: false,
+    });
+
+    swalWithBootstrapButtons
+      .fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          swalWithBootstrapButtons.fire(
+            "Deleted!",
+            "Your file has been deleted.",
+            "success"
+          );
+           dispatch(deletePlace(row.id));
+        } else if (
+          result.dismiss === Swal.DismissReason.cancel
+        ) {
+          swalWithBootstrapButtons.fire(
+            "Cancelled",
+            "Your file is safe :)",
+            "error"
+          );
+        }
+      });
+    }
+
   
   const columns = [
     {
@@ -74,11 +116,12 @@ const AddPlace = () => {
     },
     {
       name: 'Delete',
-      cell : (row) => (
+      cell : (row) => {
+        return (
         <>
-        <button onClick={() => placeDispatch(deletePlace(row.id))}>Delete</button>
+        <button onClick={() => handleDelete(row)}>Delete</button>
         </>
-      )
+      )}
     }
   ]
 
@@ -97,8 +140,6 @@ const AddPlace = () => {
 
   return (
     <div>
-
-    <Sidebar/>
     <Section>
       <Navbar/>
       {addPlace ? (<AddPlaceModal stateChange={setAddPlace} />) : null}

@@ -91,7 +91,7 @@ function Signup() {
                         {errors.phoneNumber && <p className="errorMessage">{errors.phoneNumber?.message}</p>}
                     </div>
                     <div>
-                        <input type={'password'} name='password' placeholder='Password'{...register('password', { required: 'Please enter password', minLength: { value: 6, message: 'Password must be 6 characters' } })} />
+                        <input type={'password'} name='password' placeholder='Password'{...register('password', { required: 'Please enter password', minLength: { value: 8, message: 'Password must be 8 characters' } })} />
                         {errors.password && <p className="errorMessage">{errors.password?.message}</p>}
                         
                     </div>

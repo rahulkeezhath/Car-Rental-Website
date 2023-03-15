@@ -1,6 +1,6 @@
 import React from "react";
 import "./Signup.css";
-import { toast } from 'react-toastify'
+import { toast, Toaster } from "react-hot-toast";
 import {useDispatch, useSelector} from 'react-redux'
 import SP from "../../../assets/Signup.jpeg";
 import { Link, useNavigate } from "react-router-dom";
@@ -128,6 +128,7 @@ function Signup() {
         src="https://kit.fontawesome.com/021e83338f.js"
         crossorigin="anonymous"
       ></script>
+      <Toaster/>
     </div>
   );
 }

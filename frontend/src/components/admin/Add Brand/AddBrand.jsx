@@ -7,51 +7,92 @@ import { useEffect, useState } from 'react'
 import { brandReset, getBrands,deleteBrand } from '../../../redux/features/brands/brandSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import toast, {Toaster} from 'react-hot-toast'
-import Sidebar from '../Sidebar/Sidebar'
 import AddBrandModal from '../AddNewContent/AddBrandModal'
+import Swal from "sweetalert2";
 
 
 
 const AddBrand = () => {
 
     const [addBrand, setAddBrand] = useState(false)
-    const { error, message, isError , brands } = useSelector((state) => state.brands)
+    const { error, message, isError, brands } = useSelector(
+      (state) => state.brands
+    );
     const dispatch = useDispatch()
 
-    useEffect(() => {
-        if (isError) {
-            toast.error(error)
-        }
-        dispatch(getBrands())
-    }, [dispatch, error, message, isError])
-
-    useEffect(() => {
-        return () => {
-            dispatch(brandReset())
-        }
-    }, [])
-
-     useEffect(() => {
-    const sr = scrollreveal({
-      origin: "bottom",
-      distance: "80px",
-      duration: 2000,
-      reset: false,
-    });
     
-    sr.reveal(
-      `
-      nav,
-      .row_one,
-      .row_two
-      `,
-      {
-        opacity: 0,
+    useEffect(() => {
+      if (isError) {
+        toast.error(error)
+      }
+      dispatch(getBrands())
+    }, [dispatch, error, message, isError])
+    
+    useEffect(() => {
+      return () => {
+        dispatch(brandReset())
+      }
+    }, [])
+    
+    useEffect(() => {
+      const sr = scrollreveal({
+        origin: "bottom",
+        distance: "80px",
+        duration: 2000,
+        reset: false,
+      });
+      
+      sr.reveal(
+        `
+        nav,
+        .row_one,
+        .row_two
+        `,
+        {
+          opacity: 0,
         interval: 300,
       }
       );
     }, []);
+    
+    const handleDelete = (row) => {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-danger",
+      },
+      buttonsStyling: false,
+    });
 
+    swalWithBootstrapButtons
+      .fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          swalWithBootstrapButtons.fire(
+            "Deleted!",
+            "Your file has been deleted.",
+            "success"
+          );
+           dispatch(deleteBrand(row.id));
+        } else if (
+          result.dismiss === Swal.DismissReason.cancel
+        ) {
+          swalWithBootstrapButtons.fire(
+            "Cancelled",
+            "Your file is safe :)",
+            "error"
+          );
+        }
+      });
+    }
 
     const columns = [
     {
@@ -71,11 +112,14 @@ const AddBrand = () => {
     },
     {
       name: 'Delete',
-      cell : (row) => (
+      cell : (row) => {
+        return (
         <>
-        <button onClick={() => dispatch(deleteBrand(row.id))}>Delete</button>
+        <button onClick={() => handleDelete(row)}>
+          Delete
+        </button>
         </>
-      )
+      )}
     }
   ]
 
@@ -91,7 +135,6 @@ const AddBrand = () => {
   
   return (
     <div>
-        <Sidebar/>
     <Section>
       <Navbar/>
       {addBrand ? (<AddBrandModal stateChange={setAddBrand} />) : null}

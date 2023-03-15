@@ -10,6 +10,7 @@ const addPlace = async(place,token) => {
         }
     }
     const response = await axiosInstance.post('/admin/addPlace',place,config)
+    console.log("add response",response);
     message.success("Place Added Successfully")
     return response.data
 }
@@ -17,6 +18,7 @@ const addPlace = async(place,token) => {
 // Get Place
 const getPlace = async() => {
     const response = await axiosInstance.get('/admin/getPlaces')
+    console.log("placeResponse", response);
     return response.data
 }
 
@@ -28,7 +30,7 @@ const deletePlace = async(id,token) => {
         }
     }
     const response = await axiosInstance.delete(`/admin/deletePlace?id=${id}`,config)
-    message.success("Place Deleted Successfully")
+    console.log("delete response", response);
     return response.data
 }
 

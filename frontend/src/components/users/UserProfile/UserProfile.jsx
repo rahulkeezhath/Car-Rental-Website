@@ -22,7 +22,7 @@ const UserProfile = () => {
 
   useEffect(() => {
     return () => {
-      dispatch(reset(user?.response))
+      dispatch(reset())
     }
   })
   
@@ -40,7 +40,7 @@ const UserProfile = () => {
                   <p className="text-muted mb-1">Welcome Rider</p>
                   <p className="text-muted mb-4">Have a Nice Trip</p>
                   <div className="d-flex justify-content-center mb-2">
-                    <UserProfileModal userDetails={user} /> 
+                    {/* <UserProfileModal userDetails={user} />  */}
                     <button onClick={() => navigate('/myBookings')} type="submit" className="btn btn-outline-primary ms-1">My Bookings</button>
                   </div>  
                 </div>

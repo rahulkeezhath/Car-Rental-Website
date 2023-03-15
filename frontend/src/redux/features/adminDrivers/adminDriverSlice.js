@@ -13,7 +13,7 @@ const initialState = {
 // Get Drivers
 export const getAllDrivers = createAsyncThunk('adminDriver/get', async(_,thunkAPI) => {
     try {
-        const token = thunkAPI.getState().adminAuth.admin.data
+        const token = thunkAPI.getState().adminAuth.admin.token
         return await adminDriverService.getDrivers(token)
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
@@ -25,7 +25,7 @@ export const getAllDrivers = createAsyncThunk('adminDriver/get', async(_,thunkAP
 // Approve Drivers 
 export const approveDriver = createAsyncThunk('adminDriver/approve', async(id,thunkAPI)=> {
     try {
-        const token = thunkAPI.getState().adminAuth.admin.data
+        const token = thunkAPI.getState().adminAuth.admin.token
         return await adminDriverService.approveDriver(id,token)
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
@@ -37,7 +37,7 @@ export const approveDriver = createAsyncThunk('adminDriver/approve', async(id,th
 // Decline Drivers
 export const declineDriver = createAsyncThunk('adminDriver/decline', async(id, thunkAPI)=> {
     try {
-        const token = thunkAPI.getState().adminAuth.admin.data
+        const token = thunkAPI.getState().adminAuth.admin.token
         return await adminDriverService.declineDriver(id,token)
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
@@ -49,7 +49,7 @@ export const declineDriver = createAsyncThunk('adminDriver/decline', async(id, t
 // Block and Unblock Driver
 export const blockAndUnblockDriver = createAsyncThunk('adminDriver/blockAndUnblock', async(id, thunkAPI) => {
     try {
-        const token = thunkAPI.getState().adminAuth.admin.data
+        const token = thunkAPI.getState().adminAuth.admin.token
         return await adminDriverService.blockAndUnblockDriver(id,token)
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()

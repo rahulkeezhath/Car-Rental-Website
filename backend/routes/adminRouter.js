@@ -1,9 +1,9 @@
 const router = require('express').Router();
 const {adminLogin,
-    adminUsers,blockUser,unblockUser,
+    adminUsers,blockAndUnblockUser,
     getPlace,addPlace,deletePlace,
     getBrands,addBrand,deleteBrand,
-    adminCars,addCars,deleteCar,editCar,adminBookings, adminDrivers, approveDriver, declineDriver, blockAndUnblockDriver, blockAndUnblockUser, blockAndUnblockCar} 
+    adminCars,addCars,deleteCar,editCar,adminBookings, adminDrivers, approveDriver, declineDriver, blockAndUnblockDriver, blockAndUnblockCar, changeStatus} 
     = require('../controllers/adminController');
 const { adminProtect } = require('../middleware/authMiddleware');
 
@@ -16,8 +16,7 @@ router.post('/adminLogin',adminLogin)
 
 // Users
 router.get('/users',adminProtect, adminUsers)
-router.put('/blockAndUnblockUser', adminProtect, blockAndUnblockUser)
-
+router.put('/blockAndUnblockUser',adminProtect, blockAndUnblockUser)
 
 // Places
 router.get('/getPlaces', getPlace )
@@ -39,6 +38,7 @@ router.put('/blockAndUnblockCar', adminProtect, blockAndUnblockCar)
 
 //Bookings
 router.get('/getBookings',adminProtect,adminBookings)
+router.put('/changeStatus',changeStatus)
 
 // Drivers
 router.get('/drivers',adminProtect,adminDrivers)

@@ -21,7 +21,6 @@ const approveDriver = async(id,token) => {
         }
     }
     const response = await axiosInstance.put('/admin/approveDriver',{id:id},config)
-    message.success("Driver Approved Successfully")
     return response.data
 }
 
@@ -33,7 +32,6 @@ const declineDriver = async(id,token) => {
         }
     }
     const response = await axiosInstance.put('/admin/declineDriver',{id:id},config)
-    message.success("Driver Declined Successfully")
     return response.data
 }
 

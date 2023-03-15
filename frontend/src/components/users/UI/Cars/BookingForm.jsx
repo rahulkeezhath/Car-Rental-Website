@@ -7,7 +7,7 @@ import { getPlace, placeReset } from '../../../../redux/features/place/placeSlic
 import { bookCar, bookingReset} from '../../../../redux/features/users/booking/bookingSlice'
 import { useDispatch,useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
-import {toast} from 'react-hot-toast'
+import {toast, Toaster} from 'react-hot-toast'
 import BookedSlots from '../../BookedSlots/BookedSlots';
 
 
@@ -23,9 +23,6 @@ const BookingForm = () => {
     const [driver, setDriver] = useState(false)
     const [totalAmount, setTotalAmount] = useState(0)
     const [showBookedSlots, setShowBookedSlots] = useState(false)
-    
-    
- 
 
 
     const navigate = useNavigate()
@@ -37,10 +34,24 @@ const BookingForm = () => {
     const { places } = useSelector((state) => state.places)
     
    
-    let bookedSlots = car?.bookedSlots
+    let bookedSlots =car? car.bookedSlots : null;
     console.log("booked slots", bookedSlots);
-    
 
+    const highlightDates = {};
+    if(bookedSlots && bookedSlots.highlights ){
+
+    
+    const { highlights } = bookedSlots
+
+    highlights.forEach((highlight) => {
+        const  fromDate = new Date(highlight.from).toISOString().split('T')[0];
+        const toDate = new Date(highlight.to).toISOString().split("T")[0];
+        
+        for(let date = fromDate; date <= toDate; date=new Date(date.setDate(date.getDate()+1)).toISOString().split('T')[0]) {
+          highlightDates[date] = true
+        }
+      });
+    }
 
     useEffect(() => {
         dispatch(getPlace())
@@ -87,8 +98,11 @@ const BookingForm = () => {
         if(!dropOffCity) {
           toast.error('Please Add Dropoff City')
         }
-        if(!pickUpDate && !dropOffDate) {
-          toast.error("Please Add Date")
+        if(!pickUpDate ) {
+          toast.error("Please Add PickupDate")
+        }
+        if(!dropOffDate) {
+          toast.error('Please Add DropoffDate')
         }
       } else {
         let user = JSON.parse(localStorage.getItem('user'))
@@ -116,70 +130,96 @@ const BookingForm = () => {
   
   return (
     <div className="booking_sec_wrapper">
-    <form onSubmit={onSubmit} className="booking">
-      <div className="booking_field">
-        <label htmlFor="">Dropoff City</label>
-        <select onChange={(e) => setDropOffCity(e.target.value)}>
-          <option value="" hidden>Select City</option>
-          {
-            places.map((place) => (
-              <option key={place._id} value={place.place}>{place.place}</option>
-            ))
-          }
-        </select>
-      </div>
-      <div className="booking_field">
-        <label htmlFor="">Pickup Date</label>
-        <DatePicker
+      <form onSubmit={onSubmit} className="booking">
+        <div className="booking_field">
+          <label htmlFor="">Dropoff City</label>
+          <select onChange={(e) => setDropOffCity(e.target.value)}>
+            <option value="" hidden>
+              Select City
+            </option>
+            {places.map((place) => (
+              <option key={place._id} value={place.place}>
+                {place.place}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="booking_field">
+          <label htmlFor="">Pickup Date</label>
+          <DatePicker
             selected={pickUpDate}
             minDate={Date.now()}
             showTimeSelect
             timeIntervals={60}
-            dateFormat = "MM d, yyyy h:mm aa"
+            dateFormat="MM d, yyyy h:mm aa"
             isClearable
             showYearDropdown
-            highlightDates={bookedSlots}
-            onChange={(date) => { setPickUpDate(date)}}
-            placeholderText="Select Pickup Date" />
-      </div>
-      <div className="booking_field">
-        <label htmlFor="">Dropoff Date</label>
-        <DatePicker
-        selected={dropOffDate}
-        minDate={Date.now()}
-        showTimeSelect
-        timeIntervals={60}
-        dateFormat="MM d, yyyy h:mm aa"
-        isClearable
-        showYearDropdown
-        onChange={(date) => { setDropOffDate(date)}}
-        placeholderText="Select Dropoff Date" />
-      </div>
-      <div className="booking_field_driver">
-        <div onClick={() => setShowBookedSlots(true)} className='booked_slots'>Booked Slots</div>
-        {showBookedSlots && <BookedSlots stateChange={setShowBookedSlots} data={bookedSlots} />}
-      </div>
+            highlightDates={highlightDates}
+            onChange={(date) => {
+              setPickUpDate(date);
+            }}
+            placeholderText="Select Pickup Date"
+          />
+        </div>
+        <div className="booking_field">
+          <label htmlFor="">Dropoff Date</label>
+          <DatePicker
+            selected={dropOffDate}
+            minDate={Date.now()}
+            showTimeSelect
+            timeIntervals={60}
+            dateFormat="MM d, yyyy h:mm aa"
+            isClearable
+            showYearDropdown
+            highlightDates={highlightDates}
+            onChange={(date) => {
+              setDropOffDate(date);
+            }}
+            placeholderText="Select Dropoff Date"
+          />
+        </div>
+        <div className="booking_field_driver">
+          <div
+            onClick={() => setShowBookedSlots(true)}
+            className="booked_slots "
+          >
+            Click Here to know the Booked Slots 
+          </div>
+          {showBookedSlots && (
+            <BookedSlots stateChange={setShowBookedSlots} data={bookedSlots} />
+          )}
+        </div>
 
-      <div className="booking_field_driver">
-        <input type="checkbox" onChange={(e) => {
-          if (e.target.checked) {
-            setDriver(true)
-          } else {
-            setDriver(false)
-          }
-        }} />
-        <label htmlFor="">Driver Require</label>
-      </div>
-      <div className="booking_field">
-        <p>Total hours : {totalDays >= 1 ? totalDays : 0} </p>
-        <h1>Total : ₹ {totalAmount} </h1>
-      </div>
-      <div className="booking_field">
-        <button style={{backgroundColor:'#000d6b'}} className='book' type='submit'>Book Now</button>
-      </div>
-    </form>
-  </div>
-  )
+        <div className="booking_field_driver">
+          <input
+            type="checkbox"
+            onChange={(e) => {
+              if (e.target.checked) {
+                setDriver(true);
+              } else {
+                setDriver(false);
+              }
+            }}
+          />
+          <label htmlFor="">Driver Require</label>
+        </div>
+        <div className="booking_field">
+          <p>Total hours : {totalDays >= 1 ? totalDays : 0} </p>
+          <h1>Total : ₹ {totalAmount} </h1>
+        </div>
+        <div className="booking_field">
+          <button
+            style={{ backgroundColor: "#000d6b" }}
+            className="book"
+            type="submit"
+          >
+            Book Now
+          </button>
+        </div>
+      </form>
+      <Toaster/>
+    </div>
+  );
 }
 
 export default BookingForm

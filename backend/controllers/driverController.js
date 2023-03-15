@@ -9,17 +9,15 @@ const cloudinary = require('../utils/cloudinary')
 const driverRegister = asyncHandler (async (req,res) => {
     try {
     const { name, email, phoneNumber, password, profilePhoto, driverLicenceFront, drivingLicenceRear } = req.body
-    console.log("iehjhew",req.body);
+    
 
     if(!name, !email, !phoneNumber, !password, !profilePhoto, driverLicenceFront, !drivingLicenceRear) {
         res.status(400)
         throw new Error("Please Add All Fields")
     }
-    console.log("jljfhljsde");
 
     //Check if driver exists
     const driverExists = await Driver.findOne({email:email})
-    console.log("eklfhjjle",driverExists);
     if(driverExists) {
         res.status(400)
         throw new Error("Driver Already Exists")
@@ -31,17 +29,15 @@ const driverRegister = asyncHandler (async (req,res) => {
         const profileImg = await cloudinary.uploader.upload(profilePhoto, {
             folder: 'profilePic',
         })
-        console.log("profileImg",profileImg);
+       
 
         const licenceFront = await cloudinary.uploader.upload(driverLicenceFront, {
             folder: 'drivingLicence'
         })
 
-        console.log("Front",licenceFront);
         const licenceRear = await cloudinary.uploader.upload(drivingLicenceRear, {
             folder: 'drivingLicence'
         })
-        console.log("rear",licenceRear);
 
         const driver = await Driver.create({
             name, email, phoneNumber,

@@ -5,7 +5,7 @@ import StripeCheckout from 'react-stripe-checkout';
 import { useDispatch, useSelector} from 'react-redux'
 import { bookingPayment, bookingReset } from '../../../../redux/features/users/booking/bookingSlice'
 import moment from 'moment'
-import {toast} from 'react-toastify'
+import { toast, Toaster } from "react-hot-toast";
 
 const CheckoutPage = () => {
 
@@ -99,6 +99,7 @@ const CheckoutPage = () => {
         <button>Pay Now</button>
       </StripeCheckout> 
     </div>
+    <Toaster/>
   </div>
   )
 }

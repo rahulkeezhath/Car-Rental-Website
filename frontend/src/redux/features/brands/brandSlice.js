@@ -15,7 +15,7 @@ const initialState = {
 // Add Brand
 export const addBrand = createAsyncThunk('brands/add', async (brand, thunkAPI) => {
     try {
-        const token = thunkAPI.getState().adminAuth.admin.data
+        const token = thunkAPI.getState().adminAuth.admin.token
         return await brandService.addBrand(brand,token)
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
@@ -37,7 +37,7 @@ export const getBrands = createAsyncThunk('brands/get', async (_, thunkAPI) => {
 // Delete Brand
 export const deleteBrand = createAsyncThunk('brands/delete', async (id, thunkAPI) => {
     try {
-        const token = thunkAPI.getState().adminAuth.admin.data
+        const token = thunkAPI.getState().adminAuth.admin.token
         return await brandService.deleteBrand(id,token)
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()

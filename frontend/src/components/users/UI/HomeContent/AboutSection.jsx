@@ -1,7 +1,7 @@
 import React from 'react'
 import { Container, Row, Col } from 'reactstrap'
 import './AboutSection.css'
-import AboutImage from '../../../../assets/all-images/cars-img/bmw-offer.png'
+import AboutImage from '../../../../assets/all-images/cars-img/tesla.png'
 
 const AboutSection = ({aboutClass}) => {
   return <section className='about_section' 

@@ -30,7 +30,6 @@ const addBrand = async(brand,token) => {
       }
   }
     const response = await axiosInstance.delete(`/admin/deleteBrand?id=${id}`,config)
-    message.success("Brand Deleted Successfully")
     return response.data
  }
 

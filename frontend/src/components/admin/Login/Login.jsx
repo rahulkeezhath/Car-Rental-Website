@@ -1,7 +1,7 @@
 import React from 'react'
 import './Login.css'
 import {useForm} from 'react-hook-form'
-import {toast} from 'react-toastify'
+import {toast, Toaster} from 'react-hot-toast' 
 import { useDispatch, useSelector } from 'react-redux'
 import {useNavigate} from 'react-router-dom'
 import {adminLogin, reset} from '../../../redux/features/adminAuth/adminAuthSlice'
@@ -13,19 +13,19 @@ const AdminLogin = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const { admin, isLoading, isSuccess, isError, message } = useSelector((state) => state.adminAuth)
+    const { admin, isLoading, isSuccess, isError } = useSelector((state) => state.adminAuth)
     const { register, formState: {errors}, handleSubmit } = useForm()
 
  
     useEffect(()=>{
       if (isError) {
-        toast.error(message)
+        toast.error("Login Failed",)
       }
       if(isSuccess || admin){
         navigate('/admin/dashboard')
       }
       dispatch(reset())
-    },[isError,isSuccess,admin,message,dispatch,navigate])
+    },[isError,isSuccess,admin,dispatch,navigate])
 
     const onSubmit =  (data) => {
       dispatch(adminLogin(data))
@@ -48,19 +48,20 @@ const AdminLogin = () => {
                             <div className="form-group">
                                 <input className="form-control user" name="userName" type={'text'} autocomplete="off" placeholder="User Name" {...register('userName', {required: 'Please Enter User Name'})}/>
                                 <i className="fa ic fa-envelope" aria-hidden="true"></i>
-                                {errors.userName && <p className='error_mg'>{errors.userName?.message}</p>}
                             </div>
+                                {errors.userName && <p className='error_mg'>{errors.userName?.message}</p>}
                             <div className="form-group">
                                 <input className="form-control pass" type={'password'} name="password" placeholder="Password" autocomplete="new-password" {...register('password', {required: 'Please Enter Password'})}/>
-                                {errors.password && <p className='error_mg'>{errors.password?.message}</p>}
                                 <i className="fa ic fa-lock" aria-hidden="true"></i>
                             </div>
+                                {errors.password && <p className='error_mg'>{errors.password?.message}</p>}
                             <button className="btn-login" type="submit">Login</button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
+        <Toaster/>
     </div>
   )
 }

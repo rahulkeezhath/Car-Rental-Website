@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 import scrollreveal from 'scrollreveal'
 import DataTable from 'react-data-table-component'
@@ -10,8 +10,11 @@ import Spinner from '../../Spinner/Spinner'
 import moment from 'moment'
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import axiosInstance from '../../../../utils/axiosInstance'
 
 const BookingContent = () => {
+
+
 
     const generatePdf = () => {
       // Create a new instance of jsPDF
@@ -35,14 +38,16 @@ const BookingContent = () => {
     }
 
     const dispatch = useDispatch()
-    const { bookings, isLoading, isError, error} = useSelector((state) => state.adminBooking)
-    console.log("bookings",bookings);
+    const { bookings, isLoading, isError, error, isSuccess, message } =
+      useSelector((state) => state.adminBooking);
 
     useEffect(() => {
         if(isError) {
             toast.error(error)
         }
-
+        if (isSuccess) {
+          toast.success(message)
+        }
         dispatch(getAllBookings())
 
         return() => {
@@ -72,84 +77,146 @@ const BookingContent = () => {
         }, []);
 
 
+  
          
         const columns = [
-            {
-              name: "Id",
-              selector: (row) => row.id,
-              sortable:true,
-              width:"210px"
-            },
-            {
-              name: "Sl.No",
-              selector: (row) => row.slNo,
-              sortable:true
-            },
-            {
-              name: "User Name",
-              selector: (row) => row.userName,
-              sortable:true
-            },
-            {
-              name: "Car Name",
-              selector: (row) => row.carName,
-              sortable:true,
-              width: '130px'
-            },
-            {
-              name: "Phone Number",
-              selector: (row) => row.phoneNumber,
-              sortable:true,
-              width:"130px"
-            },
-            {
-              name: "Driver",
-              selector: (row) => row.driverRequire,
-              sortable:true,
-              width:"120px"
-            },
-            {
-              name: "Pickup Date",
-              selector: (row) => row.pickUpDate,
-              sortable:true,
-              width:"150px"
-            },
-            {
-              name: "Dropoff Date",
-              selector: (row) => row.dropOffDate,
-              sortable:true,
-              width:"150px"
-            },
-            {
-              name: "Total Hours",
-              selector: (row) => row.totalHours,
-              sortable:true,
-              width:"110px"
-            },
-            {
-              name: "Total Amount",
-              selector: (row) => row.totalAmount,
-              sortable:true,
-              width:"120px"
-            },
-            {
-              name: "Dropoff City",
-              selector: (row) => row.dropOffCity,
-              sortable:true,
-              width:"120px"
-            },
-            {
-                name: "Payment",
-                selector: (row) => row.payment,
-                sortable:true
-            },
-            {
-                name: "Status",
-                selector: (row) => row.status,
-                sortable:true
-            }
-          ]
-         
+          {
+            name: "Id",
+            selector: (row) => row.id,
+            sortable: true,
+            width: "210px",
+          },
+          {
+            name: "Sl.No",
+            selector: (row) => row.slNo,
+            sortable: true,
+          },
+          {
+            name: "User Name",
+            selector: (row) => row.userName,
+            sortable: true,
+          },
+          {
+            name: "Car Name",
+            selector: (row) => row.carName,
+            sortable: true,
+            width: "130px",
+          },
+          {
+            name: "Phone Number",
+            selector: (row) => row.phoneNumber,
+            sortable: true,
+            width: "130px",
+          },
+          {
+            name: "Driver",
+            selector: (row) => row.driverRequire,
+            sortable: true,
+            width: "120px",
+          },
+          {
+            name: "Pickup Date",
+            selector: (row) => row.pickUpDate,
+            sortable: true,
+            width: "150px",
+          },
+          {
+            name: "Dropoff Date",
+            selector: (row) => row.dropOffDate,
+            sortable: true,
+            width: "150px",
+          },
+          {
+            name: "Total Hours",
+            selector: (row) => row.totalHours,
+            sortable: true,
+            width: "110px",
+          },
+          {
+            name: "Total Amount",
+            selector: (row) => row.totalAmount,
+            sortable: true,
+            width: "120px",
+          },
+          {
+            name: "Dropoff City",
+            selector: (row) => row.dropOffCity,
+            sortable: true,
+            width: "120px",
+          },
+          {
+            name: "Payment",
+            selector: (row) => row.payment,
+            sortable: true,
+          },
+          {
+            name: "Status",
+             cell: (row) => {
+          return (
+            <>
+              <div className="dropdown">
+                <button
+                  className="btn btn-secondary dropdown-toggle"
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Select Status
+                </button>
+                <ul className="dropdown-menu">
+                  <li>
+                    <a
+                      onClick={() => handleStatus("Booked", row.id)}
+                      className="dropdown-item"
+                      href="#"
+                    >
+                      Booked
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={() => handleStatus("Cancelled", row.id)}
+                      className="dropdown-item"
+                      href="#"
+                    >
+                      Cancelled
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={() => handleStatus("Picked", row.id)}
+                      className="dropdown-item"
+                      href="#"
+                    >
+                      Picked
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={() => handleStatus("Delievered", row.id)}
+                      className="dropdown-item"
+                      href="#"
+                    >
+                      Delievered
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </>
+          );},
+        }
+        ];
+
+
+        const handleStatus = (status,bookingId) => {
+          try {
+            axiosInstance.put('/admin/changeStatus',{status,bookingId})      
+          } catch (error) {
+            console.log(error);
+          }
+        }
+
+
 
 
           const rows = bookings.map((booking, index) => {
@@ -166,8 +233,8 @@ const BookingContent = () => {
                 totalHours: booking.totalHours,
                 totalAmount: booking.totalAmount,
                 dropOffCity: booking.dropoffCity,
-                status: booking.status
-            }
+                status: booking.status 
+               }
           })
 
        
@@ -180,8 +247,7 @@ const BookingContent = () => {
       <Section>
         <Navbar/>
         <div className="grid">
-          <div className="row__one"></div>
-        
+          <div className="row__one"></div>     
     <DataTable title="Booking Details"
       columns={columns}
       data={rows}

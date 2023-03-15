@@ -14,7 +14,7 @@ const initialState = {
 // Add Place
 export const addPlace = createAsyncThunk('places/add', async (place, thunkAPI) => {
     try {
-        const token = thunkAPI.getState().adminAuth.admin.data
+        const token = thunkAPI.getState().adminAuth.admin.token
         return await placeService.addPlace(place,token)
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
@@ -37,7 +37,7 @@ export const getPlace = createAsyncThunk('places/get', async (_, thunkAPI) => {
 // Delete Place
 export const deletePlace = createAsyncThunk('places/delete', async (id, thunkAPI) => {
     try {
-        const token = thunkAPI.getState().adminAuth.admin.data
+        const token = thunkAPI.getState().adminAuth.admin.token
         return await placeService.deletePlace(id,token)
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
@@ -51,11 +51,11 @@ export const placeSlice = createSlice({
     initialState,
     reducers: {
         placeReset: (state) => {
+            state.places = []
             state.placeError = ""
             state.placeIsError = false
             state.placeMessage = ""
             state.placeIsSuccess = false
-            state.places = []
         }
     },
      extraReducers: (builder) => {

@@ -15,7 +15,7 @@ const initialState = {
 // Add Car
 export const addCar = createAsyncThunk('car/add', async (carData, thunkAPI) => {
     try {
-        const token=thunkAPI.getState().adminAuth.admin.data
+        const token=thunkAPI.getState().adminAuth.admin.token
         return await carService.addCar(carData,token)
     } catch (error) {
         const message =(error.response && error.response.data && error.response.data.message) || error.message || error.toString()
@@ -27,7 +27,7 @@ export const addCar = createAsyncThunk('car/add', async (carData, thunkAPI) => {
 // Get Car
 export const getCars = createAsyncThunk('car/get', async (_, thunkAPI) => {
     try {
-        const token = thunkAPI.getState().adminAuth.admin.data
+        const token = thunkAPI.getState().adminAuth.admin.token
         return await carService.getCar(token)
     } catch (error) {
         const message =(error.response && error.response.data && error.response.data.message) || error.message || error.toString()
@@ -38,7 +38,7 @@ export const getCars = createAsyncThunk('car/get', async (_, thunkAPI) => {
 // Delete Car
 export const deleteCar = createAsyncThunk('car/delete', async (id, thunkAPI) => {
     try {
-        const token = thunkAPI.getState().adminAuth.admin.data
+        const token = thunkAPI.getState().adminAuth.admin.token
         return await carService.deleteCar(id,token)
     } catch (error) {
         const message =(error.response && error.response.data && error.response.data.message) || error.message || error.toString()
@@ -50,7 +50,7 @@ export const deleteCar = createAsyncThunk('car/delete', async (id, thunkAPI) => 
 // Block and Unblock Car
 export const blockAndUnblockCar = createAsyncThunk('car/blockAndUnblockCar', async(id, thunkAPI) => {
     try {
-        const token = thunkAPI.getState().adminAuth.admin.data
+        const token = thunkAPI.getState().adminAuth.admin.token
         return await carService.blockAndUnblockCar(id, token)
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
@@ -83,7 +83,7 @@ export const carSlice = createSlice({
         })
         .addCase(addCar.rejected,(state,action)=> {
             state.isLoading = false
-            state.isSuccess = true
+            state.isError = true
             state.message  = action.payload
         })
         .addCase(getCars.pending,(state) => {
@@ -108,7 +108,7 @@ export const carSlice = createSlice({
         })
         .addCase(deleteCar.rejected,(state,action)=> {
             state.isLoading = false
-            state.isSuccess = true
+            state.isError = true
             state.message  = action.payload
         })
         .addCase(blockAndUnblockCar.pending,(state) => {
@@ -121,7 +121,7 @@ export const carSlice = createSlice({
         })
         .addCase(blockAndUnblockCar.rejected,(state,action)=> {
             state.isLoading = false
-            state.isSuccess = true
+            state.isError = true
             state.message  = action.payload
         })
     }

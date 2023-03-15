@@ -5,11 +5,11 @@ import DataTable from 'react-data-table-component'
 import Navbar from '../Navbar/Navbar'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllDrivers, reset, approveDriver, declineDriver, blockAndUnblockDriver  } from '../../../redux/features/adminDrivers/adminDriverSlice'
-
 import { FcApprove } from "react-icons/fc";
 import { FcDisapprove } from "react-icons/fc";
 import Spinner from '../../Spinner/Spinner'
 import toast,{Toaster} from 'react-hot-toast'
+import Swal from "sweetalert2";
 
 
 const DriversContent = () => {
@@ -18,16 +18,16 @@ const DriversContent = () => {
 
     useEffect(()=> {
         if(isError) {
-            toast.error(message)
+            toast.error(error)
         }
         if(isSuccess) {
-            toast.success(message)
+            toast.success(message.message)
         }
         dispatch(getAllDrivers())
         return () => {
             dispatch(reset())
         }
-    }, [dispatch, message, isError, error])
+    }, [dispatch, message, isError])
 
 
     useEffect(() => {
@@ -60,6 +60,84 @@ const DriversContent = () => {
             return value.isApproved
         })
 
+         
+    const handleApprove = (row) => {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-danger",
+      },
+      buttonsStyling: false,
+    });
+
+    swalWithBootstrapButtons
+      .fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, approve it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          swalWithBootstrapButtons.fire(
+            "Approved!",
+            "The Driver has been Approved.",
+            "success"
+          );
+            dispatch(approveDriver(row.id))
+        } else if (
+          result.dismiss === Swal.DismissReason.cancel
+        ) {
+          swalWithBootstrapButtons.fire(
+            "Cancelled",
+            "Your file is safe :)",
+            "error"
+          );
+        }
+      });
+    }
+
+     const handleDecline = (row) => {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-danger",
+      },
+      buttonsStyling: false,
+    });
+
+    swalWithBootstrapButtons
+      .fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, decline it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          swalWithBootstrapButtons.fire(
+            "Declined!",
+            "The Driver has been Declined.",
+            "success"
+          );
+            dispatch(declineDriver(row.id))
+        } else if (
+          result.dismiss === Swal.DismissReason.cancel
+        ) {
+          swalWithBootstrapButtons.fire(
+            "Cancelled",
+            "Your file is safe :)",
+            "error"
+          );
+        }
+      });
+    }
         const columns = [
             {
               name: "Id",
@@ -120,12 +198,13 @@ const DriversContent = () => {
               },
             {
               name: "Action",
-              cell: (row) => (
+              cell: (row) => {
+                return (
                 <>
-                <button onClick={() => { dispatch(approveDriver(row.id)) }} className='btn btn-success'><FcApprove/></button>
-                <button onClick={() => { dispatch(declineDriver(row.id)) }} className='btn btn-danger'><FcDisapprove/></button>
+                <button onClick={() => handleApprove(row)} className='btn btn-success'><FcApprove/></button>
+                <button onClick={() => handleDecline(row)} className='btn btn-danger'><FcDisapprove/></button>
                 </>
-              )
+              )}
             }
           ]
 
@@ -202,11 +281,12 @@ const DriversContent = () => {
               },
             {
               name: "Action",
-              cell: (row) => (
+              cell: (row) => {
+                return(
                 <>
                 <button  onClick={() =>  dispatch(blockAndUnblockDriver(row.id)) } className={row.isBlocked ? 'unBlock_btn' : 'block_btn'}>{row.isBlocked ? <i className="ri-user-follow-fill"></i> :  <i className="ri-user-unfollow-fill"></i>}</button>
                 </>
-              )
+              )}
             }                                                          
           ]
 

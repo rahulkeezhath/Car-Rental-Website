@@ -11,16 +11,15 @@ const protect = asyncHandler(async (req, res, next ) => {
     try {
       //  Get Token from header
       token = req.headers.authorization.split(' ')[1]
-      console.log("  User token keri", token);
+      
       // Verify Token
       const decoded = jwt.verify(token, process.env.JWTPRIVATEKEY)
 
-      console.log("decoded",decoded);
+     
       req.user = await User.findById(decoded.id).select('-password')
 
       next()
     } catch (error) {
-      console.log(error);
       res.status(401)
       throw new Error('Not AUthorized')
     }
@@ -47,12 +46,10 @@ const adminProtect = asyncHandler(async (req, res, next ) => {
       const decoded = jwt.verify(token, process.env.JWTPRIVATEKEY)
 
 
-
       req.admin = await Admin.findById(decoded.id).select('-password')
 
       next()
     } catch (error) {
-      console.log(error);
       res.status(401)
       throw new Error('Not AUthorized')
     }
