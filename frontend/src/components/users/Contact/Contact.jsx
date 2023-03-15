@@ -6,6 +6,7 @@ import Header from '../Header/Header'
 import Helmet from '../Helmet/Helmet'
 import CommonSection from '../UI/About/CommonSection'
 import './Contact.css'
+import { useForm } from "react-hook-form";
 import {toast, Toaster} from 'react-hot-toast'
 import emailjs from "@emailjs/browser";
 
@@ -30,11 +31,16 @@ const socialLinks = [
 
 const Contact = () => {
 
+    const {
+      register,
+      handleSubmit,
+      formState: { errors },
+    } = useForm();
+
       const form = useRef();
 
 
-       const sendEmail = (e) => {
-         e.preventDefault();
+       const sendEmail = () => {
 
          emailjs
            .sendForm(
@@ -45,9 +51,10 @@ const Contact = () => {
            )
            .then(
              (result) => {
-                e.target.reset();
+                
                 toast.success("Message sent!");
                console.log(result.text);
+               form.current.reset();
              },
              (error) => {
               toast.error('Message sent failed')
@@ -68,21 +75,58 @@ const Contact = () => {
                 Get In Touch
               </h6>
 
-              <form ref={form} onSubmit={sendEmail}>
+              <form ref={form} onSubmit={handleSubmit(sendEmail)}>
                 <FormGroup className="contact_form">
-                  <input placeholder="Your Name" type="text" name="from_name" />
+                  <input
+                    placeholder="Your Name"
+                    type="text"
+                    name="from_name"
+                    {...register("from_name", {
+                      required: "Please Enter Name",
+                      minLength: {
+                        value: 3,
+                        message: "Name must be 3 or more characters",
+                      },
+                    })}
+                  />
+                  {errors.fullName && (
+                    <p className="error_mg">{errors.from_name?.message}</p>
+                  )}
                 </FormGroup>
                 <FormGroup className="contact_form">
-                  <input placeholder="Email" type="email" name="from_email" />
+                  <input
+                    placeholder="Email"
+                    type="email"
+                    name="from_email"
+                    {...register("from_email", {
+                      required: "Please Enter Email",
+                      pattern:
+                        /^[a-zA-Z0-9_.+-]+@[a-zA-Z-9-]+\.[a-zA-Z0-9-.]+$/i,
+                      message: "Invalid Email Address",
+                    })}
+                  />
+                  {errors.fullName && (
+                    <p className="error_mg">{errors.from_email?.message}</p>
+                  )}
                 </FormGroup>
                 <FormGroup>
                   <textarea
                     rows="5"
-                    cols={90}
+                    cols={50}
                     name="message"
                     placeholder="Message"
                     className="textarea"
+                    {...register("message", {
+                      required: "Please Enter Name",
+                      minLength: {
+                        value: 10,
+                        message: "Message must be 10 or more characters",
+                      },
+                    })}
                   ></textarea>
+                  {errors.fullName && (
+                    <p className="error_mg">{errors.message?.message}</p>
+                  )}
                 </FormGroup>
 
                 <button className="contact_btn mb-5" type="submit" value="Send">
@@ -135,7 +179,7 @@ const Contact = () => {
           </Row>
         </Container>
       </section>
-      <Toaster/>
+      <Toaster />
       <Footer />
     </Helmet>
   );

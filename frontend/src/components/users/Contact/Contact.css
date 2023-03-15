@@ -14,6 +14,12 @@
     border-radius: 5px;
 }
 
+.error_mg{
+  font-size: 10px;
+  color: #f34646;
+}
+
+
 @media only screen and (max-width: 768px) {
     .contact_btn {
       margin-bottom: 40px;
