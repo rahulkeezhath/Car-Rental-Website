@@ -53,7 +53,7 @@ function Signup() {
 
   return (
     <div className="first1">
-      <div className="main mb-5 mt-5">
+      <div className="main">
         <div className="container1">
           <div className="titulo">
             <h1>Welcome To Fastrack</h1>
