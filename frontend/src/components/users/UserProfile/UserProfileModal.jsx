@@ -11,7 +11,7 @@ import { reset } from '../../../redux/features/auth/authSlice';
 
 const UserProfileModal = ({userDetails}) => {
  
-  console.log("HLoo",userDetails)
+
   const [show, setShow] = useState(false);
 
   
@@ -25,7 +25,7 @@ const UserProfileModal = ({userDetails}) => {
  
 
   const [userData, setUserData] = useState(userDetails);
-  console.log("Rahul",userData)
+
 
     var data_id = userDetails._id;
     const getUserDetails =async() => {

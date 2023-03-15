@@ -16,7 +16,6 @@ const initialState = {
 // register driver
 export const driverRegister=createAsyncThunk('driverAuth/register',async(driverData,thunkAPI)=>{
     try {
-        console.log("slice",driverData);
         return await driverAuthService.register(driverData)
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()

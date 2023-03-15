@@ -35,7 +35,6 @@ const BookingForm = () => {
     
    
     let bookedSlots =car? car.bookedSlots : null;
-    console.log("booked slots", bookedSlots);
 
     const highlightDates = {};
     if(bookedSlots && bookedSlots.highlights ){

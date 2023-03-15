@@ -18,9 +18,6 @@ function Signup() {
     const [profileImg, setProfileImg] = useState()
     const [licenceFront, setLicenceFront] = useState()
     const [licenceRear, setLicenceRear] = useState()
-    console.log("Img",profileImg);
-    console.log("front",licenceFront);
-    console.log("rear",licenceRear);
     const dispatch  = useDispatch()
     const navigate = useNavigate()
     const {driver, isLoading, isSuccess, isError, message, error} = useSelector((state) => state.driverAuth)
@@ -53,7 +50,6 @@ function Signup() {
         const {name, email, phoneNumber, password} = data
         const driverData = { name, email, phoneNumber, password, profilePhoto:profileImg, driverLicenceFront: licenceFront, drivingLicenceRear: licenceRear }
         dispatch(driverRegister(driverData))
-        console.log("driverData",driverData);
     }
 
     if(isLoading) {

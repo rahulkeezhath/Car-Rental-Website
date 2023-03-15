@@ -12,7 +12,6 @@ function MyBookingContent() {
 
     const dispatch = useDispatch()
     const {bookings, bookingIsLoading} = useSelector((state) => state.booking)
-    console.log("bookings",bookings);
     const user = JSON.parse(localStorage.getItem('user'))
 
     useEffect(() => {

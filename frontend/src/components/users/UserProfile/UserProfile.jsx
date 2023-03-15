@@ -13,7 +13,6 @@ const UserProfile = () => {
  
 
   const { user } = useSelector(state => state.auth)
-  console.log("jdgfhgde",user)
 
 
   const navigate = useNavigate()
