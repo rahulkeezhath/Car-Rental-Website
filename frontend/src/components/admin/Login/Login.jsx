@@ -46,12 +46,12 @@ const AdminLogin = () => {
                         <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
                             <h4>Admin Login</h4>
                             <div className="form-group">
-                                <input className="form-control user" name="userName" type={'text'} autocomplete="off" placeholder="User Name" {...register('userName', {required: 'Please Enter User Name'})}/>
+                                <input className="form-control " name="userName" type={'text'} autocomplete="off" placeholder="User Name" {...register('userName', {required: 'Please Enter User Name'})}/>
                                 <i className="fa ic fa-envelope" aria-hidden="true"></i>
                             </div>
                                 {errors.userName && <p className='error_mg'>{errors.userName?.message}</p>}
                             <div className="form-group">
-                                <input className="form-control pass" type={'password'} name="password" placeholder="Password" autocomplete="new-password" {...register('password', {required: 'Please Enter Password'})}/>
+                                <input className="form-control " type={'password'} name="password" placeholder="Password" autocomplete="new-password" {...register('password', {required: 'Please Enter Password'})}/>
                                 <i className="fa ic fa-lock" aria-hidden="true"></i>
                             </div>
                                 {errors.password && <p className='error_mg'>{errors.password?.message}</p>}

@@ -1,7 +1,7 @@
     
     .mainLogin {
-        width: 100%;
-        height: 100%;
+        width: 100vw;
+        height: 100vh;
         min-height: 100vh;
         display: flex;
         justify-content: center;
@@ -156,7 +156,7 @@
     }
     /*Small devices (landscape phones, 576px and up)*/
     
-    @media (min-width: 576px) and (max-width: 1199.98px) {
+    @media (min-width: 276px) and (max-width: 1199.98px) {
         .lgn {
             width: 600px;
             padding: 50px 30px;
@@ -178,6 +178,7 @@
         .login-form h4 {
             margin-bottom: 60px;
         }
+        
         .forget {
             margin: 15px 0;
             color: #888;
