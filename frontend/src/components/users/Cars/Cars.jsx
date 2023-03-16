@@ -7,7 +7,7 @@ import CommonSection from '../UI/About/CommonSection'
 import CarItem from '../UI/HomeContent/CarItem'
 import { useDispatch, useSelector } from 'react-redux'
 import { allCars, reset } from '../../../redux/features/users/cars/carSlice'
-import { ToastContainer, toast } from 'react-toastify';
+import { toast, Toaster } from 'react-hot-toast';
 import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '../../Spinner/Spinner'
 
@@ -29,7 +29,7 @@ const Cars = () => {
 
   useEffect(() => {
     if(isError) {
-      toast.error(message)
+      toast.error("Error Occured")
     }
     dispatch(allCars())
     return () => {
@@ -78,7 +78,7 @@ const Cars = () => {
           </Row>
         </Container>
       </section>
-     <ToastContainer/>
+     <Toaster/>
     <Footer/>
     </Helmet>
   )

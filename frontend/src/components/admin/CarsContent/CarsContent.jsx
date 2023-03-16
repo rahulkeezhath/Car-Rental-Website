@@ -107,7 +107,7 @@ const CarsContent = () => {
             sortable:true
           },
           {
-            name: "Rent",
+            name: "Rent / hr",
             selector: (row) => row.rent,
             sortable:true
           },

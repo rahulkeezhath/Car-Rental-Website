@@ -16,8 +16,8 @@ const CarItem = ({name,rent,model,transmission,fuel,id,image}) => {
 
         <div className="car_item-content mt-4">
             <h4 className="section_title text-center">{name}</h4>
-            <h6 className="rent_price text-center">{rent}.00
-            <span>/ Day</span></h6>
+            <h6 className="rent_price text-center">{rent}
+            <span>/ Hour</span></h6>
 
             <div className="car_item-info d-flex align-items-center justify-content-between mt-3 mb-4">
             <span className='d-flex align-items-center gap-1' ><i class="ri-car-line"></i>{model}</span>

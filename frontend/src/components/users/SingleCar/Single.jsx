@@ -43,7 +43,7 @@ const Single = () => {
                 <h2 className='section_title2'>{car.name}</h2>
 
                 <div className='d-flex align-items-center gap-5 mb-4 mt-3'>
-                    <h6 className="rent_price fw-bold fs-4">Rs.{car.rent}.00 / Day</h6>
+                    <h6 className="rent_price fw-bold fs-4">Rs.{car.rent}.00 / Hour</h6>
 
                     <span className='d-flex align-items-center gap-2'>
                     <span style={{color:'#f9a826'}}>
