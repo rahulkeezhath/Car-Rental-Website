@@ -18,7 +18,7 @@ import Swal from "sweetalert2";
 const AddPlace = () => {
 
   const [addPlace, setAddPlace] = useState(false)
-  const {places, placeIsError, placeError } = useSelector((state) => state.places)
+  const {places, placeIsError, placeError,placeMessage } = useSelector((state) => state.places)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -26,7 +26,7 @@ const AddPlace = () => {
       toast.error(placeError)
     }
     dispatch(getPlace())
-  }, [placeIsError, placeError, dispatch])
+  }, [placeIsError, placeError, dispatch, placeMessage])
 
 
   useEffect(() => {
